@@ -20,11 +20,26 @@ ITEM_ORDER = {
 # TODO: check if items need to be sorted into variables then calculations then filters and do so if needed
 # TODO: actually just sorted preemptively when writing to file, will check later if this is an issue
 class CalcSet:
+    """
+    Represents a Leapfrog-style calculation set, containing variables, calculations, categories, filters, and conditional logic.
+
+    CalcSet is the main container for building, manipulating, and exporting calculation workflows. It is designed to help automate large, complex, or repetitive calculation sets, and supports querying, dependency analysis, and rich display in Jupyter notebooks.
+
+    Args:
+        items (list of Item): List of calculation items (Number, Category, Filter, If, etc.)
+
+    Example:
+        >>> from pollywog.core import CalcSet, Number
+        >>> calcset = CalcSet([
+        ...     Number(name="Au_est", children=["block[Au] * 0.95"]),
+        ...     Number(name="Ag_est", children=["block[Ag] * 0.85"])
+        ... ])
+    """
     def __init__(self, items: List["Item"]):
         """
         Initialize a CalcSet with a list of items.
         Args:
-            items (list): List of calculation items (Variable, Number, Category, Filter, etc.)
+            items (list): List of calculation items (Number, Category, Filter, If, etc.)
         """
         self.items = ensure_list(items)
 
@@ -36,14 +51,20 @@ class CalcSet:
 
     def query(self, expr: str, **external_vars) -> "CalcSet":
         """
-        Return a new CalcSet containing items that match the query expression.
+        Filter items in the CalcSet using a query expression.
+
         The expression can use attributes of Item (e.g., 'item_type == "variable" and name.startswith("Au")'),
         and external variables using @var syntax (like pandas).
+
         Args:
             expr (str): Query expression to filter items.
             **external_vars: External variables to use in the query (referenced as @var).
+
         Returns:
             CalcSet: New CalcSet with filtered items.
+
+        Example:
+            >>> calcset.query('name.startswith("Au")')
         """
         import inspect
         import re
@@ -97,6 +118,8 @@ class CalcSet:
     def topological_sort(self) -> "CalcSet":
         """
         Return a new CalcSet with items sorted topologically by dependencies.
+
+        This is useful for ensuring calculations are ordered so that dependencies are resolved before use.
         Raises ValueError if cyclic dependencies are detected.
         """
         items_by_name = {
@@ -137,8 +160,10 @@ class CalcSet:
     def to_dict(self, sort_items: bool = True) -> Dict[str, Any]:
         """
         Convert the CalcSet to a dictionary representation.
+
         Args:
             sort_items (bool): Whether to sort items by type.
+
         Returns:
             dict: Dictionary representation of the calculation set.
         """
@@ -151,8 +176,10 @@ class CalcSet:
     def from_dict(cls: Type["CalcSet"], data: Dict[str, Any]) -> "CalcSet":
         """
         Create a CalcSet from a dictionary.
+
         Args:
             data (dict): Dictionary containing calculation set data.
+
         Returns:
             CalcSet: Instance of CalcSet.
         """
@@ -179,9 +206,11 @@ class CalcSet:
     def to_json(self, sort_items: bool = True, indent: int = 0) -> str:
         """
         Convert the CalcSet to a JSON string.
+
         Args:
             sort_items (bool): Whether to sort items by type.
             indent (int): Indentation level for JSON output.
+
         Returns:
             str: JSON string representation.
         """
@@ -192,6 +221,7 @@ class CalcSet:
     ) -> None:
         """
         Write the CalcSet to a Leapfrog .lfcalc file.
+
         Args:
             filepath_or_buffer (str, Path, or file-like): Output file path or buffer.
             sort_items (bool): Whether to sort items by type.
@@ -219,8 +249,10 @@ class CalcSet:
     def read_lfcalc(filepath_or_buffer: Union[str, Path, Any]) -> "CalcSet":
         """
         Read a Leapfrog .lfcalc file and return a CalcSet.
+
         Args:
             filepath_or_buffer (str, Path, or file-like): Input file path or buffer.
+
         Returns:
             CalcSet: Instance of CalcSet.
         """
@@ -275,10 +307,12 @@ class CalcSet:
     ) -> "CalcSet":
         """
         Return a copy of the CalcSet with specified items renamed and/or variables in children renamed.
+
         Args:
             items (dict-like or function): Mapping of old item names to new names.
             variables (dict-like or function): Mapping of old variable names to new names.
             regex (bool): Whether to treat keys in `items` and `variables` as regex patterns.
+
         Returns:
             CalcSet: New instance with updated item names and/or children.
         """
@@ -328,8 +362,16 @@ class CalcSet:
 
 class Item:
     """
-    Base class for items in a calculation set.
-    Subclasses should define `item_type` and optionally `calculation_type`.
+    Base class for all items in a CalcSet.
+
+    Subclasses represent specific calculation types (Number, Category, Variable, Filter, If, etc.).
+    Each item has a name, a list of child expressions, and optional comments.
+
+    Attributes:
+        name (str): Name of the item.
+        children (list): List of child expressions/statements.
+        comment_item (str): Comment for the item.
+        comment_equation (str): Comment for the equation.
     """
 
     item_type = None
@@ -358,6 +400,7 @@ class Item:
     def to_dict(self) -> Dict[str, Any]:
         """
         Convert the Item to a dictionary representation.
+
         Returns:
             dict: Dictionary representation of the item.
         """
@@ -385,8 +428,10 @@ class Item:
     def from_dict(cls: Type["Item"], data: Dict[str, Any]) -> "Item":
         """
         Create an Item from a dictionary.
+
         Args:
             data (dict): Dictionary containing item data.
+
         Returns:
             Item: Instance of Item or subclass.
         """
@@ -408,6 +453,7 @@ class Item:
     def dependencies(self) -> Set[str]:
         """
         Get the set of variable dependencies for this item.
+
         Returns:
             set: Set of variable names that are dependencies.
         """
@@ -427,8 +473,10 @@ class Item:
     def replace(self, **changes: Any) -> "Item":
         """
         Return a copy of the Item with specified attributes replaced.
+
         Args:
             **changes: Attributes to replace.
+
         Returns:
             Item: New instance with updated attributes.
         """
@@ -451,9 +499,12 @@ class Item:
     ) -> "Item":
         """
         Return a copy of the Item with a new name and/or renamed variables in children.
+
         Args:
             name (str): New name for the item.
             variables (dict-like or function): Mapping of old variable names to new names.
+            regex (bool): Whether to treat keys in `variables` as regex patterns.
+
         Returns:
             Item: New instance with updated name and/or children.
         """
@@ -482,6 +533,13 @@ class Item:
 
 
 class IfRow:
+    """
+    Represents a single row in an If block, containing a condition and corresponding value(s).
+
+    Args:
+        condition (list): Condition expressions.
+        value (list): Value expressions if condition is met.
+    """
     def __init__(self, condition: List[Any], value: List[Any]):
         """
         Initialize an IfRow.
@@ -495,6 +553,7 @@ class IfRow:
     def to_dict(self) -> Dict[str, Any]:
         """
         Convert the IfRow to a dictionary representation.
+
         Returns:
             dict: Dictionary representation of the IfRow.
         """
@@ -511,8 +570,10 @@ class IfRow:
     def from_dict(cls: Type["IfRow"], data: Dict[str, Any]) -> "IfRow":
         """
         Create an IfRow from a dictionary.
+
         Args:
             data (dict): Dictionary containing IfRow data.
+
         Returns:
             IfRow: Instance of IfRow.
         """
@@ -541,7 +602,20 @@ class IfRow:
 
 
 class If:
+    """
+    Represents a conditional logic block (if/else) in a calculation set.
 
+    Args:
+        rows (list): List of IfRow objects, dicts, or (condition, value) tuples.
+        otherwise (list): Expressions for the 'otherwise' case.
+
+    Example:
+        >>> from pollywog.core import If, Number
+        >>> if_block = If([
+        ...     (["block[Au] > 1"], [Number("High_Au", ["block[Au] * 1.1"])]),
+        ...     (["block[Au] <= 1"], [Number("Low_Au", ["block[Au] * 0.9"])])
+        ... ], otherwise=[Number("Default_Au", ["block[Au]"])])
+    """
     def __init__(self, rows: List[Any], otherwise: List[Any]):
         """
         Initialize an If expression.
@@ -555,6 +629,7 @@ class If:
     def to_dict(self) -> Dict[str, Any]:
         """
         Convert the If expression to a dictionary representation.
+
         Returns:
             dict: Dictionary representation of the If expression.
         """
@@ -582,8 +657,10 @@ class If:
     def from_dict(cls: Type["If"], data: Dict[str, Any]) -> "If":
         """
         Create an If expression from a dictionary.
+
         Args:
             data (dict): Dictionary containing If expression data.
+
         Returns:
             If: Instance of If.
         """
@@ -610,7 +687,9 @@ class If:
 
 class Number(Item):
     """
-    Represents a numeric calculation item.
+    Represents a numeric calculation item in a CalcSet.
+
+    Used for variables whose values are numbers, either integers or floats.
     """
 
     item_type = "calculation"
@@ -619,7 +698,9 @@ class Number(Item):
 
 class Category(Item):
     """
-    Represents a categorical calculation item.
+    Represents a categorical calculation item in a CalcSet.
+
+    Used for variables whose values are categories, represented as strings.
     """
 
     item_type = "calculation"
@@ -629,6 +710,8 @@ class Category(Item):
 class Variable(Item):
     """
     Represents a variable item in a calculation set.
+
+    Used for declaring variables that may be referenced by other calculations.
     """
 
     item_type = "variable"
@@ -637,6 +720,8 @@ class Variable(Item):
 class Filter(Item):
     """
     Represents a filter item in a calculation set.
+
+    Used for defining filters that restrict or modify calculation results.
     """
 
     item_type = "filter"
@@ -659,8 +744,10 @@ expressions = {
 def dispatch_expression(data: Any) -> Any:
     """
     Dispatch an expression dictionary to the appropriate class constructor.
+
     Args:
         data (dict or any): Expression data.
+
     Returns:
         object: Instantiated expression object or the original data if not a dict.
     """
@@ -676,8 +763,10 @@ def dispatch_expression(data: Any) -> Any:
 def get_dependencies(item: Any) -> Set[str]:
     """
     Recursively extract variable dependencies from an Item or expression.
+
     Args:
         item (Item or expression): The item or expression to analyze.
+
     Returns:
         set: Set of variable names that are dependencies.
     """
@@ -709,10 +798,12 @@ def rename(
 ) -> Any:
     """
     Recursively rename variables in an Item or expression based on a mapping dictionary.
+
     Args:
         item (Item or expression): The item or expression to rename.
         mapper (dict-like or function): Mapping of old variable names to new names.
         regex (bool): If True, treat keys and values of the mapper as regular expressions.
+
     Returns:
         Item or expression: The renamed item or expression.
     """
