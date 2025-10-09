@@ -2,6 +2,7 @@ import json
 import zlib
 import re
 from pathlib import Path
+from typing import Any, Callable, Optional, Union, List, Dict, Set, Type, TypeVar
 
 from .utils import ensure_list, ensure_str_list, to_dict
 
@@ -13,18 +14,119 @@ ITEM_ORDER = {
     "filter": 2,
 }
 
+
 # TODO: check if items need to be sorted into variables then calculations then filters and do so if needed
 # TODO: actually just sorted preemptively when writing to file, will check later if this is an issue
 class CalcSet:
-    def __init__(self, items):
+    def query(self, expr: str, **external_vars) -> "CalcSet":
+        """
+        Return a new CalcSet containing items that match the query expression.
+        The expression can use attributes of Item (e.g., 'item_type == "variable" and name.startswith("Au")'),
+        and external variables using @var syntax (like pandas).
+        Args:
+            expr (str): Query expression to filter items.
+            **external_vars: External variables to use in the query (referenced as @var).
+        Returns:
+            CalcSet: New CalcSet with filtered items.
+        """
+        import re
+        import inspect
+
+        filtered = []
+        # Get caller's frame to access local and global variables
+        frame = inspect.currentframe()
+        try:
+            caller_frame = frame.f_back
+            caller_locals = caller_frame.f_locals if caller_frame else {}
+            caller_globals = caller_frame.f_globals if caller_frame else {}
+        finally:
+            del frame
+
+        # Merge external_vars with caller's scope, external_vars takes precedence
+        merged_vars = dict(caller_globals)
+        merged_vars.update(caller_locals)
+        merged_vars.update(external_vars)
+
+        # Safe helpers for query expressions
+        SAFE_EVAL_HELPERS = {
+            "len": len,
+            "any": any,
+            "all": all,
+            "min": min,
+            "max": max,
+            "sorted": sorted,
+            "re": re,
+            "str": str,
+        }
+
+        def replace_at_var(match):
+            var_name = match.group(1)
+            if var_name in merged_vars:
+                return f'merged_vars["{var_name}"]'
+            else:
+                raise NameError(f"External variable '@{var_name}' not provided.")
+
+        expr_eval = re.sub(r"@([A-Za-z_][A-Za-z0-9_]*)", replace_at_var, expr)
+        for item in self.items:
+            ns = {k: getattr(item, k, None) for k in dir(item) if not k.startswith("_")}
+            try:
+                if eval(
+                    expr_eval, {"merged_vars": merged_vars, **SAFE_EVAL_HELPERS}, ns
+                ):
+                    filtered.append(item)
+            except Exception:
+                pass
+        return CalcSet(filtered)
+
+    def topological_sort(self) -> "CalcSet":
+        """
+        Return a new CalcSet with items sorted topologically by dependencies.
+        Raises ValueError if cyclic dependencies are detected.
+        """
+        items_by_name = {
+            item.name: item for item in self.items if hasattr(item, "name")
+        }
+        sorted_items = []
+        visited = set()
+        temp_mark = set()
+
+        def visit(item):
+            if item.name in visited:
+                return
+            if item.name in temp_mark:
+                raise ValueError(f"Cyclic dependency detected involving '{item.name}'")
+            temp_mark.add(item.name)
+            for dep in getattr(item, "dependencies", set()):
+                if dep in items_by_name:
+                    visit(items_by_name[dep])
+            temp_mark.remove(item.name)
+            visited.add(item.name)
+            sorted_items.append(item)
+
+        for item in self.items:
+            visit(item)
+
+        # Add items without a name (should be rare)
+        unnamed = [item for item in self.items if not hasattr(item, "name")]
+        sorted_items.extend(unnamed)
+
+        return CalcSet(sorted_items)
+
+    def copy(self) -> "CalcSet":
+        """
+        Return a deep copy of the CalcSet and its items.
+        """
+        return CalcSet([item.copy() for item in self.items])
+
+    def __init__(self, items: List["Item"]):
         """
         Initialize a CalcSet with a list of items.
         Args:
             items (list): List of calculation items (Variable, Number, Category, Filter, etc.)
         """
-        self.items = items
+        self.items = ensure_list(items)
 
-    def to_dict(self, sort_items=True):
+    def to_dict(self, sort_items: bool = True) -> Dict[str, Any]:
         """
         Convert the CalcSet to a dictionary representation.
         Args:
@@ -38,7 +140,7 @@ class CalcSet:
         return {"type": "calculation-set", "items": items}
 
     @classmethod
-    def from_dict(cls, data):
+    def from_dict(cls: Type["CalcSet"], data: Dict[str, Any]) -> "CalcSet":
         """
         Create a CalcSet from a dictionary.
         Args:
@@ -59,12 +161,14 @@ class CalcSet:
                 elif item.get("calculation_type") == "string":
                     items.append(Category.from_dict(item))
                 else:
-                    raise ValueError(f"Unknown calculation type: {item.get('calculation_type')}")
+                    raise ValueError(
+                        f"Unknown calculation type: {item.get('calculation_type')}"
+                    )
             else:
                 raise ValueError(f"Unknown item type: {item_type}")
         return cls(items=items)
 
-    def to_json(self, sort_items=True, indent=0):
+    def to_json(self, sort_items: bool = True, indent: int = 0) -> str:
         """
         Convert the CalcSet to a JSON string.
         Args:
@@ -75,7 +179,9 @@ class CalcSet:
         """
         return json.dumps(self.to_dict(sort_items=sort_items), indent=indent)
 
-    def to_lfcalc(self, filepath_or_buffer, sort_items=True):
+    def to_lfcalc(
+        self, filepath_or_buffer: Union[str, Path, Any], sort_items: bool = True
+    ) -> None:
         """
         Write the CalcSet to a Leapfrog .lfcalc file.
         Args:
@@ -88,19 +194,21 @@ class CalcSet:
         else:
             self._write_to_file(filepath_or_buffer, sort_items=sort_items)
 
-    def _write_to_file(self, file, sort_items):
+    def _write_to_file(self, file: Any, sort_items: bool) -> None:
         """
         Write the CalcSet to a file in Leapfrog format.
         Args:
             file (file-like): File object to write to.
             sort_items (bool): Whether to sort items by type.
         """
-        compressed_data = zlib.compress(self.to_json(sort_items=sort_items).encode("utf-8"))
+        compressed_data = zlib.compress(
+            self.to_json(sort_items=sort_items).encode("utf-8")
+        )
         file.write(HEADER)
         file.write(compressed_data)
 
     @staticmethod
-    def read_lfcalc(filepath_or_buffer):
+    def read_lfcalc(filepath_or_buffer: Union[str, Path, Any]) -> "CalcSet":
         """
         Read a Leapfrog .lfcalc file and return a CalcSet.
         Args:
@@ -115,7 +223,7 @@ class CalcSet:
             return CalcSet._read_from_file(filepath_or_buffer)
 
     @staticmethod
-    def _read_from_file(file):
+    def _read_from_file(file: Any) -> "CalcSet":
         """
         Read a CalcSet from a file object.
         Args:
@@ -129,13 +237,13 @@ class CalcSet:
         data = json.loads(json_data)
         return CalcSet.from_dict(data)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """
         Return a pretty-printed JSON string representation of the CalcSet.
         """
         return self.to_json(indent=2)
 
-    def __add__(self, other):
+    def __add__(self, other: "CalcSet") -> "CalcSet":
         """
         Add two CalcSet objects together, combining their items.
         Args:
@@ -147,16 +255,79 @@ class CalcSet:
             return NotImplemented
         return CalcSet(self.items + other.items)
 
+    def rename(
+        self,
+        items: Optional[Union[Dict[str, str], Callable[[str], Optional[str]]]] = None,
+        variables: Optional[
+            Union[Dict[str, str], Callable[[str], Optional[str]]]
+        ] = None,
+        regex: bool = False,
+    ) -> "CalcSet":
+        """
+        Return a copy of the CalcSet with specified items renamed and/or variables in children renamed.
+        Args:
+            items (dict-like or function): Mapping of old item names to new names.
+            variables (dict-like or function): Mapping of old variable names to new names.
+            regex (bool): Whether to treat keys in `items` and `variables` as regex patterns.
+        Returns:
+            CalcSet: New instance with updated item names and/or children.
+        """
+        new_items = []
+        for item in self.items:
+            name = item.name
+            # Rename item names
+            if items is not None:
+                if callable(items):
+                    new_name = items(name)
+                    if new_name is not None:
+                        name = new_name
+                elif regex:
+                    for pattern, replacement in items.items():
+                        new_name = re.sub(pattern, replacement, name)
+                        if new_name != name:
+                            name = new_name
+                else:
+                    if name in items:
+                        name = items[name]
+            # Rename item name using variables mapping for any Item subclass
+            var_name = name
+            if variables is not None and isinstance(item, Item):
+                if callable(variables):
+                    new_var_name = variables(var_name)
+                    if new_var_name is not None:
+                        var_name = new_var_name
+                elif regex:
+                    for pattern, replacement in variables.items():
+                        new_var_name = re.sub(pattern, replacement, var_name)
+                        if new_var_name != var_name:
+                            var_name = new_var_name
+                else:
+                    if var_name in variables:
+                        var_name = variables[var_name]
+            # Use var_name for all Item subclasses
+            final_name = var_name if isinstance(item, Item) else name
+            new_items.append(
+                item.rename(name=final_name, variables=variables, regex=regex)
+            )
+        return CalcSet(new_items)
+
 
 class Item:
     """
     Base class for items in a calculation set.
     Subclasses should define `item_type` and optionally `calculation_type`.
     """
+
     item_type = None
     calculation_type = None
 
-    def __init__(self, name, children, comment_item="", comment_equation=""):
+    def __init__(
+        self,
+        name: str,
+        children: List[Any],
+        comment_item: str = "",
+        comment_equation: str = "",
+    ):
         """
         Initialize an Item.
         Args:
@@ -170,7 +341,7 @@ class Item:
         self.comment_item = comment_item
         self.comment_equation = comment_equation
 
-    def to_dict(self):
+    def to_dict(self) -> Dict[str, Any]:
         """
         Convert the Item to a dictionary representation.
         Returns:
@@ -197,7 +368,7 @@ class Item:
         return item
 
     @classmethod
-    def from_dict(cls, data):
+    def from_dict(cls: Type["Item"], data: Dict[str, Any]) -> "Item":
         """
         Create an Item from a dictionary.
         Args:
@@ -219,9 +390,85 @@ class Item:
             comment_equation=data["equation"].get("comment", ""),
         )
 
+    @property
+    def dependencies(self) -> Set[str]:
+        """
+        Get the set of variable dependencies for this item.
+        Returns:
+            set: Set of variable names that are dependencies.
+        """
+        return get_dependencies(self)
+
+    def copy(self) -> "Item":
+        """
+        Return a deep copy of the Item.
+        """
+        return type(self)(
+            name=self.name,
+            children=[c.copy() if hasattr(c, "copy") else c for c in self.children],
+            comment_item=self.comment_item,
+            comment_equation=self.comment_equation,
+        )
+
+    def replace(self, **changes: Any) -> "Item":
+        """
+        Return a copy of the Item with specified attributes replaced.
+        Args:
+            **changes: Attributes to replace.
+        Returns:
+            Item: New instance with updated attributes.
+        """
+        params = {
+            "name": self.name,
+            "children": self.children,
+            "comment_item": self.comment_item,
+            "comment_equation": self.comment_equation,
+        }
+        params.update(changes)
+        return type(self)(**params)
+
+    def rename(
+        self,
+        name: Optional[str] = None,
+        variables: Optional[
+            Union[Dict[str, str], Callable[[str], Optional[str]]]
+        ] = None,
+        regex: bool = False,
+    ) -> "Item":
+        """
+        Return a copy of the Item with a new name and/or renamed variables in children.
+        Args:
+            name (str): New name for the item.
+            variables (dict-like or function): Mapping of old variable names to new names.
+        Returns:
+            Item: New instance with updated name and/or children.
+        """
+        new = self.copy()
+        # For any Item subclass, allow variable renaming to affect the name
+        if name is not None:
+            new.name = name
+        elif variables is not None and isinstance(self, Item):
+            var_name = new.name
+            if callable(variables):
+                new_var_name = variables(var_name)
+                if new_var_name is not None:
+                    new.name = new_var_name
+            elif regex:
+                for pattern, replacement in variables.items():
+                    new_var_name = re.sub(pattern, replacement, var_name)
+                    if new_var_name != var_name:
+                        var_name = new_var_name
+                new.name = var_name
+            else:
+                if var_name in variables:
+                    new.name = variables[var_name]
+        if variables is not None:
+            return rename(new, variables, regex=regex)
+        return new
+
 
 class IfRow:
-    def __init__(self, condition, value):
+    def __init__(self, condition: List[Any], value: List[Any]):
         """
         Initialize an IfRow.
         Args:
@@ -231,7 +478,7 @@ class IfRow:
         self.condition = condition
         self.value = value
 
-    def to_dict(self):
+    def to_dict(self) -> Dict[str, Any]:
         """
         Convert the IfRow to a dictionary representation.
         Returns:
@@ -240,11 +487,14 @@ class IfRow:
         return {
             "type": "if_row",
             "test": {"type": "list", "children": to_dict(self.condition)},
-            "result": {"type": "list", "children": to_dict(self.value, guard_strings=True)},
+            "result": {
+                "type": "list",
+                "children": to_dict(self.value, guard_strings=True),
+            },
         }
 
     @classmethod
-    def from_dict(cls, data):
+    def from_dict(cls: Type["IfRow"], data: Dict[str, Any]) -> "IfRow":
         """
         Create an IfRow from a dictionary.
         Args:
@@ -266,9 +516,19 @@ class IfRow:
             value.append(dispatch_expression(val))
         return cls(condition=condition, value=value)
 
+    def copy(self) -> "IfRow":
+        """
+        Return a deep copy of the IfRow.
+        """
+        return IfRow(
+            condition=[c.copy() if hasattr(c, "copy") else c for c in self.condition],
+            value=[v.copy() if hasattr(v, "copy") else v for v in self.value],
+        )
+
 
 class If:
-    def __init__(self, rows, otherwise):
+
+    def __init__(self, rows: List[Any], otherwise: List[Any]):
         """
         Initialize an If expression.
         Args:
@@ -278,7 +538,7 @@ class If:
         self.rows = rows
         self.otherwise = otherwise
 
-    def to_dict(self):
+    def to_dict(self) -> Dict[str, Any]:
         """
         Convert the If expression to a dictionary representation.
         Returns:
@@ -298,11 +558,14 @@ class If:
         return {
             "type": "if",
             "rows": rows,
-            "otherwise": {"type": "list", "children": to_dict(self.otherwise, guard_strings=True)},
+            "otherwise": {
+                "type": "list",
+                "children": to_dict(self.otherwise, guard_strings=True),
+            },
         }
 
     @classmethod
-    def from_dict(cls, data):
+    def from_dict(cls: Type["If"], data: Dict[str, Any]) -> "If":
         """
         Create an If expression from a dictionary.
         Args:
@@ -321,11 +584,21 @@ class If:
             otherwise.append(dispatch_expression(val))
         return cls(rows=rows, otherwise=otherwise)
 
+    def copy(self) -> "If":
+        """
+        Return a deep copy of the If expression.
+        """
+        return If(
+            rows=[r.copy() if hasattr(r, "copy") else r for r in self.rows],
+            otherwise=[o.copy() if hasattr(o, "copy") else o for o in self.otherwise],
+        )
+
 
 class Number(Item):
     """
     Represents a numeric calculation item.
     """
+
     item_type = "calculation"
     calculation_type = "number"
 
@@ -334,6 +607,7 @@ class Category(Item):
     """
     Represents a categorical calculation item.
     """
+
     item_type = "calculation"
     calculation_type = "string"
 
@@ -342,6 +616,7 @@ class Variable(Item):
     """
     Represents a variable item in a calculation set.
     """
+
     item_type = "variable"
 
 
@@ -349,6 +624,7 @@ class Filter(Item):
     """
     Represents a filter item in a calculation set.
     """
+
     item_type = "filter"
 
 
@@ -366,7 +642,7 @@ expressions = {
 }
 
 
-def dispatch_expression(data):
+def dispatch_expression(data: Any) -> Any:
     """
     Dispatch an expression dictionary to the appropriate class constructor.
     Args:
@@ -382,3 +658,76 @@ def dispatch_expression(data):
             raise ValueError(f"Unknown expression type: {expr_type}")
     return data
 
+
+def get_dependencies(item: Any) -> Set[str]:
+    """
+    Recursively extract variable dependencies from an Item or expression.
+    Args:
+        item (Item or expression): The item or expression to analyze.
+    Returns:
+        set: Set of variable names that are dependencies.
+    """
+    deps = set()
+
+    if isinstance(item, Item):
+        for child in item.children:
+            deps.update(get_dependencies(child))
+    elif isinstance(item, If):
+        for row in item.rows:
+            deps.update(get_dependencies(row))
+        deps.update(get_dependencies(item.otherwise))
+    elif isinstance(item, IfRow):
+        deps.update(get_dependencies(item.condition))
+        deps.update(get_dependencies(item.value))
+    elif isinstance(item, list):
+        for elem in item:
+            deps.update(get_dependencies(elem))
+    elif isinstance(item, str):
+        # Find all occurrences of [var_name] in the string
+        found_vars = re.findall(r"\[([^\[\]]+)\]", item)
+        deps.update(found_vars)
+
+    return deps
+
+
+def rename(
+    item: Any, mapper: Union[Dict[str, str], Callable[[str], str]], regex: bool = False
+) -> Any:
+    """
+    Recursively rename variables in an Item or expression based on a mapping dictionary.
+    Args:
+        item (Item or expression): The item or expression to rename.
+        mapper (dict-like or function): Mapping of old variable names to new names.
+        regex (bool): If True, treat keys and values of the mapper as regular expressions.
+    Returns:
+        Item or expression: The renamed item or expression.
+    """
+    if isinstance(item, Item):
+        new_children = [rename(child, mapper, regex=regex) for child in item.children]
+        return item.replace(children=new_children)
+    elif isinstance(item, If):
+        new_rows = [rename(row, mapper, regex=regex) for row in item.rows]
+        new_otherwise = rename(item.otherwise, mapper, regex=regex)
+        return If(rows=new_rows, otherwise=new_otherwise)
+    elif isinstance(item, IfRow):
+        new_condition = rename(item.condition, mapper, regex=regex)
+        new_value = rename(item.value, mapper, regex=regex)
+        return IfRow(condition=new_condition, value=new_value)
+    elif isinstance(item, list):
+        return [rename(elem, mapper, regex=regex) for elem in item]
+    elif isinstance(item, str):
+
+        def replace_var(match):
+            var_name = match.group(1)
+            if callable(mapper):
+                return f"[{mapper(var_name)}]"
+            elif regex:
+                for pattern, replacement in mapper.items():
+                    var_name = re.sub(pattern, replacement, var_name)
+                return f"[{var_name}]"
+            else:
+                return f"[{mapper.get(var_name, var_name)}]"
+
+        return re.sub(r"\[([^\[\]]+)\]", replace_var, item)
+    else:
+        return item

@@ -8,10 +8,10 @@ except ImportError:
     )
 
 
-
 # Classification and Regression Trees
 
 from sklearn import tree
+
 
 def convert_tree(tree_model, feature_names, target_name, comment_equation=None):
     tree_ = tree_model.tree_
@@ -37,11 +37,9 @@ def convert_tree(tree_model, feature_names, target_name, comment_equation=None):
         comment_equation = f"Converted from {tree_model.__class__.__name__}"
 
     if isinstance(tree_model, tree.DecisionTreeRegressor):
-        return Number(target_name, if_rows
-                      , comment_equation=comment_equation)
+        return Number(target_name, if_rows, comment_equation=comment_equation)
     elif isinstance(tree_model, tree.DecisionTreeClassifier):
-        return Category(target_name, if_rows
-                        , comment_equation=comment_equation)
+        return Category(target_name, if_rows, comment_equation=comment_equation)
     else:
         raise ValueError("Unsupported tree model type")
 
@@ -49,15 +47,22 @@ def convert_tree(tree_model, feature_names, target_name, comment_equation=None):
 # Linear Models
 from sklearn import linear_model
 
+
 def convert_linear_model(lm_model, feature_names, target_name):
     coefs = lm_model.coef_
     intercept = lm_model.intercept_
 
-    terms = [f"{intercept:.6f}"] if intercept != 0 else []
+    def format_float(val):
+        return f"{float(val):.6f}"
+
+    terms = [format_float(intercept)] if intercept != 0 else []
     for coef, feature in zip(coefs, feature_names):
         if coef != 0:
-            terms.append(f"{coef:.6f} * [{feature}]")
+            terms.append(f"{format_float(coef)} * [{feature}]")
 
     equation = " + ".join(terms) if terms else "0"
-    return Number(target_name, equation
-                  , comment_equation=f"Converted from {lm_model.__class__.__name__}")
+    return Number(
+        target_name,
+        [equation],
+        comment_equation=f"Converted from {lm_model.__class__.__name__}",
+    )

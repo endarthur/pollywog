@@ -66,6 +66,37 @@ CalcSet([recovery_calc]).to_lfcalc("recovery_ml.lfcalc")
 
 For more advanced workflows (domain dilution, conditional logic, economic value, combining CalcSets, etc.), see the Jupyter notebooks in the `examples/` folder of this repository.
 
+## Querying CalcSets
+
+Pollywog provides a powerful query method for filtering items in a `CalcSet`, inspired by pandas' DataFrame.query. You can use Python-like expressions to select items based on their attributes and external variables.
+
+### Syntax
+- Use item attributes (e.g., `name`, `item_type`) in expressions.
+- Reference external variables using `@var` syntax (e.g., `name.startswith(@prefix)`).
+- Supported helpers: `len`, `any`, `all`, `min`, `max`, `sorted`, `re`, `str`.
+
+### Examples
+
+```python
+# Select items whose name starts with 'Au'
+calcset.query('name.startswith("Au")')
+
+# Select items whose name starts with an external variable 'prefix'
+prefix = "Ag"
+calcset.query('name.startswith(@prefix)')
+
+# Select items with more than one child
+calcset.query('len(children) > 1')
+
+# Use regular expressions
+calcset.query('re.match(r"^A", name)')
+```
+
+### Notes
+- Bracketed variable names (`[var]`) can be any string, including spaces or punctuation.
+- External variables (`@var`) are resolved from the caller's scope or passed as keyword arguments.
+- Only items matching the query expression are returned in the new `CalcSet`.
+
 ## File Structure
 
 - `core.py`: Main classes for calculation sets and items.

@@ -14,6 +14,7 @@ setup(
     include_package_data=True,
     extras_require={
         "conversion": ["scikit-learn"],
+        "dev": ["pytest", "scikit-learn", "pandas"],
     },
     classifiers=[
         "Programming Language :: Python :: 3",
