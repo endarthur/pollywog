@@ -1,15 +1,32 @@
-# pollywog
+# Automating Leapfrog Workflows with Pollywog – An Independent Open-Source Tool
 
-**pollywog** is a Python library for working with Leapfrog calculation sets, including reading, writing, and manipulating `.lfcalc` files.
-It provides a much needed layer of automation for creating and managing complex calculation workflows in Leapfrog.
+Professionals using Seequent solutions for geological modeling and resource estimation often work with .lfcalc files. These files can be repetitive to manage and prone to manual errors. This is especially true when dealing with conditional logic, domain-based dilution calculations, or predictive model integration.
+
+Pollywog was developed to support this technical audience. It is a Python package that enables:
+
+- Programmatic reading and writing of .lfcalc files, making calculations more standardized and reproducible
+- Automation of complex workflows, including conditional equations and post-processing of results
+- Integration with machine learning models via scikit-learn, allowing classifiers or regressions to be applied directly within Leapfrog calculations
+- Creation of reusable scripts, which can be versioned and audited, providing greater control over modeling processes
+
+Pollywog aims to reduce time spent on manual tasks, minimize input errors, and increase efficiency in geological modeling.
+
+The documentation includes practical examples and tutorials to help technical teams get started quickly.
+
+If you work with Leapfrog and are looking to optimize your workflows, Pollywog is worth exploring.
 
 Pollywog is still very much a work in progress, so take care in its use and make sure to not have anything important open and not saved in Leapfrog while testing it out. Also, please report any issues you encounter. Suggestions and contributions are very welcome!
 
-## Features
+## Legal Disclaimer
 
-- Read and write Leapfrog `.lfcalc` files.
-- Manipulate calculation sets, variables, calculations, filters, and conditional logic.
-- Convert scikit-learn models (decision trees, linear models) to Leapfrog calculation format.
+Pollywog is an independent open-source tool developed to support the automation of workflows involving .lfcalc files used in Leapfrog software by Seequent.
+This tool does not perform reverse engineering, does not modify Leapfrog, and does not access its source code or proprietary libraries. Pollywog operates exclusively on user-generated files and is designed to complement Leapfrog through external automation.
+
+Important:
+- Pollywog is not affiliated with, endorsed by, or sponsored by Seequent or any company associated with Leapfrog
+- Use of this tool does not violate Leapfrog’s license terms or Seequent’s policies
+- Users are encouraged to review Leapfrog’s terms of use before integrating Pollywog into commercial or corporate environments
+- The author is not responsible for any misuse of the tool that may breach Seequent’s licensing terms
 
 
 ## Installation
@@ -93,15 +110,8 @@ calcset.query('re.match(r"^A", name)')
 ```
 
 ### Notes
-- Bracketed variable names (`[var]`) can be any string, including spaces or punctuation.
 - External variables (`@var`) are resolved from the caller's scope or passed as keyword arguments.
 - Only items matching the query expression are returned in the new `CalcSet`.
-
-## File Structure
-
-- `core.py`: Main classes for calculation sets and items.
-- `conversion/sklearn.py`: Conversion utilities for scikit-learn models.
-- `utils.py`: Helper functions.
 
 ## License
 
@@ -110,3 +120,20 @@ MIT License
 <!-- ## Authors
 
 See `AUTHORS` file or repository contributors. -->
+
+## Contributions
+
+Contributions are very welcome!
+If you'd like to collaborate on Pollywog, whether through bug fixes, feature enhancements, new use cases, or documentation, please follow these steps:
+
+- Fork the repository
+- Create a feature branch (git checkout -b feature-name)
+- Make your changes and commit (git commit -m 'Add new feature')
+- Submit a pull request with a clear explanation of your changes
+
+Before contributing, please:
+- Ensure your changes align with the project’s goals
+- Maintain consistent code style
+- Test your modifications whenever possible
+
+Feel free to open an issue if you have questions or suggestions.

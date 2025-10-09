@@ -1,8 +1,10 @@
 import json
-import zlib
 import re
+import zlib
 from pathlib import Path
-from typing import Any, Callable, Optional, Union, List, Dict, Set, Type, TypeVar
+from typing import (
+    Any, Callable, Dict, List, Optional, Set, Type, TypeVar, Union, Sequence
+)
 
 from .utils import ensure_list, ensure_str_list, to_dict
 
@@ -18,6 +20,20 @@ ITEM_ORDER = {
 # TODO: check if items need to be sorted into variables then calculations then filters and do so if needed
 # TODO: actually just sorted preemptively when writing to file, will check later if this is an issue
 class CalcSet:
+    def __init__(self, items: List["Item"]):
+        """
+        Initialize a CalcSet with a list of items.
+        Args:
+            items (list): List of calculation items (Variable, Number, Category, Filter, etc.)
+        """
+        self.items = ensure_list(items)
+
+    def copy(self) -> "CalcSet":
+        """
+        Return a deep copy of the CalcSet and its items.
+        """
+        return CalcSet([item.copy() for item in self.items])
+
     def query(self, expr: str, **external_vars) -> "CalcSet":
         """
         Return a new CalcSet containing items that match the query expression.
@@ -29,14 +45,14 @@ class CalcSet:
         Returns:
             CalcSet: New CalcSet with filtered items.
         """
-        import re
         import inspect
+        import re
 
         filtered = []
         # Get caller's frame to access local and global variables
         frame = inspect.currentframe()
         try:
-            caller_frame = frame.f_back
+            caller_frame = frame.f_back if frame is not None else None
             caller_locals = caller_frame.f_locals if caller_frame else {}
             caller_globals = caller_frame.f_globals if caller_frame else {}
         finally:
@@ -112,19 +128,11 @@ class CalcSet:
 
         return CalcSet(sorted_items)
 
-    def copy(self) -> "CalcSet":
+        # ...existing code...
         """
         Return a deep copy of the CalcSet and its items.
         """
         return CalcSet([item.copy() for item in self.items])
-
-    def __init__(self, items: List["Item"]):
-        """
-        Initialize a CalcSet with a list of items.
-        Args:
-            items (list): List of calculation items (Variable, Number, Category, Filter, etc.)
-        """
-        self.items = ensure_list(items)
 
     def to_dict(self, sort_items: bool = True) -> Dict[str, Any]:
         """
@@ -253,7 +261,9 @@ class CalcSet:
         """
         if not isinstance(other, CalcSet):
             return NotImplemented
-        return CalcSet(self.items + other.items)
+        items1 = list(self.items) if self.items else []
+        items2 = list(other.items) if other.items else []
+        return CalcSet(items1 + items2)
 
     def rename(
         self,
@@ -307,9 +317,13 @@ class CalcSet:
             # Use var_name for all Item subclasses
             final_name = var_name if isinstance(item, Item) else name
             new_items.append(
-                item.rename(name=final_name, variables=variables, regex=regex)
+                item.rename(name=final_name, variables=variables, regex=regex)  # type: ignore
             )
         return CalcSet(new_items)
+
+    def _repr_html_(self):
+        from .display import display_calcset
+        return display_calcset(self, display_output=False)
 
 
 class Item:
@@ -463,7 +477,7 @@ class Item:
                 if var_name in variables:
                     new.name = variables[var_name]
         if variables is not None:
-            return rename(new, variables, regex=regex)
+            return rename(new, variables, regex=regex)  # type: ignore
         return new
 
 
