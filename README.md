@@ -137,3 +137,7 @@ Before contributing, please:
 - Test your modifications whenever possible
 
 Feel free to open an issue if you have questions or suggestions.
+
+## Acknowledgements
+
+Thanks to Debora Roldão for helping with the organization of the project and documentation, and Eduardo Takafuji for the initial discussion of the feasability of this all those years ago.
