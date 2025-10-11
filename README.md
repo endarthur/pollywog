@@ -142,4 +142,4 @@ Feel free to open an issue if you have questions or suggestions.
 
 ## Acknowledgements
 
-Thanks to Debora Roldão for helping with the organization of the project and documentation, and Eduardo Takafuji for the initial discussion of the feasability of this all those years ago.
+Thanks to Debora Roldão for helping with organization of the project, documentation and design, Eduardo Takafuji for the initial discussion of the feasability of this all those years ago and Jessica da Matta for support and sanity checks along the way.

@@ -612,9 +612,9 @@ class If:
     Example:
         >>> from pollywog.core import If, Number
         >>> if_block = If([
-        ...     (["block[Au] > 1"], [Number("High_Au", ["block[Au] * 1.1"])]),
-        ...     (["block[Au] <= 1"], [Number("Low_Au", ["block[Au] * 0.9"])])
-        ... ], otherwise=[Number("Default_Au", ["block[Au]"])])
+        ...     (["[Au] > 1"], "[Au] * 1.1"),
+        ...     (["[Au] <= 1"], "[Au] * 0.9")
+        ... ], otherwise=["[Au]"])
     """
     def __init__(self, rows: List[Any], otherwise: List[Any]):
         """
