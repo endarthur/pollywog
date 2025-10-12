@@ -39,6 +39,8 @@ jobs:
           cd pollyweb
           git checkout -b update-examples-${{ github.event.release.tag_name }}
           git add content/examples
+          git add content/pollywog
+          git add content/quickstart.ipynb
           git commit -m "Update examples from pollywog ${{ github.event.release.tag_name }}"
           git push origin update-examples-${{ github.event.release.tag_name }}
 
