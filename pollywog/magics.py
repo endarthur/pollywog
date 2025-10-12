@@ -64,6 +64,7 @@ class PollywogMagics(Magics):
                             # Call original method for file-like objects
                             self._original_to_lfcalc(filepath_or_buffer, sort_items=sort_items)
                     
+                    CalcSet._original_to_lfcalc = CalcSet.to_lfcalc
                     CalcSet.to_lfcalc = patched_to_lfcalc
                     self.autodownload_enabled = True
                 else:
