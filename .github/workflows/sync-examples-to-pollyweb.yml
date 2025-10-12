@@ -26,7 +26,7 @@ jobs:
           rm -rf pollyweb/content/pollywog
           cp -r pollywog/examples pollyweb/content/examples
           cp -r pollywog/pollywog pollyweb/content/pollywog
-          cp -r pollywog/examples/jupyterlite_quickstart.ipynb pollyweb/content/quickstart.ipynb
+          cp pollywog/examples/jupyterlite_quickstart.ipynb pollyweb/content/quickstart.ipynb
 
       - name: Set up git
         run: |
