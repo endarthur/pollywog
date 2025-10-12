@@ -33,7 +33,7 @@ Important:
 
 ## Installation
 
-Install from pypi (not available yet, but soon):
+Install from pypi:
 
 ```bash
 pip install lf_pollywog
@@ -83,7 +83,7 @@ recovery_calc = convert_tree(reg, feature_names, "recovery_ml")
 CalcSet([recovery_calc]).to_lfcalc("recovery_ml.lfcalc")
 ```
 
-For more advanced workflows (domain dilution, conditional logic, economic value, combining CalcSets, etc.), see the Jupyter notebooks in the `examples/` folder of this repository.
+For more advanced workflows (domain dilution, conditional logic, economic value, combining CalcSets, etc.), see the Jupyter notebooks in the `examples/` folder of this repository or the documentation at https://pollywog.readthedocs.io/en/latest/.
 
 ## Querying CalcSets
 

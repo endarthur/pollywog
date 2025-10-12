@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lf_pollywog"
-version = "0.1.0"
+version = "0.1.1"
 description = "Python library for working with Leapfrog calculation sets (.lfcalc files)"
 authors = [
     { name = "Arthur Endlein", email = "endarthur@gmail.com" }

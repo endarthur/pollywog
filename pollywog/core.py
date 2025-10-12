@@ -35,7 +35,7 @@ class CalcSet:
         ...     Number(name="Ag_est", children=["block[Ag] * 0.85"])
         ... ])
     """
-    def __init__(self, items: List["Item"]):
+    def __init__(self, items: Sequence[Union["Item", "Variable"]]):
         """
         Initialize a CalcSet with a list of items.
         Args:
@@ -393,7 +393,7 @@ class Item:
             comment_equation (str): Comment for the equation.
         """
         self.name = name
-        self.children = children
+        self.children = ensure_list(children)
         self.comment_item = comment_item
         self.comment_equation = comment_equation
 
