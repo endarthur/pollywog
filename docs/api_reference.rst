@@ -10,3 +10,8 @@ API Reference
     :members:
     :undoc-members:
     :show-inheritance:
+
+.. automodule:: pollywog.helpers
+    :members:
+    :undoc-members:
+    :show-inheritance:

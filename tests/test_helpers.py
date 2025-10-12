@@ -1,5 +1,14 @@
-from pollywog.helpers import Average, Sum, Product, Normalize, WeightedAverage, Scale, IfElse, CategoryFromThresholds
+from pollywog.helpers import (
+    Average,
+    Sum,
+    Product,
+    Normalize,
+    WeightedAverage,
+    Scale,
+    CategoryFromThresholds,
+)
 from pollywog.core import Number
+
 
 def test_average_helper():
     n = Average("Au", "Ag", name="avg_Au_Ag")
@@ -8,12 +17,14 @@ def test_average_helper():
     assert "/ 2" in n.children[0]
     assert "[Au]" in n.children[0] and "[Ag]" in n.children[0]
 
+
 def test_sum_helper():
     n = Sum("Au", "Ag", name="sum_Au_Ag")
     assert isinstance(n, Number)
     assert n.name == "sum_Au_Ag"
     assert "[Au]" in n.children[0] and "[Ag]" in n.children[0]
     assert "+" in n.children[0]
+
 
 def test_product_helper():
     n = Product("Au", "Ag", name="prod_Au_Ag")
@@ -22,12 +33,14 @@ def test_product_helper():
     assert "[Au]" in n.children[0] and "[Ag]" in n.children[0]
     assert "*" in n.children[0]
 
+
 def test_normalize_helper():
     n = Normalize("Au", 0, 10, name="norm_Au")
     assert isinstance(n, Number)
     assert n.name == "norm_Au"
     assert "[Au]" in n.children[0]
     assert "/ (10 - 0)" in n.children[0]
+
 
 def test_weighted_average_helper():
     # Test with constant weights
@@ -46,6 +59,7 @@ def test_weighted_average_helper():
     assert "[Ag] * [w2]" in n2.children[0]
     assert "/ ([w1] + [w2])" in n2.children[0]
 
+
 def test_scale_helper():
     n = Scale("Au", 2, name="Au_scaled")
     assert isinstance(n, Number)
@@ -57,15 +71,11 @@ def test_scale_helper():
     assert n2.name == "Ag_scaled"
     assert "[Ag] * [factor]" in n2.children[0]
 
-def test_ifelse_helper():
-    n = IfElse("[Au] > 1", 2, 0, name="Au_ifelse")
-    assert n.name == "Au_ifelse"
-    # Should contain If block
-    assert hasattr(n, "children")
-    assert "If [Au] > 1 then 2 else 0" in n.comment_equation
 
 def test_category_from_thresholds_helper():
-    n = CategoryFromThresholds("Au", [0.5, 1.0], ["Low", "Medium", "High"], name="Au_class")
+    n = CategoryFromThresholds(
+        "Au", [0.5, 1.0], ["Low", "Medium", "High"], name="Au_class"
+    )
     assert n.name == "Au_class"
     # Should contain If block
     assert hasattr(n, "children")

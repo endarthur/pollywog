@@ -1,4 +1,4 @@
-def ensure_list(x):
+def ensure_list(x) -> list:
     """
     Ensure the input is a list. If not, wrap it in a list.
 
@@ -52,6 +52,7 @@ def to_dict(items, guard_strings=False):
             out = out + [""]
     return out
 
+
 def is_number(v):
     """
     Check if the input can be converted to a float (i.e., is a number).
@@ -66,7 +67,8 @@ def is_number(v):
         return True
     except (ValueError, TypeError):
         return False
-    
+
+
 def ensure_brackets(var):
     """
     Ensure the variable name is wrapped in brackets [var].
@@ -81,6 +83,7 @@ def ensure_brackets(var):
         var = f"[{var}]"
     return var
 
+
 def ensure_variables(variables):
     """
     Ensures that each item in the input is formatted as a variable.
@@ -92,4 +95,6 @@ def ensure_variables(variables):
         list: A list of formatted variable strings.
     """
 
-    return [f"{v}" if is_number(v) else ensure_brackets(v) for v in ensure_list(variables)]
+    return [
+        f"{v}" if is_number(v) else ensure_brackets(v) for v in ensure_list(variables)
+    ]

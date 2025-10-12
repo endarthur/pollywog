@@ -3,7 +3,17 @@ import re
 import zlib
 from pathlib import Path
 from typing import (
-    Any, Callable, Dict, List, Optional, Set, Type, TypeVar, Union, Sequence
+    Any,
+    Callable,
+    Dict,
+    List,
+    Optional,
+    Set,
+    Type,
+    TypeVar,
+    Union,
+    Sequence,
+    overload,
 )
 
 from .utils import ensure_list, ensure_str_list, to_dict
@@ -35,7 +45,8 @@ class CalcSet:
         ...     Number(name="Ag_est", children=["block[Ag] * 0.85"])
         ... ])
     """
-    def __init__(self, items: Sequence[Union["Item", "Variable"]]):
+
+    def __init__(self, items: list["Item"]):
         """
         Initialize a CalcSet with a list of items.
         Args:
@@ -150,12 +161,6 @@ class CalcSet:
         sorted_items.extend(unnamed)
 
         return CalcSet(sorted_items)
-
-        # ...existing code...
-        """
-        Return a deep copy of the CalcSet and its items.
-        """
-        return CalcSet([item.copy() for item in self.items])
 
     def to_dict(self, sort_items: bool = True) -> Dict[str, Any]:
         """
@@ -297,6 +302,40 @@ class CalcSet:
         items2 = list(other.items) if other.items else []
         return CalcSet(items1 + items2)
 
+    def __getitem__(self, name: str) -> "Item":
+        """
+        Get an item by name.
+
+        Args:
+            name (str): Name of the item to retrieve.
+
+        Returns:
+            Item: The item with the specified name.
+
+        Raises:
+            KeyError: If no item with the specified name exists.
+        """
+        for item in self.items:
+            if hasattr(item, "name") and item.name == name:
+                return item
+        raise KeyError(f"Item with name '{name}' not found.")
+
+    def __setitem__(self, name: str, value: "Item") -> None:
+        """
+        Set or replace an item by name.
+
+        Args:
+            name (str): Name of the item to set.
+            value (Item): The new item to set.
+        """
+        named_item = value.replace(name=name)
+        for i, item in enumerate(self.items):
+            if hasattr(item, "name") and item.name == name:
+                self.items[i] = named_item
+                return
+        else:
+            self.items.append(named_item)
+
     def rename(
         self,
         items: Optional[Union[Dict[str, str], Callable[[str], Optional[str]]]] = None,
@@ -357,6 +396,7 @@ class CalcSet:
 
     def _repr_html_(self):
         from .display import display_calcset
+
         return display_calcset(self, display_output=False)
 
 
@@ -379,8 +419,8 @@ class Item:
 
     def __init__(
         self,
-        name: str,
-        children: List[Any],
+        name: str = "",
+        children: Optional[List[Any]] = None,
         comment_item: str = "",
         comment_equation: str = "",
     ):
@@ -393,6 +433,8 @@ class Item:
             comment_equation (str): Comment for the equation.
         """
         self.name = name
+        if children is None:
+            children = []
         self.children = ensure_list(children)
         self.comment_item = comment_item
         self.comment_equation = comment_equation
@@ -540,6 +582,7 @@ class IfRow:
         condition (list): Condition expressions.
         value (list): Value expressions if condition is met.
     """
+
     def __init__(self, condition: List[Any], value: List[Any]):
         """
         Initialize an IfRow.
@@ -609,21 +652,75 @@ class If:
         rows (list): List of IfRow objects, dicts, or (condition, value) tuples.
         otherwise (list): Expressions for the 'otherwise' case.
 
+    Alternatively, in case of a single condition and value, these may be provided directly as three parameters:
+
+    Args:
+        condition: condition expression.
+        then: value expression if condition is met.
+        otherwise: value expression if no conditions are met.
+
     Example:
         >>> from pollywog.core import If, Number
         >>> if_block = If([
-        ...     (["[Au] > 1"], "[Au] * 1.1"),
-        ...     (["[Au] <= 1"], "[Au] * 0.9")
+        ...     ("[Au] > 1", "[Au] * 1.1"),
+        ...     ("[Au] <= 1", "[Au] * 0.9")
         ... ], otherwise=["[Au]"])
+
+    Example of the second case:
+        >>> from pollywog.core import If, Number
+        >>> if_block = If("[Au] > 1", "[Au] * 1.1", "[Au]")
     """
-    def __init__(self, rows: List[Any], otherwise: List[Any]):
+
+    @overload
+    def __init__(self, rows: List[Any], otherwise: List[Any]): ...
+    @overload
+    def __init__(self, condition: str, then: str, otherwise: str): ...
+    def __init__(self, *args: Any, **kwargs: Any):
         """
         Initialize an If expression.
         Args:
             rows (list): List of either IfRow objects, dicts, or (condition, value) tuples.
             otherwise (list): Expressions for the 'otherwise' case.
+
+        Alternatively, in case of a single condition and value, these may be provided directly as three parameters:
+
+        Args:
+            condition: condition expression.
+            then: value expression if condition is met.
+            otherwise: value expression if no conditions are met.
         """
-        self.rows = rows
+
+        args_list = list(args)
+        if len(args) + len(kwargs) == 2:
+            rows = kwargs["rows"] if "rows" in kwargs else args_list.pop(0)
+            otherwise = (
+                kwargs["otherwise"] if "otherwise" in kwargs else args_list.pop(0)
+            )
+        elif len(args) + len(kwargs) == 3:
+            condition = (
+                kwargs["condition"] if "condition" in kwargs else args_list.pop(0)
+            )
+            then = kwargs["then"] if "then" in kwargs else args_list.pop(0)
+            otherwise = (
+                kwargs["otherwise"] if "otherwise" in kwargs else args_list.pop(0)
+            )
+            rows = [(condition, then)]
+        else:
+            raise ValueError(
+                "If must be initialized with either (rows, otherwise) or (condition, then, otherwise)"
+            )
+        ifrows = []
+        for row in ensure_list(rows):
+            if isinstance(row, IfRow):
+                ifrows.append(row)
+            elif isinstance(row, dict) and row.get("type") == "if_row":
+                ifrows.append(IfRow.from_dict(row))
+            elif isinstance(row, (tuple, list)) and len(row) == 2:
+                condition, value = row
+                ifrows.append(IfRow(condition, value))
+            else:
+                raise ValueError(f"Invalid row format: {row}")
+        self.rows = ifrows
         self.otherwise = otherwise
 
     def to_dict(self) -> Dict[str, Any]:
@@ -633,17 +730,7 @@ class If:
         Returns:
             dict: Dictionary representation of the If expression.
         """
-        rows = []
-        for row in ensure_list(self.rows):
-            if isinstance(row, IfRow):
-                rows.append(row.to_dict())
-            elif isinstance(row, dict) and row.get("type") == "if_row":
-                rows.append(row)
-            elif isinstance(row, (tuple, list)) and len(row) == 2:
-                condition, value = row
-                rows.append(IfRow(condition, value).to_dict())
-            else:
-                raise ValueError(f"Invalid row format: {row}")
+        rows = [row.to_dict() for row in self.rows]
         return {
             "type": "if",
             "rows": rows,

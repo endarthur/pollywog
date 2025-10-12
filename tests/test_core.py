@@ -157,6 +157,14 @@ def test_ifrow_and_if():
     assert ifrow2.condition == ["[x] > 0"]
     assert ifrow2.value == ["1"]
 
+    # Test If with three-parameter mode
+    ifexpr3 = If("[x] > 0", "1", "0")
+    assert isinstance(ifexpr3, If)
+    assert isinstance(ifexpr3.rows[0], IfRow)
+    assert ifexpr3.rows[0].condition == "[x] > 0"
+    assert ifexpr3.rows[0].value == "1"
+    assert ifexpr3.otherwise == "0" or ifexpr3.otherwise == ["0"]
+
     ifexpr = If(rows=[ifrow], otherwise=["0"])
     d2 = ifexpr.to_dict()
     ifexpr2 = If.from_dict(d2)

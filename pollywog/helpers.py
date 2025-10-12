@@ -168,44 +168,6 @@ def Scale(variable, factor, name=None, comment=None):
     )
 
 
-def IfElse(condition, then, else_, name=None, comment=None, output_type=None):
-    """
-    Create a Number or Category with conditional logic (if/else).
-
-    Args:
-        condition (str): Condition expression (e.g., "[Au] > 1").
-        then: Value or expression if condition is true.
-        else_: Value or expression if condition is false.
-        name (str, optional): Name for the output variable.
-        comment (str, optional): Optional comment for the calculation.
-        output_type (type, optional): Number or Category (default: Number).
-
-    Returns:
-        Number or Category: A pollywog item with conditional logic.
-
-    Example:
-        >>> IfElse("[Au] > 1", "High", "Low", name="Au_class")
-    """
-    if output_type is None:
-        output_type = Number
-    if name is None:
-        name = "ifelse"
-    if isinstance(then, (int, float)):
-        then_expr = str(then)
-    else:
-        then_expr = then
-    if isinstance(else_, (int, float)):
-        else_expr = str(else_)
-    else:
-        else_expr = else_
-    if_block = If([IfRow([condition], [then_expr])], otherwise=[else_expr])
-    return output_type(
-        name,
-        [if_block],
-        comment_equation=comment or f"If {condition} then {then_expr} else {else_expr}",
-    )
-
-
 def CategoryFromThresholds(variable, thresholds, categories, name=None, comment=None):
     """
     Create a Category assigning labels based on value thresholds.

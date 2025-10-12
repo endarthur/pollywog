@@ -1,6 +1,8 @@
 # Automating Leapfrog Workflows with Pollywog – An Independent Open-Source Tool
 
 [![DOI](https://zenodo.org/badge/1071742254.svg)](https://doi.org/10.5281/zenodo.17313856)
+[![Documentation Status](https://readthedocs.org/projects/pollywog/badge/?version=latest)](https://pollywog.readthedocs.io/en/latest/?badge=latest)
+
 
 Professionals using Seequent solutions for geological modeling and resource estimation often work with .lfcalc files. These files can be repetitive to manage and prone to manual errors. This is especially true when dealing with conditional logic, domain-based dilution calculations, or predictive model integration.
 

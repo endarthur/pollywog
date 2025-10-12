@@ -1,21 +1,25 @@
 import pollywog.display
 import pytest
 
+
 # Dummy CalcSet and Item for testing
 class DummyItem:
     def __init__(self, name, typ, calc_type=None):
         self.name = name
         self.item_type = typ
         self.calculation_type = calc_type
+
     def to_dict(self):
         d = {"name": self.name, "type": self.item_type}
         if self.calculation_type:
             d["calculation_type"] = self.calculation_type
         return d
 
+
 class DummyCalcSet:
     def __init__(self, items):
         self.items = items
+
 
 # Test set_theme and theme switching
 def test_set_theme():
@@ -25,6 +29,7 @@ def test_set_theme():
     assert pollywog.display._DISPLAY_THEME == "light"
     with pytest.raises(ValueError):
         pollywog.display.set_theme("unknown")
+
 
 # Test display_calcset does not error and produces HTML
 @pytest.mark.parametrize("theme", ["light", "dark"])
@@ -42,6 +47,7 @@ def test_display_calcset_html(theme):
     # Should produce HTML output (not None)
     # (We can't check the actual rendering, but can check no error)
 
+
 # Optionally, test that the HTML contains expected labels
 @pytest.mark.parametrize("theme,label", [("light", "number"), ("dark", "string")])
 def test_display_calcset_label(theme, label):
@@ -50,9 +56,12 @@ def test_display_calcset_label(theme, label):
     calcset = DummyCalcSet(items)
     # Monkeypatch display to capture HTML
     import IPython.display
+
     captured = {}
+
     def fake_display(obj):
         captured["html"] = obj.data if hasattr(obj, "data") else str(obj)
+
     orig_display = IPython.display.display
     IPython.display.display = fake_display
     pollywog.display.display_calcset(calcset)

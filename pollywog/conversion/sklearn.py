@@ -13,7 +13,14 @@ except ImportError:
 from sklearn import tree, ensemble
 
 
-def convert_tree(tree_model, feature_names, target_name, flat=False, comment_equation=None, output_type=None):
+def convert_tree(
+    tree_model,
+    feature_names,
+    target_name,
+    flat=False,
+    comment_equation=None,
+    output_type=None,
+):
     tree_ = tree_model.tree_
     feature_name = [
         feature_names[i] if i != tree._tree.TREE_UNDEFINED else "undefined!"
@@ -39,9 +46,15 @@ def convert_tree(tree_model, feature_names, target_name, flat=False, comment_equ
                 recurse_flat(tree_.children_left[node], left_conditions)
                 recurse_flat(tree_.children_right[node], right_conditions)
             else:
-                value = tree_.value[node][0][0] if not is_classifier else classes[tree_.value[node][0].argmax()]
+                value = (
+                    tree_.value[node][0][0]
+                    if not is_classifier
+                    else classes[tree_.value[node][0].argmax()]
+                )
                 value = f'"{value}"' if isinstance(value, str) else str(value)
-                conditions.append(" and ".join(current_conditions) if current_conditions else "True")
+                conditions.append(
+                    " and ".join(current_conditions) if current_conditions else "True"
+                )
                 values.append(value)
 
         recurse_flat(0, [])
@@ -57,12 +70,15 @@ def convert_tree(tree_model, feature_names, target_name, flat=False, comment_equ
                 right = recurse(tree_.children_right[node])
                 return If(IfRow(f"[{name}] <= {threshold}", left), right)
             else:
-                value = tree_.value[node][0][0] if not is_classifier else classes[tree_.value[node][0].argmax()]
+                value = (
+                    tree_.value[node][0][0]
+                    if not is_classifier
+                    else classes[tree_.value[node][0].argmax()]
+                )
                 value = f'"{value}"' if isinstance(value, str) else str(value)
                 return value
 
         if_rows = recurse(0)
-
 
     if comment_equation is None:
         comment_equation = f"Converted from {tree_model.__class__.__name__}"
@@ -77,9 +93,12 @@ def convert_tree(tree_model, feature_names, target_name, flat=False, comment_equ
     else:
         raise ValueError("Unsupported tree model type")
 
-def convert_forest(forest_model, feature_names, target_name, flat=False, comment_equation=None):
+
+def convert_forest(
+    forest_model, feature_names, target_name, flat=False, comment_equation=None
+):
     """Convert a RandomForestRegressor or RandomForestClassifier to a Pollywog Number or Category.
-    
+
     Args:
         forest_model: A fitted RandomForestRegressor or RandomForestClassifier from scikit-learn
         feature_names: List of feature names used in the model
@@ -90,8 +109,12 @@ def convert_forest(forest_model, feature_names, target_name, flat=False, comment
     Returns:
         A Pollywog Number (for regression) or Category (for classification)
     """
-    if not isinstance(forest_model, (ensemble.RandomForestRegressor, ensemble.RandomForestClassifier)):
-        raise ValueError("forest_model must be a RandomForestRegressor or RandomForestClassifier")
+    if not isinstance(
+        forest_model, (ensemble.RandomForestRegressor, ensemble.RandomForestClassifier)
+    ):
+        raise ValueError(
+            "forest_model must be a RandomForestRegressor or RandomForestClassifier"
+        )
 
     # Convert each tree in the forest
     trees = [
@@ -101,31 +124,35 @@ def convert_forest(forest_model, feature_names, target_name, flat=False, comment
             f"{target_name}_tree_{i}",
             flat=flat,
             comment_equation=f"Tree {i} from {forest_model.__class__.__name__}",
-            output_type=Variable
+            output_type=Variable,
         )
         for i, estimator in enumerate(forest_model.estimators_)
     ]
-
 
     # Average predictions for regression or majority vote for classification
     if isinstance(forest_model, ensemble.RandomForestRegressor):
         # For regression, create an equation that averages the tree outputs
         tree_outputs = " + ".join([f"[{t.name}]" for t in trees])
         equation = f"({tree_outputs}) / {len(trees)}"
-        return trees + [Number(
-            target_name,
-            [equation],
-            comment_equation=f"Averaged output from {len(trees)} trees in {forest_model.__class__.__name__}",
-        )]
+        return trees + [
+            Number(
+                target_name,
+                [equation],
+                comment_equation=f"Averaged output from {len(trees)} trees in {forest_model.__class__.__name__}",
+            )
+        ]
     elif isinstance(forest_model, ensemble.RandomForestClassifier):
         # For classification, create an equation that does majority voting
         tree_outputs = " + ".join([f"[{t.name}]" for t in trees])
         equation = f"round(({tree_outputs}) / {len(trees)})"
-        return trees + [Category(
-            target_name,
-            [equation],
-            comment_equation=f"Majority vote from {len(trees)} trees in {forest_model.__class__.__name__}",
-        )]
+        return trees + [
+            Category(
+                target_name,
+                [equation],
+                comment_equation=f"Majority vote from {len(trees)} trees in {forest_model.__class__.__name__}",
+            )
+        ]
+
 
 # Linear Models
 from sklearn import linear_model
@@ -150,5 +177,5 @@ def convert_linear_model(lm_model, feature_names, target_name):
         comment_equation=f"Converted from {lm_model.__class__.__name__}",
     )
 
-# Pre Processing
 
+# Pre Processing

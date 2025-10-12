@@ -6,6 +6,7 @@ Welcome to pollywog's documentation!
    :maxdepth: 2
    :caption: Contents
 
+   getting_started
    api_reference
    tutorials
 
