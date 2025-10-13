@@ -1,7 +1,13 @@
 # Automating Leapfrog Workflows with Pollywog – An Independent Open-Source Tool
 
-[![DOI](https://zenodo.org/badge/1071742254.svg)](https://doi.org/10.5281/zenodo.17313856)
-[![Documentation Status](https://readthedocs.org/projects/pollywog/badge/?version=latest)](https://pollywog.readthedocs.io/en/latest/?badge=latest)
+[![DOI-badge]][DOI] [![docs-badge]][docs] [![lite-badge]][lite]
+
+[DOI-badge]: https://zenodo.org/badge/1071742254.svg
+[DOI]: https://doi.org/10.5281/zenodo.173138
+[docs-badge]: https://readthedocs.org/projects/pollywog/badge/?version=latest
+[docs]: https://pollywog.readthedocs.io/en/latest/?
+[lite-badge]: https://jupyterlite.rtfd.io/en/latest/_static/badge.svg
+[lite]: https://endarthur.github.io/pollyweb
 
 
 Professionals using Seequent solutions for geological modeling and resource estimation often work with .lfcalc files. These files can be repetitive to manage and prone to manual errors. This is especially true when dealing with conditional logic, domain-based dilution calculations, or predictive model integration.
@@ -46,6 +52,14 @@ Or install the latest development version from GitHub:
 ```bash
 pip install git+https://github.com/endarthur/pollywog.git
 ```
+
+### JupyterLite
+
+You can also try Pollywog in your browser without any installation using JupyterLite: https://endarthur.github.io/pollyweb
+
+Please be aware that JupyterLite has some limitations, such as restricted file system access and limited support for certain libraries. It also saves files in the browser's memory, which may not persist across sessions, and will be deleted if you clear your browser's cache. For full functionality and to avoid losing work, it is recommended to install Pollywog in a local Python environment.
+
+Having said that, if you take care to download your notebooks and lfcalc files from time to time, JupyterLite can be a convenient way to experiment with Pollywog without any installation. Check the quickstart notebook in the JupyterLite environment for a brief introduction and some helper functions to automatically download lfcalc files you export.
 
 ## Usage
 

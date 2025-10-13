@@ -7,12 +7,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "lf_pollywog"
-version = "0.1.1"
+version = "0.1.2"
 description = "Python library for working with Leapfrog calculation sets (.lfcalc files)"
 authors = [
     { name = "Arthur Endlein", email = "endarthur@gmail.com" }
 ]
-license = { text = "MIT" }
+license = "MIT"
 readme = "README.md"
 requires-python = ">=3.7"
 dependencies = []
