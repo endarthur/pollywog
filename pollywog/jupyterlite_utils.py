@@ -21,11 +21,16 @@ def download_file(content, filename, content_type="application/octet-stream"):
         else:
             content_b64 = base64.b64encode(content).decode('ascii')
         
-        # JavaScript code to trigger download
+        # JavaScript code to trigger download (handles binary data correctly)
         js_code = f"""
         (function() {{
-            const content = atob('{content_b64}');
-            const blob = new Blob([content], {{type: '{content_type}'}});
+            const b64 = '{content_b64}';
+            const binary = atob(b64);
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) {{
+                bytes[i] = binary.charCodeAt(i);
+            }}
+            const blob = new Blob([bytes], {{type: '{content_type}'}});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
