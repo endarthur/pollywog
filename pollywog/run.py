@@ -61,7 +61,7 @@ def sqrt(n):
     return math.sqrt(n)
 
 
-def abs(n):
+def abs_(n):
     """
     Compute the absolute value of n.
     
@@ -71,7 +71,8 @@ def abs(n):
     Returns:
         float: The absolute value of n.
     """
-    return abs(n)
+    import builtins
+    return builtins.abs(n)
 
 
 # Trigonometric functions
@@ -164,7 +165,8 @@ def min_(*args):
     Returns:
         The minimum value among the arguments.
     """
-    return min(args)
+    import builtins
+    return builtins.min(args)
 
 
 def max_(*args):
@@ -177,7 +179,8 @@ def max_(*args):
     Returns:
         The maximum value among the arguments.
     """
-    return max(args)
+    import builtins
+    return builtins.max(args)
 
 
 def clamp(n, lower, upper=None):
@@ -230,8 +233,9 @@ def roundsf(n, sf):
     if n == 0:
         return 0
     from math import log10, floor
+    import builtins
 
-    return round(n, -int(floor(log10(abs(n)))) + (sf - 1))
+    return builtins.round(n, -int(floor(log10(abs_(n)))) + (sf - 1))
 
 
 def floor_(n):
@@ -414,6 +418,52 @@ def floor(n):
     return floor_(n)
 
 
+def abs(n):
+    """
+    Wrapper for abs_ to match Leapfrog function naming.
+    
+    Args:
+        n (float): The value to compute the absolute value of.
+    
+    Returns:
+        float: The absolute value of n.
+    """
+    return abs_(n)
+
+
+def is_normal(n):
+    """
+    Check if a value is a normal (valid) number.
+    
+    Returns True for finite numbers (int, float), False for None, NaN, or infinity.
+    Treats anything that isn't a normal number as NaN for run.py purposes.
+    
+    Args:
+        n: The value to check.
+    
+    Returns:
+        bool: True if n is a finite number, False otherwise.
+    
+    Example:
+        >>> is_normal(5.0)
+        True
+        >>> is_normal(None)
+        False
+        >>> is_normal(float('nan'))
+        False
+        >>> is_normal(float('inf'))
+        False
+    """
+    if n is None:
+        return False
+    try:
+        import math
+        # Check if it's a number and is finite (not NaN, not inf)
+        return isinstance(n, (int, float)) and math.isfinite(n)
+    except (TypeError, ValueError):
+        return False
+
+
 LEAPFROG_ENV = {
     "log": log,
     "ln": ln,
@@ -442,6 +492,7 @@ LEAPFROG_ENV = {
     "contains": contains,
     "like": like,
     "regexp": regexp,
+    "is_normal": is_normal,
 }
 
 
