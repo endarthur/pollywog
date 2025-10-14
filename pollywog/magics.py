@@ -15,7 +15,7 @@ class PollywogMagics(Magics):
     in Jupyter notebooks, particularly for JupyterLite environments.
     
     Available commands:
-        %pollywog autodownload on/off/status - Manage automatic file downloads
+        %pollywog autodownload on/off/status - Manage automatic display of download buttons for exported files
     """
     
     def __init__(self, shell):
@@ -31,7 +31,7 @@ class PollywogMagics(Magics):
         
     @line_magic
     @magic_arguments()
-    @argument('command', choices=['on', 'off', 'status'], help='Enable/disable autodownload')
+    @argument('command', choices=['on', 'off', 'status'], help='Enable/disable autodownload (download button appears automatically)')
     def pollywog(self, line):
         """
         Pollywog magic commands for Jupyter notebooks.
@@ -40,13 +40,12 @@ class PollywogMagics(Magics):
         notebook environments, especially JupyterLite.
         
         Usage:
-            %pollywog autodownload on     - Enable automatic .lfcalc downloads in JupyterLite
-            %pollywog autodownload off    - Disable automatic downloads  
+            %pollywog autodownload on     - Enable automatic display of download button for .lfcalc files in JupyterLite
+            %pollywog autodownload off    - Disable automatic download button
             %pollywog autodownload status - Show current autodownload status
-        
+
         When autodownload is enabled in JupyterLite, calling CalcSet.to_lfcalc()
-        will automatically trigger a browser download instead of writing to the
-        file system.
+        will automatically display a download button below the cell, allowing you to save the file to your computer. The file is not downloaded automatically; you must click the button.
         """
         args = line.strip().split()
         
@@ -58,13 +57,13 @@ class PollywogMagics(Magics):
         
         if command == 'on':
             self._enable_autodownload()
-            print("Pollywog autodownload enabled")
+            print("Pollywog autodownload enabled (download button will appear automatically)")
         elif command == 'off':
             self._disable_autodownload()
-            print("Pollywog autodownload disabled")
+            print("Pollywog autodownload disabled (download button will not appear automatically)")
         elif command == 'status':
             status = "enabled" if self.autodownload_enabled else "disabled"
-            print(f"Pollywog autodownload is {status}")
+            print(f"Pollywog autodownload is {status} (download button {'will' if status == 'enabled' else 'will not'} appear automatically)")
             
     def _enable_autodownload(self):
         if not self.autodownload_enabled:
@@ -82,7 +81,12 @@ class PollywogMagics(Magics):
                             # Generate file content and trigger download
                             buffer = io.BytesIO()
                             self._original_to_lfcalc(buffer, sort_items=sort_items)
-                            download_file(buffer.getvalue(), str(filepath_or_buffer), "application/octet-stream")
+                            buffer_data = buffer.getvalue()
+                            download_file(buffer_data, str(filepath_or_buffer), "application/octet-stream")
+                            # save the buffer content to a file as well. We could just call _original_to_lfcalc again,
+                            # but this avoids any side effects of multiple calls.
+                            with open(str(filepath_or_buffer), "wb") as f:
+                                f.write(buffer_data)
                         else:
                             # Call original method for file-like objects
                             self._original_to_lfcalc(filepath_or_buffer, sort_items=sort_items)
@@ -91,10 +95,10 @@ class PollywogMagics(Magics):
                     CalcSet.to_lfcalc = patched_to_lfcalc
                     self.autodownload_enabled = True
                 else:
-                    print("Autodownload only works in JupyterLite environment")
+                    print("Autodownload (download button) only works in JupyterLite environment")
                     
             except ImportError as e:
-                print(f"Could not enable autodownload: {e}")
+                print(f"Could not enable autodownload (download button): {e}")
                 
     def _disable_autodownload(self):
         if self.autodownload_enabled and self._original_to_lfcalc is not None:

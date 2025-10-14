@@ -27,59 +27,17 @@ class TestJupyterLiteUtils:
             if pyodide_backup is not None:
                 sys.modules['pyodide'] = pyodide_backup
     
-    @patch('pollywog.jupyterlite_utils.ensure_comm_target')
-    @patch('IPython.get_ipython')
-    def test_download_file_in_jupyterlite(self, mock_get_ipython, mock_ensure_comm_target):
-        """Test file download triggers comm in JupyterLite environment."""
+
+    @patch('IPython.display.display')
+    @patch('IPython.display.HTML')
+    def test_download_file_displays_html_button(self, mock_html, mock_display):
         from pollywog.jupyterlite_utils import download_file
-
-        # Mock comm manager and comm
-        mock_comm = Mock()
-        mock_comm_manager = Mock()
-        mock_comm_manager.new_comm.return_value = mock_comm
-        mock_kernel = Mock()
-        mock_kernel.comm_manager = mock_comm_manager
-        mock_ipython = Mock()
-        mock_ipython.kernel = mock_kernel
-        mock_get_ipython.return_value = mock_ipython
-
         content = b"test content"
         filename = "test.txt"
         content_type = "text/plain"
-
         download_file(content, filename, content_type)
-
-        mock_ensure_comm_target.assert_called_once()
-        mock_comm_manager.new_comm.assert_called_once_with('pollywog_download')
-        mock_comm.send.assert_called_once()
-        args = mock_comm.send.call_args[0][0]
-        assert args['filename'] == filename
-        assert args['content_type'] == content_type
-        assert isinstance(args['content_b64'], str)
-
-    @patch('pollywog.jupyterlite_utils.ensure_comm_target')
-    @patch('IPython.get_ipython')
-    def test_download_file_with_bytes(self, mock_get_ipython, mock_ensure_comm_target):
-        """Test file download with bytes content triggers comm."""
-        from pollywog.jupyterlite_utils import download_file
-
-        mock_comm = Mock()
-        mock_comm_manager = Mock()
-        mock_comm_manager.new_comm.return_value = mock_comm
-        mock_kernel = Mock()
-        mock_kernel.comm_manager = mock_comm_manager
-        mock_ipython = Mock()
-        mock_ipython.kernel = mock_kernel
-        mock_get_ipython.return_value = mock_ipython
-
-        content = b"test binary content"
-        filename = "test.bin"
-
-        download_file(content, filename)
-
-        mock_ensure_comm_target.assert_called_once()
-        mock_comm_manager.new_comm.assert_called_once_with('pollywog_download')
-        mock_comm.send.assert_called_once()
+        mock_html.assert_called_once()
+        mock_display.assert_called_once_with(mock_html.return_value)
     
     @patch('builtins.open', create=True)
     @patch('IPython.get_ipython', return_value=None)
@@ -114,18 +72,6 @@ class TestJupyterLiteUtils:
 
         mock_open.assert_called_once_with(filename, 'wb')
         mock_file.write.assert_called_once_with(content)
-    @patch('IPython.display.display')
-    @patch('IPython.display.Javascript')
-    def test_ensure_comm_target(self, mock_javascript, mock_display):
-        """Test that ensure_comm_target injects Javascript only once."""
-        # Import after patching so the mocks are used
-        from unittest.mock import patch
-        import importlib
-        jupyterlite_utils = importlib.import_module('pollywog.jupyterlite_utils')
-        with patch("pollywog.jupyterlite_utils.display") as mock_display, patch("pollywog.jupyterlite_utils.Javascript") as mock_js:
-            jupyterlite_utils.ensure_comm_target()
-            mock_display.assert_called_once()
-            mock_js.assert_called_once()
 
 
 class TestPollywogMagics:
