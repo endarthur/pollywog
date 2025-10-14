@@ -208,3 +208,6 @@ __marimo__/
 
 # lfcalc files
 *.lfcalc
+
+# Jupyter Notebook files containing private or sensitive information
+examples/private*.ipynb
