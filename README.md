@@ -63,43 +63,150 @@ Having said that, if you take care to download your notebooks and lfcalc files f
 
 ## Usage
 
+Pollywog makes it easy to automate Leapfrog calculation workflows. Here are some common use cases:
+
 ### Reading and Writing `.lfcalc` files
+
+Read existing calculation files, modify them, and write them back:
 
 ```python
 import pollywog as pw
+
+# Read existing file
 calcset = pw.CalcSet.read_lfcalc("path/to/file.lfcalc")
+
+# Modify or add calculations
+from pollywog.core import Number
+calcset.items.append(Number(name="new_calc", children=["[Au] * 2"]))
+
+# Export modified version
 calcset.to_lfcalc("output.lfcalc")
 ```
 
 ### Creating a Simple Calculation Set
 
+Build calculation sets programmatically with clear, version-controlled code:
+
 ```python
 from pollywog.core import Number, CalcSet
+
+# Create calculations for drillhole preprocessing
 calcset = CalcSet([
-    Number(name="Au_final", children=["clamp([Au_est], 0)"]),
-    Number(name="Ag_final", children=["clamp([Ag_est], 0)"])
+    Number(name="Au_clean", children=["clamp([Au], 0)"],
+           comment_equation="Remove negative values"),
+    Number(name="Au_log", children=["log([Au_clean] + 1e-6)"],
+           comment_equation="Log transform for kriging"),
 ])
-calcset.to_lfcalc("postprocessed.lfcalc")
+
+calcset.to_lfcalc("drillhole_preprocessing.lfcalc")
+```
+
+### Using Helper Functions
+
+Simplify common patterns with helper functions:
+
+```python
+from pollywog.helpers import WeightedAverage, Sum, CategoryFromThresholds
+from pollywog.core import CalcSet
+
+# Domain-weighted grades
+calcset = CalcSet([
+    WeightedAverage(
+        variables=["Au_oxide", "Au_sulfide", "Au_transition"],
+        weights=["prop_oxide", "prop_sulfide", "prop_transition"],
+        name="Au_composite",
+        comment="Domain-weighted gold grade"
+    ),
+    
+    Sum("Au", "Ag", "Cu", name="total_metals"),
+    
+    CategoryFromThresholds(
+        variable="Au_composite",
+        thresholds=[0.5, 2.0],
+        categories=["low", "medium", "high"],
+        name="grade_class"
+    ),
+])
+
+calcset.to_lfcalc("resource_model.lfcalc")
 ```
 
 ### Converting a scikit-learn model
 
-Currently supports decision trees (both classification and regression) and linear models:
+Deploy machine learning models directly in Leapfrog calculations:
 
 ```python
-from pollywog.conversion.sklearn import convert_tree
+from pollywog.conversion.sklearn import convert_tree, convert_forest
 from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestRegressor
+from pollywog.core import CalcSet
 import numpy as np
-X = np.array([[0.2, 1.0, 10], [0.5, 2.0, 20]])
-y = np.array([0.7, 0.8])
-feature_names = ["Cu_final", "Au_final", "Ag_final"]
-reg = DecisionTreeRegressor(max_depth=2)
-reg.fit(X, y)
-recovery_calc = convert_tree(reg, feature_names, "recovery_ml")
-CalcSet([recovery_calc]).to_lfcalc("recovery_ml.lfcalc")
+
+# Example: Predict metallurgical recovery from grade and mineralogy
+X = np.array([
+    [1.2, 0.3, 75],  # Au grade, Cu grade, grind size (P80)
+    [0.8, 0.5, 100],
+    [2.0, 0.2, 75],
+])
+y = np.array([0.88, 0.82, 0.91])  # Recovery values
+
+# Train decision tree
+tree_model = DecisionTreeRegressor(max_depth=3, random_state=42)
+tree_model.fit(X, y)
+
+# Convert to Leapfrog calculation
+feature_names = ["Au_composite", "Cu_composite", "P80"]
+recovery_calc = convert_tree(tree_model, feature_names, "Au_recovery_predicted")
+
+# Export to .lfcalc file
+CalcSet([recovery_calc]).to_lfcalc("ml_recovery_model.lfcalc")
+
+# Or use random forest for ensemble predictions
+rf_model = RandomForestRegressor(n_estimators=5, max_depth=3, random_state=42)
+rf_model.fit(X, y)
+rf_calc = convert_forest(rf_model, feature_names, "Au_recovery_rf")
+CalcSet([rf_calc]).to_lfcalc("rf_recovery_model.lfcalc")
 ```
 
-For more advanced workflows (domain dilution, conditional logic, economic value, combining CalcSets, etc.), see the Jupyter notebooks in the `examples/` folder of this repository or the documentation at https://pollywog.readthedocs.io/en/latest/.
+### Domain-Based Calculations
+
+Handle multi-domain resource estimation with ease:
+
+```python
+from pollywog.core import CalcSet, Number, If
+from pollywog.helpers import WeightedAverage
+
+domains = ["oxide", "transition", "sulfide"]
+metals = ["Au", "Ag", "Cu"]
+
+# Create weighted averages for all metals across all domains
+domain_calcs = CalcSet([
+    WeightedAverage(
+        variables=[f"{metal}_{domain}" for domain in domains],
+        weights=[f"prop_{domain}" for domain in domains],
+        name=f"{metal}_composite",
+        comment=f"Domain-weighted {metal} grade"
+    )
+    for metal in metals
+])
+
+# Apply domain-specific recovery factors
+recovery_calcs = CalcSet([
+    Number(name="Au_recovered", children=[
+        If([
+            ("[domain] = 'oxide'", "[Au_composite] * 0.92"),
+            ("[domain] = 'transition'", "[Au_composite] * 0.85"),
+            ("[domain] = 'sulfide'", "[Au_composite] * 0.78"),
+        ], otherwise=["[Au_composite] * 0.75"])
+    ], comment_equation="Domain-specific Au recovery"),
+])
+
+# Combine and export
+combined = CalcSet(domain_calcs.items + recovery_calcs.items)
+combined.to_lfcalc("multi_domain_workflow.lfcalc")
+```
+
+For more advanced workflows and complete tutorials, see the [documentation](https://pollywog.readthedocs.io/en/latest/).
 
 ## Querying CalcSets
 
