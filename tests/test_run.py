@@ -69,3 +69,177 @@ def test_pw_accessor():
     df = pd.DataFrame({"a": [10, 20]})
     result_df = df.pw.run(cs)
     assert list(result_df["b"]) == [11, 21]
+
+
+def test_run_with_math_functions():
+    """Test that Leapfrog-like math functions work correctly."""
+    import math
+
+    # Test log function
+    a = Variable(name="a", children=[""])
+    b = Number(name="log10_result", children=["log([a], 10)"])
+    c = Number(name="ln_result", children=["ln([a])"])
+    d = Number(name="exp_result", children=["exp([a])"])
+    e = Number(name="sqrt_result", children=["sqrt([a])"])
+    
+    cs = CalcSet([a, b, c, d, e])
+    results = run_calcset(cs, inputs={"a": 100})
+    
+    assert abs(results["log10_result"] - 2.0) < 0.001
+    assert abs(results["ln_result"] - math.log(100)) < 0.001
+    assert abs(results["exp_result"] - math.exp(100)) < 0.001
+    assert abs(results["sqrt_result"] - 10.0) < 0.001
+
+
+def test_run_with_trig_functions():
+    """Test trigonometric functions."""
+    import math
+
+    a = Variable(name="angle", children=[""])
+    b = Number(name="sin_result", children=["sin([angle])"])
+    c = Number(name="cos_result", children=["cos([angle])"])
+    d = Number(name="tan_result", children=["tan([angle])"])
+    
+    cs = CalcSet([a, b, c, d])
+    results = run_calcset(cs, inputs={"angle": math.pi / 4})
+    
+    assert abs(results["sin_result"] - math.sqrt(2) / 2) < 0.001
+    assert abs(results["cos_result"] - math.sqrt(2) / 2) < 0.001
+    assert abs(results["tan_result"] - 1.0) < 0.001
+
+
+def test_run_with_inverse_trig_functions():
+    """Test inverse trigonometric functions."""
+    import math
+
+    a = Variable(name="x", children=[""])
+    b = Number(name="asin_result", children=["asin([x])"])
+    c = Number(name="acos_result", children=["acos([x])"])
+    d = Number(name="atan_result", children=["atan([x])"])
+    
+    cs = CalcSet([a, b, c, d])
+    results = run_calcset(cs, inputs={"x": 0.5})
+    
+    assert abs(results["asin_result"] - math.asin(0.5)) < 0.001
+    assert abs(results["acos_result"] - math.acos(0.5)) < 0.001
+    assert abs(results["atan_result"] - math.atan(0.5)) < 0.001
+
+
+def test_run_with_trig_functions():
+    """Test trigonometric functions."""
+    import math
+
+    a = Variable(name="angle", children=[""])
+    b = Number(name="sin_result", children=["sin([angle])"])
+    c = Number(name="cos_result", children=["cos([angle])"])
+    d = Number(name="tan_result", children=["tan([angle])"])
+    
+    cs = CalcSet([a, b, c, d])
+    results = run_calcset(cs, inputs={"angle": math.pi / 4})
+    
+    assert abs(results["sin_result"] - math.sqrt(2) / 2) < 0.001
+    assert abs(results["cos_result"] - math.sqrt(2) / 2) < 0.001
+    assert abs(results["tan_result"] - 1.0) < 0.001
+
+
+def test_run_with_inverse_trig_functions():
+    """Test inverse trigonometric functions."""
+    import math
+
+    a = Variable(name="x", children=[""])
+    b = Number(name="asin_result", children=["asin([x])"])
+    c = Number(name="acos_result", children=["acos([x])"])
+    d = Number(name="atan_result", children=["atan([x])"])
+    
+    cs = CalcSet([a, b, c, d])
+    results = run_calcset(cs, inputs={"x": 0.5})
+    
+    assert abs(results["asin_result"] - math.asin(0.5)) < 0.001
+    assert abs(results["acos_result"] - math.acos(0.5)) < 0.001
+    assert abs(results["atan_result"] - math.atan(0.5)) < 0.001
+
+
+def test_run_with_string_functions():
+    """Test string manipulation functions."""
+    a = Variable(name="text", children=[""])
+    b = Number(name="starts", children=["startswith([text], 'Hello')"])
+    c = Number(name="ends", children=["endswith([text], 'world')"])
+    d = Number(name="has", children=["contains([text], 'beautiful')"])
+    
+    cs = CalcSet([a, b, c, d])
+    
+    # Test with matching string
+    results = run_calcset(cs, inputs={"text": "Hello beautiful world"})
+    assert results["starts"] is True
+    assert results["ends"] is True
+    assert results["has"] is True
+    
+    # Test with non-matching string
+    results = run_calcset(cs, inputs={"text": "Goodbye cruel world"})
+    assert results["starts"] is False
+    assert results["ends"] is True
+    assert results["has"] is False
+
+
+def test_run_with_concat():
+    """Test string concatenation function."""
+    a = Variable(name="first", children=[""])
+    b = Variable(name="last", children=[""])
+    c = Number(name="full_name", children=["concat([first], ' ', [last])"])
+    
+    cs = CalcSet([a, b, c])
+    results = run_calcset(cs, inputs={"first": "John", "last": "Doe"})
+    
+    assert results["full_name"] == "John Doe"
+
+
+def test_run_with_error_handling():
+    """Test that errors in expressions are handled gracefully."""
+    a = Variable(name="x", children=[""])
+    # Division by zero should return None
+    b = Number(name="div_zero", children=["[x] / 0"])
+    # Undefined variable should return None
+    c = Number(name="undefined", children=["[y] + 1"])
+    
+    cs = CalcSet([a, b, c])
+    results = run_calcset(cs, inputs={"x": 5})
+    
+    # Errors should result in None values
+    assert results["div_zero"] is None
+    assert results["undefined"] is None
+
+
+def test_run_with_complex_if():
+    """Test complex If structures with multiple conditions."""
+    a = Variable(name="grade", children=[""])
+    ifrow1 = IfRow(condition=["[grade] >= 90"], value=["'A'"])
+    ifrow2 = IfRow(condition=["[grade] >= 80"], value=["'B'"])
+    ifrow3 = IfRow(condition=["[grade] >= 70"], value=["'C'"])
+    ifexpr = If(rows=[ifrow1, ifrow2, ifrow3], otherwise=["'F'"])
+    b = Number(name="letter_grade", children=[ifexpr])
+    
+    cs = CalcSet([a, b])
+    
+    # Test different grade ranges
+    assert run_calcset(cs, inputs={"grade": 95})["letter_grade"] == "A"
+    assert run_calcset(cs, inputs={"grade": 85})["letter_grade"] == "B"
+    assert run_calcset(cs, inputs={"grade": 75})["letter_grade"] == "C"
+    assert run_calcset(cs, inputs={"grade": 65})["letter_grade"] == "F"
+
+
+def test_run_with_nested_if():
+    """Test nested If structures."""
+    a = Variable(name="x", children=[""])
+    # Inner If
+    inner_ifrow = IfRow(condition=["[x] > 0"], value=["1"])
+    inner_if = If(rows=[inner_ifrow], otherwise=["-1"])
+    # Outer If
+    outer_ifrow = IfRow(condition=["[x] != 0"], value=[inner_if])
+    outer_if = If(rows=[outer_ifrow], otherwise=["0"])
+    b = Number(name="result", children=[outer_if])
+    
+    cs = CalcSet([a, b])
+    
+    assert run_calcset(cs, inputs={"x": 5})["result"] == 1
+    assert run_calcset(cs, inputs={"x": -5})["result"] == -1
+    assert run_calcset(cs, inputs={"x": 0})["result"] == 0
