@@ -850,8 +850,9 @@ class Variable(Item):
     """
     Represents a variable item in a calculation set.
     
-    Variables are input values that may be referenced by other calculations.
-    They don't perform calculations themselves but declare available inputs.
+    Variables can perform calculations but are not available outside the scope
+    of the calculation set. They are typically used as parameters or intermediate
+    values that are referenced by other calculations.
     
     Example:
         >>> from pollywog.core import Variable
