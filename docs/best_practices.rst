@@ -182,9 +182,9 @@ Always validate and clean input data:
     # Cap extreme outliers
     Number(name="Au_capped", children=["clamp([Au], 0, 100)"])
     
-    # Handle missing values (NaN != NaN in Leapfrog)
+    # Handle missing/blank values using Leapfrog's is_normal function
     Number(name="Au_default", children=[
-        "if([Au] != [Au], 0.001, [Au])"  # If NaN, use 0.001
+        "if(not is_normal([Au]), 0.001, [Au])"  # If blank/special value, use 0.001
     ])
 
 Range Checking
@@ -209,7 +209,7 @@ Create flags for out-of-range values:
         
         # Flag missing critical data
         Number(name="flag_incomplete", children=[
-            If("([domain] = '') or ([density] != [density])", "1", "0")
+            If("([domain] = '') or (not is_normal([density]))", "1", "0")
         ]),
     ])
 

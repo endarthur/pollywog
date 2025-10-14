@@ -293,7 +293,7 @@ Create flags to identify data quality issues:
         
         # Flag missing critical data
         Number(name="flag_missing", children=[
-            If("([density] != [density]) or ([domain] = '')", "1", "0")
+            If("(not is_normal([density])) or ([domain] = '')", "1", "0")
         ], comment_equation="Flag missing density or domain"),
         
         # Overall QA/QC status

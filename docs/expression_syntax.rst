@@ -156,6 +156,45 @@ Pollywog provides access to mathematical constants:
     Number(name="circle_area", children=["pi * [radius] ^ 2"])
     Number(name="exponential", children=["e ^ [rate]"])
 
+Value Status Functions
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Leapfrog provides auxiliary functions to query the status of values:
+
+.. code-block:: python
+
+    # is_normal: Returns true if value is a normal numeric value (not blank, without_value, or outside)
+    Number(name="has_valid_Au", children=[
+        If("is_normal([Au])", "1", "0")
+    ])
+    
+    # is_blank: Returns true if value is blank (similar to NaN/null)
+    Number(name="is_missing", children=[
+        If("is_blank([density])", "1", "0")
+    ])
+    
+    # is_without_value: Returns true if estimation could not be performed
+    Number(name="needs_reestimation", children=[
+        If("is_without_value([Au_kriged])", "1", "0")
+    ])
+    
+    # is_outside: Returns true if value is outside domain boundary
+    Number(name="outside_domain", children=[
+        If("is_outside([Au_est])", "1", "0")
+    ])
+    
+    # Common pattern: Use not is_normal() to check for any special value
+    Number(name="Au_validated", children=[
+        If("not is_normal([Au])", "0", "[Au]")
+    ])
+
+Value statuses in Leapfrog:
+
+- **normal**: Regular numeric value
+- **blank**: Empty/null value (general missing data)
+- **without_value**: Estimation could not be performed (e.g., insufficient data)
+- **outside**: Evaluation outside domain boundary
+
 Conditional Logic (If/Else)
 ---------------------------
 
@@ -251,17 +290,26 @@ Comparison operators available in expressions:
 Working with Missing Values
 ----------------------------
 
-In Leapfrog, missing or null values can occur in various contexts. Here are strategies for handling them:
+Leapfrog has specific value statuses (blank, without_value, outside) for different types of missing or special values. Use the value status functions to handle them properly:
 
 .. code-block:: python
 
     # Provide default values for missing data
     Number(name="Au_clean", children=["clamp([Au], 0)"])
     
-    # Use conditional logic to handle nulls
-    # (In Leapfrog, you might check if a value exists)
+    # Use is_normal() to check for valid numeric values
     Number(name="Au_default", children=[
-        If("[Au] != [Au]", "0.001", "[Au]")  # NaN != NaN is true
+        If("not is_normal([Au])", "0.001", "[Au]")  # Check for blank/special values
+    ])
+    
+    # Use is_blank() to specifically check for blank values
+    Number(name="has_density", children=[
+        If("is_blank([density])", "0", "1")
+    ])
+    
+    # Handle estimation failures (without_value status)
+    Number(name="Au_final", children=[
+        If("is_without_value([Au_kriged])", "[Au_idw]", "[Au_kriged]")  # Fallback to IDW
     ])
     
     # Add small epsilon to avoid log(0) errors
