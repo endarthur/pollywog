@@ -72,7 +72,7 @@ Calculate the final grade as a weighted sum of domain grades, normalized by the 
     postprocess_helper.to_lfcalc("blockmodel_postprocessing_weighted.lfcalc")
 
 Step 4: Geometallurgical Recovery with Regression Trees
-------------------------------------------------------
+--------------------------------------------------------
 Create example data for metal recovery, fit a regression tree, and add the tree-based recovery calculation to the block model calcset.
 
 .. code-block:: python
@@ -114,7 +114,7 @@ Create example data for metal recovery, fit a regression tree, and add the tree-
     postprocess_helper.to_lfcalc("blockmodel_postprocessing_with_recovery_weighted.lfcalc")
 
 Step 5: Visualization (Optional)
--------------------------------
+---------------------------------
 You can visualize any CalcSet in Jupyter for inspection.
 
 .. code-block:: python
@@ -128,7 +128,7 @@ You can visualize any CalcSet in Jupyter for inspection.
 For more advanced notebooks and real data examples, see the ``examples/`` folder in the repository.
 
 Step 6: More Helper Function Examples
--------------------------------------
+--------------------------------------
 Pollywog provides several helpers to simplify common calculation patterns. Here are some examples:
 
 .. code-block:: python
