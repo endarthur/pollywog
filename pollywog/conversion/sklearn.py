@@ -21,6 +21,36 @@ def convert_tree(
     comment_equation=None,
     output_type=None,
 ):
+    """
+    Convert a scikit-learn decision tree to a Pollywog Number or Category.
+    
+    This function converts DecisionTreeRegressor and DecisionTreeClassifier models
+    into Pollywog calculation items that can be exported to Leapfrog.
+    
+    Args:
+        tree_model: A fitted DecisionTreeRegressor or DecisionTreeClassifier from scikit-learn.
+        feature_names (list of str): List of feature names used in the model.
+        target_name (str): Name of the target variable to create.
+        flat (bool): Whether to create flattened if expressions (one condition per path).
+            If True, creates a flat list of conditions. If False (default), creates nested If structure.
+        comment_equation (str, optional): Comment for the generated equation. 
+            Defaults to "Converted from <ModelClassName>".
+        output_type (class, optional): Output class to use (Number, Category, Variable).
+            If None, automatically selects based on model type.
+    
+    Returns:
+        Number or Category: A Pollywog calculation item representing the decision tree.
+    
+    Raises:
+        ValueError: If tree_model is not a supported tree model type.
+    
+    Example:
+        >>> from sklearn.tree import DecisionTreeRegressor
+        >>> from pollywog.conversion.sklearn import convert_tree
+        >>> model = DecisionTreeRegressor()
+        >>> model.fit(X, y)
+        >>> calc = convert_tree(model, ["feature1", "feature2"], "prediction")
+    """
     tree_ = tree_model.tree_
     feature_name = [
         feature_names[i] if i != tree._tree.TREE_UNDEFINED else "undefined!"
@@ -97,17 +127,35 @@ def convert_tree(
 def convert_forest(
     forest_model, feature_names, target_name, flat=False, comment_equation=None
 ):
-    """Convert a RandomForestRegressor or RandomForestClassifier to a Pollywog Number or Category.
-
+    """
+    Convert a scikit-learn random forest to Pollywog Variables and a final Number/Category.
+    
+    This function converts RandomForestRegressor and RandomForestClassifier models
+    into a list of Pollywog items, with each tree converted to a Variable and a final
+    aggregation step (averaging for regression, majority vote for classification).
+    
     Args:
-        forest_model: A fitted RandomForestRegressor or RandomForestClassifier from scikit-learn
-        feature_names: List of feature names used in the model
-        target_name: Name of the target variable to create
-        flat: Whether to create flattened if expressions (default: False)
-        comment_equation: Optional comment for the generated equation
-
+        forest_model: A fitted RandomForestRegressor or RandomForestClassifier from scikit-learn.
+        feature_names (list of str): List of feature names used in the model.
+        target_name (str): Name of the target variable to create.
+        flat (bool): Whether to create flattened if expressions for each tree.
+            Defaults to False.
+        comment_equation (str, optional): Comment for the generated equation.
+            Defaults to model-specific description.
+    
     Returns:
-        A Pollywog Number (for regression) or Category (for classification)
+        list: List of Pollywog items including Variables for each tree and a final
+            Number (for regression) or Category (for classification) for the aggregated result.
+    
+    Raises:
+        ValueError: If forest_model is not a RandomForestRegressor or RandomForestClassifier.
+    
+    Example:
+        >>> from sklearn.ensemble import RandomForestRegressor
+        >>> from pollywog.conversion.sklearn import convert_forest
+        >>> model = RandomForestRegressor(n_estimators=10)
+        >>> model.fit(X, y)
+        >>> calcs = convert_forest(model, ["feat1", "feat2"], "prediction")
     """
     if not isinstance(
         forest_model, (ensemble.RandomForestRegressor, ensemble.RandomForestClassifier)
@@ -159,6 +207,27 @@ from sklearn import linear_model
 
 
 def convert_linear_model(lm_model, feature_names, target_name):
+    """
+    Convert a scikit-learn linear model to a Pollywog Number.
+    
+    This function converts fitted linear models (LinearRegression, Ridge, Lasso, etc.)
+    into a Pollywog Number calculation representing the linear equation.
+    
+    Args:
+        lm_model: A fitted linear model from scikit-learn with coef_ and intercept_ attributes.
+        feature_names (list of str): List of feature names corresponding to the coefficients.
+        target_name (str): Name of the target variable to create.
+    
+    Returns:
+        Number: A Pollywog Number representing the linear equation.
+    
+    Example:
+        >>> from sklearn.linear_model import LinearRegression
+        >>> from pollywog.conversion.sklearn import convert_linear_model
+        >>> model = LinearRegression()
+        >>> model.fit(X, y)
+        >>> calc = convert_linear_model(model, ["feature1", "feature2"], "prediction")
+    """
     coefs = lm_model.coef_
     intercept = lm_model.intercept_
 
