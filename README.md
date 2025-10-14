@@ -194,9 +194,9 @@ domain_calcs = CalcSet([
 recovery_calcs = CalcSet([
     Number(name="Au_recovered", children=[
         If([
-            ("[domain] == 'oxide'", "[Au_composite] * 0.92"),
-            ("[domain] == 'transition'", "[Au_composite] * 0.85"),
-            ("[domain] == 'sulfide'", "[Au_composite] * 0.78"),
+            ("[domain] = 'oxide'", "[Au_composite] * 0.92"),
+            ("[domain] = 'transition'", "[Au_composite] * 0.85"),
+            ("[domain] = 'sulfide'", "[Au_composite] * 0.78"),
         ], otherwise=["[Au_composite] * 0.75"])
     ], comment_equation="Domain-specific Au recovery"),
 ])

@@ -194,18 +194,18 @@ A common pattern in resource estimation is applying different formulas based on 
     # Apply different recovery factors by domain
     Number(name="Au_recovered", children=[
         If([
-            ("[domain] == 'oxide'", "[Au_est] * 0.92"),
-            ("[domain] == 'transition'", "[Au_est] * 0.85"),
-            ("[domain] == 'sulfide'", "[Au_est] * 0.78"),
+            ("[domain] = 'oxide'", "[Au_est] * 0.92"),
+            ("[domain] = 'transition'", "[Au_est] * 0.85"),
+            ("[domain] = 'sulfide'", "[Au_est] * 0.78"),
         ], otherwise=["[Au_est] * 0.75"])  # Default recovery
     ])
     
     # Combine conditions
     Number(name="dilution_factor", children=[
         If([
-            ("([domain] == 'high_grade') and ([Au] > 3)", "1.05"),
-            ("([domain] == 'high_grade') and ([Au] <= 3)", "1.10"),
-            ("[domain] == 'low_grade'", "1.20"),
+            ("([domain] = 'high_grade') and ([Au] > 3)", "1.05"),
+            ("([domain] = 'high_grade') and ([Au] <= 3)", "1.10"),
+            ("[domain] = 'low_grade'", "1.20"),
         ], otherwise=["1.15"])
     ])
 
@@ -220,7 +220,7 @@ Use the ``Category`` class for text-based outputs:
     
     Category(name="ore_type", children=[
         If([
-            ("[Au] > 2 and [domain] == 'oxide'", "'high_grade_oxide'"),
+            ("[Au] > 2 and [domain] = 'oxide'", "'high_grade_oxide'"),
             ("[Au] > 2", "'high_grade'"),
             ("[Au] > 0.5", "'medium_grade'"),
         ], otherwise=["'low_grade'"])
@@ -231,7 +231,7 @@ Boolean Comparisons
 
 Comparison operators available in expressions:
 
-- ``==`` : Equal to
+- ``=`` : Equal to
 - ``!=`` : Not equal to
 - ``>`` : Greater than
 - ``>=`` : Greater than or equal to
@@ -302,8 +302,8 @@ Here's a comprehensive example showing various expression types:
         # 3. Domain-based adjustments
         Number(name="Au_adjusted", children=[
             If([
-                ("[domain] == 'oxide'", "[Au_clean] * 0.95"),
-                ("[domain] == 'sulfide'", "[Au_clean] * 0.90"),
+                ("[domain] = 'oxide'", "[Au_clean] * 0.95"),
+                ("[domain] = 'sulfide'", "[Au_clean] * 0.90"),
             ], otherwise=["[Au_clean]"])
         ], comment_equation="Apply domain-specific scaling"),
         

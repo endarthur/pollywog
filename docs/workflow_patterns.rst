@@ -105,9 +105,9 @@ Apply different estimation approaches based on rock type:
         # Use different estimation methods based on rock type
         Number(name="Au_final", children=[
             If([
-                ("[rocktype] == 'basalt'", "[Au_ordinary_kriging]"),
-                ("[rocktype] == 'breccia'", "[Au_indicator_kriging]"),
-                ("[rocktype] == 'skarn'", "[Au_nearest_neighbor]"),
+                ("[rocktype] = 'basalt'", "[Au_ordinary_kriging]"),
+                ("[rocktype] = 'breccia'", "[Au_indicator_kriging]"),
+                ("[rocktype] = 'skarn'", "[Au_nearest_neighbor]"),
             ], otherwise=["[Au_inverse_distance]"])
         ], comment_equation="Select estimation method by rock type"),
     ])
@@ -131,10 +131,10 @@ Integrate metallurgical test data to predict recovery:
         # Gold recovery as a function of grind size and domain
         Number(name="Au_recovery", children=[
             If([
-                ("([geo_domain] == 'free_milling') and ([p80] <= 75)", "0.92"),
-                ("([geo_domain] == 'free_milling') and ([p80] > 75)", "0.88"),
-                ("([geo_domain] == 'refractory') and ([p80] <= 75)", "0.78"),
-                ("([geo_domain] == 'refractory') and ([p80] > 75)", "0.72"),
+                ("([geo_domain] = 'free_milling') and ([p80] <= 75)", "0.92"),
+                ("([geo_domain] = 'free_milling') and ([p80] > 75)", "0.88"),
+                ("([geo_domain] = 'refractory') and ([p80] <= 75)", "0.78"),
+                ("([geo_domain] = 'refractory') and ([p80] > 75)", "0.72"),
             ], otherwise=["0.70"])
         ], comment_equation="Recovery by geo-domain and grind size"),
         
@@ -293,15 +293,15 @@ Create flags to identify data quality issues:
         
         # Flag missing critical data
         Number(name="flag_missing", children=[
-            If("([density] != [density]) or ([domain] == '')", "1", "0")
+            If("([density] != [density]) or ([domain] = '')", "1", "0")
         ], comment_equation="Flag missing density or domain"),
         
         # Overall QA/QC status
         Category(name="qa_status", children=[
             If([
-                ("[flag_negative] == 1", "'FAILED_NEGATIVE'"),
-                ("[flag_extreme] == 1", "'REVIEW_OUTLIER'"),
-                ("[flag_missing] == 1", "'FAILED_MISSING'"),
+                ("[flag_negative] = 1", "'FAILED_NEGATIVE'"),
+                ("[flag_extreme] = 1", "'REVIEW_OUTLIER'"),
+                ("[flag_missing] = 1", "'FAILED_MISSING'"),
             ], otherwise=["'PASSED'"])
         ], comment_equation="Overall QA/QC status"),
     ])

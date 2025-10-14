@@ -209,7 +209,7 @@ Create flags for out-of-range values:
         
         # Flag missing critical data
         Number(name="flag_incomplete", children=[
-            If("([domain] == '') or ([density] != [density])", "1", "0")
+            If("([domain] = '') or ([density] != [density])", "1", "0")
         ]),
     ])
 

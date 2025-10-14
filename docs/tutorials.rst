@@ -506,10 +506,10 @@ Multi-Condition Logic
     calcset = CalcSet([
         Number(name="recovery_factor", children=[
             If([
-                ("[domain] == 'oxide' and [grind] <= 75", "0.92"),
-                ("[domain] == 'oxide' and [grind] > 75", "0.88"),
-                ("[domain] == 'sulfide' and [grind] <= 75", "0.85"),
-                ("[domain] == 'sulfide' and [grind] > 75", "0.78"),
+                ("[domain] = 'oxide' and [grind] <= 75", "0.92"),
+                ("[domain] = 'oxide' and [grind] > 75", "0.88"),
+                ("[domain] = 'sulfide' and [grind] <= 75", "0.85"),
+                ("[domain] = 'sulfide' and [grind] > 75", "0.78"),
             ], otherwise=["0.75"])
         ], comment_equation="Recovery based on domain and grind size"),
     ])
