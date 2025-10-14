@@ -17,11 +17,11 @@ This document summarizes the comprehensive review and improvements made to the p
   - `utils.py`: 100%
 
 ### After Improvements
-- **Total Tests**: 95 (+64%)
-- **Overall Coverage**: 74% (+4 percentage points)
+- **Total Tests**: 100 (+72%)
+- **Overall Coverage**: 76% (+6 percentage points)
 - **Module Coverage**:
   - `core.py`: 87% (+5%)
-  - `run.py`: 76% (+13%)
+  - `run.py`: 84% (+21%)
   - `conversion/sklearn.py`: 57% (maintained, added edge cases)
   - `helpers.py`: 77% (maintained, added edge cases)
   - `utils.py`: 100% (maintained)
@@ -45,7 +45,7 @@ This document summarizes the comprehensive review and improvements made to the p
 **Purpose**: These tests ensure that core functionality like file I/O, querying, renaming, and serialization work correctly and handle edge cases properly.
 
 ### 2. Run Module Tests (test_run.py)
-**Added 9 new tests** to improve coverage from 63% to 76%:
+**Added 14 new tests** to improve coverage from 63% to 84%:
 
 - `test_run_with_math_functions()` - Tests log, ln, exp, sqrt functions
 - `test_run_with_trig_functions()` - Tests sin, cos, tan functions
@@ -55,8 +55,13 @@ This document summarizes the comprehensive review and improvements made to the p
 - `test_run_with_error_handling()` - Tests that errors are handled gracefully (return None)
 - `test_run_with_complex_if()` - Tests multi-condition If structures
 - `test_run_with_nested_if()` - Tests nested If expressions
+- **`test_run_with_clamp()` - NEW** - Tests clamp function (fixed infinite recursion bug)
+- **`test_run_with_min_max()` - NEW** - Tests min and max functions (fixed infinite recursion bug)
+- **`test_run_with_roundsf()` - NEW** - Tests roundsf function (fixed infinite recursion bug)
+- **`test_run_with_abs()` - NEW** - Tests abs function (fixed infinite recursion bug)
+- **`test_run_with_is_normal()` - NEW** - Tests is_normal function for validating finite numbers
 
-**Purpose**: These tests ensure that the Leapfrog-like math and string functions work correctly and that error handling is robust.
+**Purpose**: These tests ensure that the Leapfrog-like math and string functions work correctly, that error handling is robust, and that all previously broken functions due to infinite recursion bugs now work properly.
 
 ### 3. Conversion Module Tests (test_conversion.py)
 **Added 5 new tests** for edge cases:
@@ -134,14 +139,25 @@ Some code remains uncovered due to:
 
 ## Bugs Discovered During Testing
 
-### 1. Infinite Recursion in Wrapper Functions
+### 1. Infinite Recursion in Wrapper Functions ~~(FIXED)~~
 **Location**: `pollywog/run.py`
 
-Several wrapper functions have infinite recursion due to name collision with Python builtins:
-- `min()` calls `min_()` which calls builtin `min()` which calls wrapper `min()` again
-- `max()` has the same issue
-- `abs()` has the same issue
-- This breaks `clamp()`, `roundsf()`, and other functions that depend on them
+~~Several wrapper functions have infinite recursion due to name collision with Python builtins:~~
+- ~~`min()` calls `min_()` which calls builtin `min()` which calls wrapper `min()` again~~
+- ~~`max()` has the same issue~~
+- ~~`abs()` has the same issue~~
+- ~~This breaks `clamp()`, `roundsf()`, and other functions that depend on them~~
+
+**STATUS: FIXED** - These bugs have been resolved by using `builtins.min`, `builtins.max`, and `builtins.abs` in the underlying functions to avoid name collision. All affected functions (`min`, `max`, `abs`, `clamp`, `roundsf`) now work correctly.
+
+### 2. Added `is_normal()` Function
+**Location**: `pollywog/run.py`
+
+Added new `is_normal()` function to check if a value is a valid finite number:
+- Returns `True` for finite numbers (int, float)
+- Returns `False` for `None`, `NaN`, or `infinity`
+- Treats anything that isn't a normal number as NaN for run.py purposes
+- Added to `LEAPFROG_ENV` for use in calculations
 
 **Impact**: These functions cannot be used in calculations and tests cannot be written for them.
 
@@ -163,7 +179,9 @@ Several wrapper functions have infinite recursion due to name collision with Pyt
 
 ## Conclusion
 
-The test suite has been significantly improved with 37 new tests added (+64% increase), bringing total test count from 58 to 95. Coverage improved from 70% to 74% overall, with significant improvements in core.py (+5%) and run.py (+13%).
+The test suite has been significantly improved with 42 new tests added (+72% increase), bringing total test count from 58 to 100. Coverage improved from 70% to 76% overall, with significant improvements in core.py (+5%) and run.py (+21%).
+
+**Bug Fixes**: Fixed critical infinite recursion bugs in `min`, `max`, `abs`, `clamp`, and `roundsf` functions, and added the `is_normal` function for value validation.
 
 The new tests are:
 - **Representative**: They cover real-world use cases and workflows

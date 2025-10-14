@@ -243,3 +243,109 @@ def test_run_with_nested_if():
     assert run_calcset(cs, inputs={"x": 5})["result"] == 1
     assert run_calcset(cs, inputs={"x": -5})["result"] == -1
     assert run_calcset(cs, inputs={"x": 0})["result"] == 0
+
+
+def test_run_with_clamp():
+    """Test clamp function with fixed infinite recursion bug."""
+    a = Variable(name="x", children=[""])
+    b = Number(name="clamped", children=["clamp([x], 0, 10)"])
+    c = Number(name="clamped_lower", children=["clamp([x], 5)"])
+    
+    cs = CalcSet([a, b, c])
+    
+    # Test value within bounds
+    results = run_calcset(cs, inputs={"x": 5})
+    assert results["clamped"] == 5
+    assert results["clamped_lower"] == 5
+    
+    # Test value below lower bound
+    results = run_calcset(cs, inputs={"x": -5})
+    assert results["clamped"] == 0
+    assert results["clamped_lower"] == 5
+    
+    # Test value above upper bound
+    results = run_calcset(cs, inputs={"x": 15})
+    assert results["clamped"] == 10
+    assert results["clamped_lower"] == 15
+
+
+def test_run_with_min_max():
+    """Test min and max functions with fixed infinite recursion bug."""
+    a = Variable(name="x", children=[""])
+    b = Variable(name="y", children=[""])
+    c = Number(name="min_result", children=["min([x], [y])"])
+    d = Number(name="max_result", children=["max([x], [y])"])
+    
+    cs = CalcSet([a, b, c, d])
+    results = run_calcset(cs, inputs={"x": 5, "y": 10})
+    
+    assert results["min_result"] == 5
+    assert results["max_result"] == 10
+    
+    # Test with negative values
+    results = run_calcset(cs, inputs={"x": -3, "y": -7})
+    assert results["min_result"] == -7
+    assert results["max_result"] == -3
+
+
+def test_run_with_roundsf():
+    """Test roundsf (round to significant figures) function with fixed bug."""
+    a = Variable(name="x", children=[""])
+    b = Number(name="rounded_sf", children=["roundsf([x], 3)"])
+    
+    cs = CalcSet([a, b])
+    
+    # Test various roundsf cases
+    results = run_calcset(cs, inputs={"x": 123.456})
+    assert results["rounded_sf"] == 123
+    
+    results = run_calcset(cs, inputs={"x": 0.001234})
+    assert results["rounded_sf"] == 0.00123
+
+
+def test_run_with_is_normal():
+    """Test is_normal function for detecting valid numbers."""
+    a = Variable(name="x", children=[""])
+    b = Number(name="is_valid", children=["is_normal([x])"])
+    
+    cs = CalcSet([a, b])
+    
+    # Test normal number
+    results = run_calcset(cs, inputs={"x": 5.0})
+    assert results["is_valid"] is True
+    
+    # Test None value
+    results = run_calcset(cs, inputs={"x": None})
+    assert results["is_valid"] is False
+    
+    # Test with zero (should be normal)
+    results = run_calcset(cs, inputs={"x": 0})
+    assert results["is_valid"] is True
+    
+    # Test with negative number
+    results = run_calcset(cs, inputs={"x": -123.456})
+    assert results["is_valid"] is True
+
+
+def test_run_with_abs():
+    """Test abs function with fixed infinite recursion bug."""
+    a = Variable(name="x", children=[""])
+    b = Number(name="abs_result", children=["abs([x])"])
+    
+    cs = CalcSet([a, b])
+    
+    # Test positive number
+    results = run_calcset(cs, inputs={"x": 5})
+    assert results["abs_result"] == 5
+    
+    # Test negative number
+    results = run_calcset(cs, inputs={"x": -5})
+    assert results["abs_result"] == 5
+    
+    # Test zero
+    results = run_calcset(cs, inputs={"x": 0})
+    assert results["abs_result"] == 0
+    
+    # Test decimal
+    results = run_calcset(cs, inputs={"x": -3.14})
+    assert abs(results["abs_result"] - 3.14) < 0.001
