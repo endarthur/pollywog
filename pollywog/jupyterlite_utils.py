@@ -1,15 +1,27 @@
 """
 JupyterLite utilities for browser-based file operations.
+
+This module provides helper functions for working with pollywog in JupyterLite,
+a browser-based Jupyter environment that runs entirely in the client.
 """
 
 def download_file(content, filename, content_type="application/octet-stream"):
     """
     Trigger a file download in JupyterLite/browser environment.
     
+    This function creates a download link in the browser to save generated files
+    (like .lfcalc files) directly to the user's computer. In non-browser environments,
+    it falls back to saving the file to the current directory.
+    
     Args:
-        content (str or bytes): File content to download
-        filename (str): Name of the file to download
-        content_type (str): MIME type of the file
+        content (str or bytes): File content to download.
+        filename (str): Name of the file to download.
+        content_type (str): MIME type of the file. 
+            Defaults to "application/octet-stream".
+    
+    Example:
+        >>> from pollywog.jupyterlite_utils import download_file
+        >>> download_file(b"Hello, world!", "test.txt", "text/plain")
     """
     try:
         from IPython.display import Javascript, display
@@ -53,7 +65,20 @@ def download_file(content, filename, content_type="application/octet-stream"):
 
 def is_jupyterlite():
     """
-    Check if running in JupyterLite environment.
+    Check if code is running in a JupyterLite environment.
+    
+    JupyterLite is a browser-based Jupyter distribution that runs entirely
+    in the client using Pyodide (Python compiled to WebAssembly). This function
+    detects if the current environment is JupyterLite by checking for the
+    pyodide module.
+    
+    Returns:
+        bool: True if running in JupyterLite, False otherwise.
+    
+    Example:
+        >>> from pollywog.jupyterlite_utils import is_jupyterlite
+        >>> if is_jupyterlite():
+        ...     print("Running in browser!")
     """
     try:
         import sys

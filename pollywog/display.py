@@ -3,7 +3,13 @@ _DISPLAY_THEME = "light"
 
 def set_theme(theme):
     """
-    Set the global theme for display_calcset ("light" or "dark").
+    Set the global theme for display_calcset.
+    
+    Args:
+        theme (str): Theme name, either "light" or "dark".
+    
+    Raises:
+        ValueError: If theme is not "light" or "dark".
     """
     global _DISPLAY_THEME
     if theme not in ("light", "dark"):
@@ -13,8 +19,30 @@ def set_theme(theme):
 
 def display_calcset(calcset, theme=None, colors=None, display_output=True):
     """
-    Display a CalcSet in a Jupyter notebook with a visual style similar to Leapfrog, rendering equations and logic blocks visually.
-    Supports 'theme' ("light" or "dark") and custom color palettes via 'colors' dict. If theme is None, uses global setting from set_theme().
+    Display a CalcSet in a Jupyter notebook with Leapfrog-style visual formatting.
+    
+    This function renders calculation sets with visual styling similar to Leapfrog,
+    making equations and logic blocks easy to read and understand.
+    
+    Args:
+        calcset (CalcSet): The calculation set to display.
+        theme (str, optional): Visual theme, either "light" or "dark". 
+            If None, uses the global theme set by set_theme(). Defaults to None.
+        colors (dict, optional): Custom color palette to override theme defaults.
+            Keys can include: 'background', 'text', 'variable', 'label', 'if', 
+            'arrow', 'comment', 'var_ref'. Defaults to None.
+        display_output (bool): Whether to display output in Jupyter. 
+            If False, returns HTML string. Defaults to True.
+    
+    Returns:
+        str or None: If display_output is False, returns HTML string. 
+            Otherwise displays in Jupyter and returns None.
+    
+    Example:
+        >>> from pollywog.core import CalcSet, Number
+        >>> from pollywog.display import display_calcset
+        >>> cs = CalcSet([Number(name="x2", children=["[x] * 2"])])
+        >>> display_calcset(cs, theme="dark")
     """
     from IPython.display import display, HTML
     import html

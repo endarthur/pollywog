@@ -8,7 +8,23 @@ import inspect
 
 @magics_class
 class PollywogMagics(Magics):
+    """
+    IPython magic commands for pollywog.
+    
+    This class provides custom magic commands to enhance pollywog's functionality
+    in Jupyter notebooks, particularly for JupyterLite environments.
+    
+    Available commands:
+        %pollywog autodownload on/off/status - Manage automatic file downloads
+    """
+    
     def __init__(self, shell):
+        """
+        Initialize the PollywogMagics extension.
+        
+        Args:
+            shell: IPython shell instance.
+        """
         super().__init__(shell)
         self.autodownload_enabled = False
         self._original_to_lfcalc = None
@@ -18,12 +34,19 @@ class PollywogMagics(Magics):
     @argument('command', choices=['on', 'off', 'status'], help='Enable/disable autodownload')
     def pollywog(self, line):
         """
-        Pollywog magic commands.
+        Pollywog magic commands for Jupyter notebooks.
+        
+        This magic command provides utilities for working with pollywog in
+        notebook environments, especially JupyterLite.
         
         Usage:
-        %pollywog autodownload on   - Enable automatic downloads
-        %pollywog autodownload off  - Disable automatic downloads  
-        %pollywog autodownload status - Show current status
+            %pollywog autodownload on     - Enable automatic .lfcalc downloads in JupyterLite
+            %pollywog autodownload off    - Disable automatic downloads  
+            %pollywog autodownload status - Show current autodownload status
+        
+        When autodownload is enabled in JupyterLite, calling CalcSet.to_lfcalc()
+        will automatically trigger a browser download instead of writing to the
+        file system.
         """
         args = line.strip().split()
         
@@ -84,11 +107,27 @@ class PollywogMagics(Magics):
 
 
 def load_ipython_extension(ipython):
-    """Load the extension in IPython."""
+    """
+    Load the pollywog IPython extension.
+    
+    This function is called by IPython when the extension is loaded via
+    %load_ext pollywog.magics.
+    
+    Args:
+        ipython: IPython shell instance.
+    """
     ipython.register_magic_function(PollywogMagics(ipython).pollywog, 'line', 'pollywog')
     
 
 def unload_ipython_extension(ipython):
-    """Unload the extension from IPython."""
+    """
+    Unload the pollywog IPython extension.
+    
+    This function is called by IPython when the extension is unloaded via
+    %unload_ext pollywog.magics.
+    
+    Args:
+        ipython: IPython shell instance.
+    """
     # Clean up if needed
     pass

@@ -49,14 +49,18 @@ class CalcSet:
     def __init__(self, items: list["Item"]):
         """
         Initialize a CalcSet with a list of items.
+        
         Args:
-            items (list): List of calculation items (Number, Category, Filter, If, etc.)
+            items (list): List of calculation items (Number, Category, Variable, Filter, If, etc.).
         """
         self.items = ensure_list(items)
 
     def copy(self) -> "CalcSet":
         """
         Return a deep copy of the CalcSet and its items.
+        
+        Returns:
+            CalcSet: A new CalcSet instance with all items copied.
         """
         return CalcSet([item.copy() for item in self.items])
 
@@ -129,9 +133,24 @@ class CalcSet:
     def topological_sort(self) -> "CalcSet":
         """
         Return a new CalcSet with items sorted topologically by dependencies.
-
-        This is useful for ensuring calculations are ordered so that dependencies are resolved before use.
-        Raises ValueError if cyclic dependencies are detected.
+        
+        This method analyzes variable dependencies and reorders items so that each
+        calculation appears after all the calculations it depends on. This ensures
+        calculations can be evaluated in the correct order.
+        
+        Returns:
+            CalcSet: New CalcSet with topologically sorted items.
+        
+        Raises:
+            ValueError: If cyclic dependencies are detected (e.g., A depends on B and B depends on A).
+        
+        Example:
+            >>> cs = CalcSet([
+            ...     Number(name="result", children=["[intermediate] * 2"]),
+            ...     Number(name="intermediate", children=["[input] + 1"])
+            ... ])
+            >>> sorted_cs = cs.topological_sort()
+            # Now 'intermediate' will come before 'result'
         """
         items_by_name = {
             item.name: item for item in self.items if hasattr(item, "name")
@@ -239,10 +258,14 @@ class CalcSet:
 
     def _write_to_file(self, file: Any, sort_items: bool) -> None:
         """
-        Write the CalcSet to a file in Leapfrog format.
+        Write the CalcSet to a file in Leapfrog binary format.
+        
+        This internal method writes the CalcSet as compressed JSON data with
+        a Leapfrog-specific header for .lfcalc files.
+        
         Args:
             file (file-like): File object to write to.
-            sort_items (bool): Whether to sort items by type.
+            sort_items (bool): Whether to sort items by type (variable, calculation, filter).
         """
         compressed_data = zlib.compress(
             self.to_json(sort_items=sort_items).encode("utf-8")
@@ -270,11 +293,16 @@ class CalcSet:
     @staticmethod
     def _read_from_file(file: Any) -> "CalcSet":
         """
-        Read a CalcSet from a file object.
+        Read a CalcSet from a Leapfrog binary file object.
+        
+        This internal method reads compressed JSON data from a .lfcalc file,
+        decompresses it, and reconstructs the CalcSet.
+        
         Args:
             file (file-like): File object to read from.
+        
         Returns:
-            CalcSet: Instance of CalcSet.
+            CalcSet: Reconstructed CalcSet instance.
         """
         file.seek(len(HEADER))
         compressed_data = file.read()
@@ -426,11 +454,12 @@ class Item:
     ):
         """
         Initialize an Item.
+        
         Args:
-            name (str): Name of the item.
-            children (list): List of child expressions/statements.
-            comment_item (str): Comment for the item.
-            comment_equation (str): Comment for the equation.
+            name (str): Name of the item (e.g., variable name or calculation name).
+            children (list, optional): List of child expressions/statements. Defaults to empty list.
+            comment_item (str): Comment describing the item itself. Defaults to empty string.
+            comment_equation (str): Comment describing the equation/logic. Defaults to empty string.
         """
         self.name = name
         if children is None:
@@ -504,6 +533,9 @@ class Item:
     def copy(self) -> "Item":
         """
         Return a deep copy of the Item.
+        
+        Returns:
+            Item: A new Item instance with all attributes copied.
         """
         return type(self)(
             name=self.name,
@@ -585,10 +617,11 @@ class IfRow:
 
     def __init__(self, condition: List[Any], value: List[Any]):
         """
-        Initialize an IfRow.
+        Initialize an IfRow (a single row in an If block).
+        
         Args:
-            condition (list): Condition expressions.
-            value (list): Value expressions if condition is met.
+            condition (list): Condition expressions that must evaluate to True for this row to execute.
+            value (list): Value expressions to return if the condition is met.
         """
         self.condition = condition
         self.value = value
@@ -637,6 +670,9 @@ class IfRow:
     def copy(self) -> "IfRow":
         """
         Return a deep copy of the IfRow.
+        
+        Returns:
+            IfRow: A new IfRow instance with copied condition and value expressions.
         """
         return IfRow(
             condition=[c.copy() if hasattr(c, "copy") else c for c in self.condition],
@@ -765,6 +801,9 @@ class If:
     def copy(self) -> "If":
         """
         Return a deep copy of the If expression.
+        
+        Returns:
+            If: A new If instance with copied rows and otherwise expressions.
         """
         return If(
             rows=[r.copy() if hasattr(r, "copy") else r for r in self.rows],
@@ -775,8 +814,13 @@ class If:
 class Number(Item):
     """
     Represents a numeric calculation item in a CalcSet.
-
-    Used for variables whose values are numbers, either integers or floats.
+    
+    Used for calculations whose values are numbers, either integers or floats.
+    This is the most common type of calculation in Leapfrog calculation sets.
+    
+    Example:
+        >>> from pollywog.core import Number
+        >>> au_calc = Number(name="Au_adjusted", children=["[Au] * 0.95"])
     """
 
     item_type = "calculation"
@@ -785,9 +829,17 @@ class Number(Item):
 
 class Category(Item):
     """
-    Represents a categorical calculation item in a CalcSet.
-
-    Used for variables whose values are categories, represented as strings.
+    Represents a categorical (string) calculation item in a CalcSet.
+    
+    Used for calculations whose values are categories or text labels.
+    Commonly used for classification, domain assignment, or text manipulation.
+    
+    Example:
+        >>> from pollywog.core import Category, If
+        >>> grade_class = Category(
+        ...     name="grade_class",
+        ...     children=[If("[Au] > 1", "High", "Low")]
+        ... )
     """
 
     item_type = "calculation"
@@ -797,8 +849,14 @@ class Category(Item):
 class Variable(Item):
     """
     Represents a variable item in a calculation set.
-
-    Used for declaring variables that may be referenced by other calculations.
+    
+    Variables can perform calculations but are not available outside the scope
+    of the calculation set. They are typically used as parameters or intermediate
+    values that are referenced by other calculations.
+    
+    Example:
+        >>> from pollywog.core import Variable
+        >>> au_var = Variable(name="Au", comment_item="Gold grade from drillhole database")
     """
 
     item_type = "variable"
@@ -807,8 +865,13 @@ class Variable(Item):
 class Filter(Item):
     """
     Represents a filter item in a calculation set.
-
-    Used for defining filters that restrict or modify calculation results.
+    
+    Filters define conditions that restrict or modify which data is included
+    in calculations. They evaluate to boolean values.
+    
+    Example:
+        >>> from pollywog.core import Filter
+        >>> ore_filter = Filter(name="is_ore", children=["[Au] > 0.5"])
     """
 
     item_type = "filter"
