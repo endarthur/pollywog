@@ -3,6 +3,23 @@ Best Practices
 
 This guide provides recommendations for effectively using pollywog in production geological modeling and resource estimation workflows.
 
+.. tip::
+   **Quick Checklist**
+   
+   ✅ Use version control (Git) for all scripts
+   
+   ✅ Add comments and docstrings to your code
+   
+   ✅ Test calculations on small datasets first
+   
+   ✅ Use configuration files for parameters
+   
+   ✅ Follow consistent naming conventions
+   
+   ✅ Validate results against known values
+   
+   ✅ Document assumptions and data sources
+
 Code Organization
 -----------------
 

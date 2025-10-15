@@ -3,6 +3,13 @@ Helper Functions Guide
 
 Pollywog provides a collection of helper functions to simplify common calculation patterns. These functions generate properly formatted ``Number`` or ``Category`` objects that you can include in your ``CalcSet``.
 
+.. image:: _static/helper_decision_tree.png
+   :alt: Helper Function Decision Tree
+   :align: center
+   :width: 100%
+
+|
+
 Why Use Helpers?
 ----------------
 

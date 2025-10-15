@@ -4,8 +4,15 @@ Tutorials
 
 This section provides step-by-step tutorials demonstrating complete workflows using pollywog. Each tutorial builds on the previous one, progressing from basic concepts to advanced techniques.
 
+.. image:: _static/estimation_workflow.png
+   :alt: Complete Estimation Workflow
+   :align: center
+   :width: 60%
+
+|
+
 .. note::
-    Many of these tutorials are also available as Jupyter notebooks in the `examples/ <https://github.com/endarthur/pollywog/tree/main/examples>`_ folder.
+    Many of these tutorials are also available as Jupyter notebooks in the `examples/ <https://github.com/endarthur/pollywog/tree/main/examples>`_ folder. Try them interactively in your browser at `JupyterLite <https://endarthur.github.io/pollyweb>`_!
 
 Tutorial Overview
 -----------------
