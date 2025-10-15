@@ -187,8 +187,9 @@ Step 4: Export to Leapfrog
     calcset.to_lfcalc("my_calculations.lfcalc")
     
     print(f"Exported {len(calcset.items)} calculations")
-        .. note::
-            In JupyterLite and Jupyter Notebooks, Pollywog provides an extension that makes a download button appear below the cell when you export with `to_lfcalc`. To enable this feature, first run ``%load_ext pollywog.magics`` in a cell, then ``%pollywog autodownload on``. When you export, simply click the button to save the file to your computer.
+
+.. note::
+    In JupyterLite and Jupyter Notebooks, Pollywog provides an extension that makes a download button appear below the cell when you export with ``to_lfcalc``. To enable this feature, first run ``%load_ext pollywog.magics`` in a cell, then ``%pollywog autodownload on``. When you export, simply click the button to save the file to your computer.
 
 Step 5: Use in Leapfrog
 ~~~~~~~~~~~~~~~~~~~~~~~~
