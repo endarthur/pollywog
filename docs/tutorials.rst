@@ -68,8 +68,8 @@ Calculate the final grade as a weighted sum of domain grades, normalized by the 
     # Using WeightedAverage helper
     postprocess_helper = CalcSet([
         *[WeightedAverage(
-            values=[f"[{v}_{d}]" for d in domains],
-            weights=[f"[prop_{d}]" for d in domains],
+            variables=[f"{v}_{d}" for d in domains],
+            weights=[f"prop_{d}" for d in domains],
             name=f"{v}_final_weighted"
         ) for v in variables],
     ])
@@ -143,20 +143,23 @@ Pollywog provides several helpers to simplify common calculation patterns. Here 
     from pollywog.helpers import Sum, Product, Normalize, Scale, IfElse, CategoryFromThresholds
 
     # Sum: Add several variables together
-    sum_example = Sum(["[Au_final]", "[Ag_final]", "[Cu_final]"], name="Total_Metals")
+    sum_example = Sum("Au_final", "Ag_final", "Cu_final", name="Total_Metals")
 
     # Product: Multiply variables (e.g., grade * recovery)
-    product_example = Product(["[Au_final]", "[Au_recovery]"], name="Au_payable")
-
-    # Normalize: Normalize proportions so they sum to 1
-    normalize_example = Normalize(["[prop_high]", "[prop_medium]", "[prop_low]"], name="DomainProportionsNorm")
+    product_example = Product("Au_final", "Au_recovery", name="Au_payable")
 
     # Scale: Apply a scaling factor to a variable
-    scale_example = Scale("[Au_final]", 0.95, name="Au_final_scaled")
+    scale_example = Scale("Au_final", 0.95, name="Au_final_scaled")
+
+    # Note: For normalizing proportions to sum to 1, use manual calculation:
+    # normalize_example = Number(
+    #     name="prop_high_norm",
+    #     children=["[prop_high] / ([prop_high] + [prop_medium] + [prop_low])"]
+    # )
 
     # CategoryFromThresholds: Categorize based on thresholds
     cat_example = CategoryFromThresholds(
-        value="[Au_final]",
+        variable="Au_final",
         thresholds=[0.3, 1.0],
         categories=["Low", "Medium", "High"],
         name="AuCategory"
@@ -166,7 +169,6 @@ Pollywog provides several helpers to simplify common calculation patterns. Here 
     helpers_calcset = CalcSet([
         sum_example,
         product_example,
-        normalize_example,
         scale_example,
         cat_example,
     ])
