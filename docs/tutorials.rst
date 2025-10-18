@@ -141,16 +141,16 @@ Pollywog provides several helpers to simplify common calculation patterns. Here 
 
 .. code-block:: python
 
-    from pollywog.helpers import Sum, Product, Normalize, Scale, IfElse, CategoryFromThresholds
+    from pollywog.helpers import Sum, Product, Scale, CategoryFromThresholds
 
-    # Sum: Add several variables together
-    sum_example = Sum("Au_final", "Ag_final", "Cu_final", name="Total_Metals")
+    # Sum: Combine multiple Au estimates for validation
+    sum_example = Sum(["Au_kriging", "Au_idw", "Au_nn"], name="Au_estimates_total")
 
-    # Product: Multiply variables (e.g., grade * recovery)
-    product_example = Product("Au_final", "Au_recovery", name="Au_payable")
+    # Product: Calculate recovered gold (grade × recovery)
+    product_example = Product(["Au_final", "Au_recovery"], name="Au_payable")
 
-    # Scale: Apply a scaling factor to a variable
-    scale_example = Scale("Au_final", 0.95, name="Au_final_scaled")
+    # Scale: Apply dilution factor
+    scale_example = Scale("Au_final", 0.95, name="Au_diluted")
 
     # Note: For normalizing proportions to sum to 1, use manual calculation:
     # normalize_example = Number(
@@ -158,12 +158,12 @@ Pollywog provides several helpers to simplify common calculation patterns. Here 
     #     children=["[prop_high] / ([prop_high] + [prop_medium] + [prop_low])"]
     # )
 
-    # CategoryFromThresholds: Categorize based on thresholds
+    # CategoryFromThresholds: Categorize based on grade thresholds
     cat_example = CategoryFromThresholds(
         variable="Au_final",
         thresholds=[0.3, 1.0],
-        categories=["Low", "Medium", "High"],
-        name="AuCategory"
+        categories=["Low_Grade", "Medium_Grade", "High_Grade"],
+        name="Au_OreClass"
     )
 
     # Add these to a CalcSet and export

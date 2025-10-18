@@ -282,21 +282,21 @@ Pollywog provides helper functions to simplify common patterns:
     from pollywog.core import CalcSet
     
     helpers_example = CalcSet([
-        # Sum multiple variables
-        Sum("Au", "Ag", "Cu", name="total_metals"),
+        # Sum multiple Au assays from different labs/methods
+        Sum(["Au_fire_assay", "Au_screen_assay", "Au_leach"], name="Au_total"),
         
-        # Multiply variables
-        Product("grade", "tonnage", name="metal_content"),
+        # Calculate tonnage: volume × density
+        Product(["block_volume", "density"], name="tonnage"),
         
-        # Scale by a factor
+        # Apply dilution factor
         Scale("Au", 0.95, name="Au_diluted"),
         
-        # Categorize by thresholds
+        # Categorize by grade thresholds
         CategoryFromThresholds(
             variable="Au",
             thresholds=[0.5, 2.0],
-            categories=["low", "medium", "high"],
-            name="grade_class"
+            categories=["low_grade", "medium_grade", "high_grade"],
+            name="ore_class"
         ),
     ])
     

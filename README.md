@@ -180,7 +180,7 @@ calcset.to_lfcalc("drillhole_preprocessing.lfcalc")
 Helpers can return either complete calculations or just expressions for composition:
 
 ```python
-from pollywog.helpers import WeightedAverage, Sum, CategoryFromThresholds
+from pollywog.helpers import WeightedAverage, Product, CategoryFromThresholds
 from pollywog.core import CalcSet, Number
 
 calcset = CalcSet([
@@ -192,21 +192,30 @@ calcset = CalcSet([
         comment="Domain-weighted gold grade"
     ),
     
-    # With name: Standalone calculation
-    Sum(["Au", "Ag", "Cu"], name="total_metals"),
-    
-    # Without name: Returns expression for composition
+    # Calculate gold equivalent (Ag and Cu converted to Au)
     Number(
-        name="total_value",
-        children=[f"{Sum(['Au', 'Ag', 'Cu'])} * [metal_price] * [recovery]"]
+        name="AuEq",
+        children=["[Au_composite] + ([Ag_composite] * 0.011) + ([Cu_composite] * 1.5)"],
+        comment_equation="Gold equivalent grade (Ag/91, Cu*1.5 for price ratio)"
     ),
     
-    # Classify by thresholds
+    # Without name: Returns expression for composition
+    # Calculate net smelter return (NSR) per tonne
+    Number(
+        name="NSR_per_tonne",
+        children=[
+            f"{Product(['Au_composite', '1800', '0.88'])} + "  # Au: price $1800/oz, 88% recovery
+            f"{Product(['Ag_composite', '22', '0.75'])} + "    # Ag: price $22/oz, 75% recovery  
+            f"{Product(['Cu_composite', '3.5', '0.85'])}"      # Cu: price $3.5/lb, 85% recovery
+        ]
+    ),
+    
+    # Classify by gold equivalent grade
     CategoryFromThresholds(
-        variable="Au_composite",
+        variable="AuEq",
         thresholds=[0.5, 2.0],
-        categories=["low", "medium", "high"],
-        name="grade_class"
+        categories=["waste", "low_grade", "high_grade"],
+        name="ore_class"
     ),
 ])
 

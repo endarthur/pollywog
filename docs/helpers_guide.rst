@@ -8,7 +8,7 @@ Why Use Helpers?
 
 Helper functions offer several advantages:
 
-1. **Readability**: ``Sum(["Au", "Ag", "Cu"])`` is clearer than manually writing the expression
+1. **Readability**: ``Sum(["Au_assay1", "Au_assay2", "Au_assay3"])`` is clearer than manually writing the expression
 2. **Consistency**: Helpers ensure correct syntax and parentheses
 3. **Error Prevention**: Reduce mistakes in complex expressions
 4. **Maintainability**: Easier to update and refactor calculations
@@ -37,16 +37,18 @@ This flexibility allows you to use helpers both for simple standalone calculatio
     from pollywog.core import Number
     
     # Mode 1: Complete calculation (with name)
-    total = Sum(["Au", "Ag", "Cu"], name="total_metals")
+    # Example: Average of multiple assay results
+    avg_Au = Sum(["Au_lab1", "Au_lab2", "Au_lab3"], name="Au_total_for_avg")
     # Returns a Number object ready for CalcSet
     
     # Mode 2: Expression only (without name)  
-    sum_expr = Sum(["Au", "Ag", "Cu"])
-    # Returns: "([Au] + [Ag] + [Cu])"
+    # Example: Calculate block volume
+    volume_expr = Product(["block_x", "block_y", "block_z"])
+    # Returns: "([block_x] * [block_y] * [block_z])"
     # Use this in more complex expressions:
-    complex_calc = Number(
-        name="metal_value",
-        children=[f"{sum_expr} * [price] * [recovery]"]
+    tonnage_calc = Number(
+        name="tonnage",
+        children=[f"{volume_expr} * [density]"]
     )
 
 **When to use each mode:**
@@ -67,18 +69,18 @@ Add multiple variables together.
     from pollywog.helpers import Sum
     
     # With name: Returns a Number
-    total = Sum(["Au", "Ag", "Cu"], name="total_metals")
-    # Generates: Number(name="total_metals", children=["([Au] + [Ag] + [Cu])"])
+    total = Sum(["Au_assay1", "Au_assay2", "Au_assay3"], name="Au_composite")
+    # Generates: Number(name="Au_composite", children=["([Au_assay1] + [Au_assay2] + [Au_assay3])"])
     
     # Without name: Returns expression string
-    sum_expr = Sum(["Au", "Ag", "Cu"])
-    # Returns: "([Au] + [Ag] + [Cu])"
+    sum_expr = Sum(["length", "width", "height"])
+    # Returns: "([length] + [width] + [height])"
     
     # Use expression in complex logic
     from pollywog.core import Number
     value_calc = Number(
-        name="total_metal_value",
-        children=[f"{sum_expr} * [metal_price]"]
+        name="total_dimension",
+        children=[f"{sum_expr} * [scale_factor]"]
     )
 
 **Parameters:**
@@ -403,8 +405,10 @@ Example comparing both approaches:
     
     # Using helpers with name (returns Number)
     helper_approach = CalcSet([
-        Sum(["Au", "Ag", "Cu"], name="total_metals"),
-        Product(["grade", "tonnage"], name="metal_tonnes"),
+        # Sum multiple Au assays for composite
+        Sum(["Au_north", "Au_south", "Au_center"], name="Au_total"),
+        # Calculate block tonnage
+        Product(["block_volume", "density"], name="tonnage"),
     ])
     
     # Using manual expressions (needed for complex logic)
@@ -415,14 +419,16 @@ Example comparing both approaches:
     ])
     
     # Combining helpers without name for complex expressions
-    from pollywog.helpers import WeightedAverage
+    from pollywog.helpers import WeightedAverage, Product
     mixed_approach = CalcSet([
-        Sum(["Au", "Ag"], name="precious"),  # Simple standalone calc
+        # Simple standalone: average multiple Au estimates
+        Sum(["Au_kriging", "Au_idw", "Au_nn"], name="Au_sum_for_avg"),
+        # Complex: Calculate NSR using helper composition
         Number(
-            name="adjusted_value", 
+            name="NSR_Au", 
             children=[
-                # Use helper expression inside manual Number
-                f"{Sum(['Au', 'Ag', 'Cu'])} * [adjustment_factor] * clamp([recovery], 0, 1)"
+                # Gold revenue: grade * price * recovery * conversion
+                f"{Product(['Au_composite', '31.1035'])} * [Au_price_per_oz] * [Au_recovery]"
             ]
         ),
     ])
@@ -442,29 +448,28 @@ Nested Helper Expressions
     
     # Build complex expression from helper building blocks
     calcset = CalcSet([
-        # Average of sums - helpers without name return expressions
+        # Calculate total block dimensions for geometric checks
         Number(
-            name="avg_total_by_domain",
+            name="total_block_dimension",
             children=[
-                f"({Sum(['Au_oxide', 'Ag_oxide', 'Cu_oxide'])} + "
-                f"{Sum(['Au_sulfide', 'Ag_sulfide', 'Cu_sulfide'])}) / 2"
+                f"({Sum(['block_x', 'block_y', 'block_z'])})"
             ]
         ),
         
-        # Product of averages
+        # Average of multiple Au estimates times tonnage
         Number(
-            name="composite_value",
+            name="Au_metal_content",
             children=[
-                f"{Average(['Au_est1', 'Au_est2', 'Au_est3'])} * "
-                f"{Average(['recovery1', 'recovery2'])}"
+                f"{Average(['Au_kriging', 'Au_idw', 'Au_nn'])} * "
+                f"{Product(['block_volume', 'density'])}"
             ]
         ),
         
-        # Weighted average inside conditional
+        # Weighted average grade with clamping for safety
         Number(
-            name="conditional_weighted",
+            name="Au_composite_safe",
             children=[
-                f"clamp({WeightedAverage(['grade1', 'grade2'], [0.6, 0.4])}, 0, 10)"
+                f"clamp({WeightedAverage(['Au_oxide', 'Au_sulfide'], ['prop_oxide', 'prop_sulfide'])}, 0, 100)"
             ]
         ),
     ])
@@ -475,31 +480,31 @@ Using Helper Expressions in Conditional Logic
 .. code-block:: python
 
     from pollywog.core import Number, If, CalcSet
-    from pollywog.helpers import Sum, Product, CategoryFromThresholds
+    from pollywog.helpers import Product, CategoryFromThresholds
     
     # Use helper expressions in If conditions
-    total_metals_expr = Sum(["Au", "Ag", "Cu", "Pb", "Zn"])
-    
+    # Example: Adjust dilution based on Au grade
     calcset = CalcSet([
         Number(
             name="dilution_factor",
             children=[
                 If([
-                    (f"{total_metals_expr} > 5", "1.05"),
-                    (f"{total_metals_expr} > 2", "1.10"),
-                ], otherwise=["1.15"])
+                    ("[Au_composite] > 5", "1.05"),  # High grade: 5% dilution
+                    ("[Au_composite] > 2", "1.10"),  # Medium grade: 10% dilution
+                ], otherwise=["1.15"])  # Low grade: 15% dilution
             ]
         ),
         
-        # CategoryFromThresholds without name returns If block
-        # Can be wrapped in Category for different name/comment
+        # Calculate metal content with grade-dependent recovery
         Number(
-            name="grade_multiplier",
+            name="Au_recovered_oz",
             children=[
                 If([
-                    ("[ore_class] = 'high_grade'", "1.2"),
-                    ("[ore_class] = 'medium_grade'", "1.0"),
-                ], otherwise=["0.8"])
+                    ("[Au_composite] > 3", 
+                     f"{Product(['Au_composite', '31.1035', 'tonnage', '0.92'])}"),  # High grade: 92% recovery
+                    ("[Au_composite] > 1", 
+                     f"{Product(['Au_composite', '31.1035', 'tonnage', '0.88'])}"),  # Medium: 88% recovery
+                ], otherwise=[f"{Product(['Au_composite', '31.1035', 'tonnage', '0.82'])}"])  # Low: 82% recovery
             ]
         ),
     ])
@@ -527,17 +532,7 @@ Real-World Example: Multi-Metal Resource Model
             )
         )
     
-    # Step 2: Total metal value using expression composition
-    # Build sum expression without name, use in complex calc
-    metal_sum_expr = Sum([f"{m}_composite" for m in metals])
-    calculations.append(
-        Number(
-            name="total_metal_grade",
-            children=[f"{metal_sum_expr} * [grade_adjustment]"]
-        )
-    )
-    
-    # Step 3: Revenue calculation with nested helpers
+    # Step 2: Revenue calculation with nested helpers - each metal priced individually
     prices = {"Au": 1800, "Ag": 22, "Cu": 3.5, "Pb": 0.9, "Zn": 1.2}
     recoveries = {"Au": 0.88, "Ag": 0.75, "Cu": 0.85, "Pb": 0.80, "Zn": 0.82}
     
