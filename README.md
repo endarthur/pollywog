@@ -59,6 +59,7 @@ If you work with [Leapfrog](https://www.seequent.com/products-solutions/leapfrog
 - **Mathematical operations**: `Sum`, `Product`, `Average`, `WeightedAverage`
 - **Transformations**: `Scale`, `Normalize`
 - **Classification**: `CategoryFromThresholds`
+- **Dual mode**: Return complete calculations (with `name`) or expressions (without `name`) for composition
 
 ### 🤖 Machine Learning Integration
 - Convert **scikit-learn decision trees** to Leapfrog calculations
@@ -176,12 +177,14 @@ calcset.to_lfcalc("drillhole_preprocessing.lfcalc")
 
 ### 3. Using Helper Functions
 
+Helpers can return either complete calculations or just expressions for composition:
+
 ```python
 from pollywog.helpers import WeightedAverage, Sum, CategoryFromThresholds
-from pollywog.core import CalcSet
+from pollywog.core import CalcSet, Number
 
 calcset = CalcSet([
-    # Domain-weighted grades
+    # With name: Returns complete Number object
     WeightedAverage(
         variables=["Au_oxide", "Au_sulfide", "Au_transition"],
         weights=["prop_oxide", "prop_sulfide", "prop_transition"],
@@ -189,8 +192,14 @@ calcset = CalcSet([
         comment="Domain-weighted gold grade"
     ),
     
-    # Sum metals
-    Sum("Au", "Ag", "Cu", name="total_metals"),
+    # With name: Standalone calculation
+    Sum(["Au", "Ag", "Cu"], name="total_metals"),
+    
+    # Without name: Returns expression for composition
+    Number(
+        name="total_value",
+        children=[f"{Sum(['Au', 'Ag', 'Cu'])} * [metal_price] * [recovery]"]
+    ),
     
     # Classify by thresholds
     CategoryFromThresholds(

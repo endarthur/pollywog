@@ -1,24 +1,58 @@
 Helper Functions Guide
 ======================
 
-Pollywog provides a collection of helper functions to simplify common calculation patterns. These functions generate properly formatted ``Number`` or ``Category`` objects that you can include in your ``CalcSet``.
+Pollywog provides a collection of helper functions to simplify common calculation patterns. These functions can generate either complete ``Number`` or ``Category`` objects for your ``CalcSet``, or return just the expression/logic for use in more complex calculations.
 
 Why Use Helpers?
 ----------------
 
 Helper functions offer several advantages:
 
-1. **Readability**: ``Sum("Au", "Ag", "Cu")`` is clearer than manually writing the expression
+1. **Readability**: ``Sum(["Au", "Ag", "Cu"])`` is clearer than manually writing the expression
 2. **Consistency**: Helpers ensure correct syntax and parentheses
 3. **Error Prevention**: Reduce mistakes in complex expressions
 4. **Maintainability**: Easier to update and refactor calculations
 5. **Self-Documentation**: Helper names clearly indicate intent
+6. **Flexibility**: Can return either complete calculations or just expressions for composition
 
 All helper functions are available from the ``pollywog.helpers`` module:
 
 .. code-block:: python
 
     from pollywog.helpers import Sum, Product, Average, WeightedAverage, Scale, Normalize, CategoryFromThresholds
+
+How Helpers Work: Two Modes
+----------------------------
+
+**All helper functions have two modes of operation:**
+
+1. **With ``name`` parameter**: Returns a complete ``Number`` or ``Category`` object ready to add to a ``CalcSet``
+2. **Without ``name`` parameter**: Returns just the expression (string) or logic (If block) for use in more complex calculations
+
+This flexibility allows you to use helpers both for simple standalone calculations and as building blocks for more complex logic.
+
+.. code-block:: python
+
+    from pollywog.helpers import Sum, Product
+    from pollywog.core import Number
+    
+    # Mode 1: Complete calculation (with name)
+    total = Sum(["Au", "Ag", "Cu"], name="total_metals")
+    # Returns a Number object ready for CalcSet
+    
+    # Mode 2: Expression only (without name)  
+    sum_expr = Sum(["Au", "Ag", "Cu"])
+    # Returns: "([Au] + [Ag] + [Cu])"
+    # Use this in more complex expressions:
+    complex_calc = Number(
+        name="metal_value",
+        children=[f"{sum_expr} * [price] * [recovery]"]
+    )
+
+**When to use each mode:**
+
+- **With name**: Simple, standalone calculations
+- **Without name**: Building blocks for complex logic, nested expressions, or conditional calculations
 
 Mathematical Helpers
 --------------------
@@ -32,25 +66,28 @@ Add multiple variables together.
 
     from pollywog.helpers import Sum
     
-    # Sum of multiple metals
-    total = Sum("Au", "Ag", "Cu", name="total_metals")
-    # Generates: ([Au] + [Ag] + [Cu])
+    # With name: Returns a Number
+    total = Sum(["Au", "Ag", "Cu"], name="total_metals")
+    # Generates: Number(name="total_metals", children=["([Au] + [Ag] + [Cu])"])
     
-    # Can also pass a list
-    metals = ["Au", "Ag", "Cu", "Pb", "Zn"]
-    total_all = Sum(metals, name="total_all_metals")
+    # Without name: Returns expression string
+    sum_expr = Sum(["Au", "Ag", "Cu"])
+    # Returns: "([Au] + [Ag] + [Cu])"
     
-    # Custom comment
-    with_comment = Sum("Au", "Ag", name="precious_metals", 
-                       comment="Combined precious metals")
+    # Use expression in complex logic
+    from pollywog.core import Number
+    value_calc = Number(
+        name="total_metal_value",
+        children=[f"{sum_expr} * [metal_price]"]
+    )
 
 **Parameters:**
 
-- ``*variables``: Variable names as strings, or a single list of variable names
-- ``name`` (optional): Name for output variable (default: ``sum_<var1>_<var2>_...``)
+- ``variables``: List of variable names as strings
+- ``name`` (optional): Name for output variable. If None, returns expression string
 - ``comment`` (optional): Custom comment for the calculation
 
-**Returns:** ``Number`` object
+**Returns:** ``Number`` object when name is provided, or expression string when name is None
 
 Product
 ~~~~~~~
@@ -61,20 +98,28 @@ Multiply multiple variables together.
 
     from pollywog.helpers import Product
     
-    # Grade times recovery times tonnage
-    payable = Product("grade", "recovery", "tonnes", name="payable_metal")
-    # Generates: ([grade] * [recovery] * [tonnes])
+    # With name: Returns a Number
+    payable = Product(["grade", "recovery", "tonnes"], name="payable_metal")
+    # Generates: Number(name="payable_metal", children=["([grade] * [recovery] * [tonnes])"])
     
-    # Area calculation
-    area = Product("length", "width", name="block_area")
+    # Without name: Returns expression string
+    prod_expr = Product(["grade", "recovery"])
+    # Returns: "([grade] * [recovery])"
+    
+    # Use in complex calculation
+    from pollywog.core import Number
+    metal_value = Number(
+        name="metal_value_usd",
+        children=[f"{prod_expr} * [tonnes] * [price_per_oz]"]
+    )
 
 **Parameters:**
 
-- ``*variables``: Variable names as strings, or a single list of variable names
-- ``name`` (optional): Name for output variable (default: ``prod_<var1>_<var2>_...``)
+- ``variables``: List of variable names as strings
+- ``name`` (optional): Name for output variable. If None, returns expression string
 - ``comment`` (optional): Custom comment for the calculation
 
-**Returns:** ``Number`` object
+**Returns:** ``Number`` object when name is provided, or expression string when name is None
 
 Average
 ~~~~~~~
@@ -85,21 +130,21 @@ Calculate the arithmetic mean of multiple variables.
 
     from pollywog.helpers import Average
     
-    # Average of multiple estimates
-    avg_grade = Average("Au_kriging", "Au_idw", "Au_nn", name="Au_average")
+    # With name: Returns a Number
+    avg_grade = Average(["Au_kriging", "Au_idw", "Au_nn"], name="Au_average")
     # Generates: ([Au_kriging] + [Au_idw] + [Au_nn]) / 3
     
-    # Average across domains
-    domains = ["oxide", "transition", "sulfide"]
-    avg_domain = Average([f"grade_{d}" for d in domains], name="avg_grade")
+    # Without name: Returns expression string for reuse
+    avg_expr = Average(["est1", "est2", "est3"])
+    # Returns: "([est1] + [est2] + [est3]) / 3"
 
 **Parameters:**
 
-- ``*variables``: Variable names as strings, or a single list of variable names
-- ``name`` (optional): Name for output variable (default: ``avg_<var1>_<var2>_...``)
+- ``variables``: List of variable names as strings
+- ``name`` (optional): Name for output variable. If None, returns expression string
 - ``comment`` (optional): Custom comment for the calculation
 
-**Returns:** ``Number`` object
+**Returns:** ``Number`` object when name is provided, or expression string when name is None
 
 WeightedAverage
 ~~~~~~~~~~~~~~~
@@ -356,10 +401,10 @@ Example comparing both approaches:
     from pollywog.core import CalcSet, Number
     from pollywog.helpers import Sum, Product
     
-    # Using helpers (recommended for simple patterns)
+    # Using helpers with name (returns Number)
     helper_approach = CalcSet([
-        Sum("Au", "Ag", "Cu", name="total_metals"),
-        Product("grade", "tonnage", name="metal_tonnes"),
+        Sum(["Au", "Ag", "Cu"], name="total_metals"),
+        Product(["grade", "tonnage"], name="metal_tonnes"),
     ])
     
     # Using manual expressions (needed for complex logic)
@@ -369,10 +414,154 @@ Example comparing both approaches:
         ]),
     ])
     
-    # Combining both approaches
+    # Combining helpers without name for complex expressions
+    from pollywog.helpers import WeightedAverage
     mixed_approach = CalcSet([
-        Sum("Au", "Ag", name="precious"),  # Helper for simple sum
-        Number(name="adjusted_value", children=[  # Manual for complex expression
+        Sum(["Au", "Ag"], name="precious"),  # Simple standalone calc
+        Number(
+            name="adjusted_value", 
+            children=[
+                # Use helper expression inside manual Number
+                f"{Sum(['Au', 'Ag', 'Cu'])} * [adjustment_factor] * clamp([recovery], 0, 1)"
+            ]
+        ),
+    ])
+
+Advanced Usage: Composing Helpers
+----------------------------------
+
+The real power of helpers returning expressions (when ``name=None``) is the ability to compose them into more complex calculations.
+
+Nested Helper Expressions
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    from pollywog.core import Number, CalcSet
+    from pollywog.helpers import Sum, Product, Average, WeightedAverage
+    
+    # Build complex expression from helper building blocks
+    calcset = CalcSet([
+        # Average of sums - helpers without name return expressions
+        Number(
+            name="avg_total_by_domain",
+            children=[
+                f"({Sum(['Au_oxide', 'Ag_oxide', 'Cu_oxide'])} + "
+                f"{Sum(['Au_sulfide', 'Ag_sulfide', 'Cu_sulfide'])}) / 2"
+            ]
+        ),
+        
+        # Product of averages
+        Number(
+            name="composite_value",
+            children=[
+                f"{Average(['Au_est1', 'Au_est2', 'Au_est3'])} * "
+                f"{Average(['recovery1', 'recovery2'])}"
+            ]
+        ),
+        
+        # Weighted average inside conditional
+        Number(
+            name="conditional_weighted",
+            children=[
+                f"clamp({WeightedAverage(['grade1', 'grade2'], [0.6, 0.4])}, 0, 10)"
+            ]
+        ),
+    ])
+
+Using Helper Expressions in Conditional Logic
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    from pollywog.core import Number, If, CalcSet
+    from pollywog.helpers import Sum, Product, CategoryFromThresholds
+    
+    # Use helper expressions in If conditions
+    total_metals_expr = Sum(["Au", "Ag", "Cu", "Pb", "Zn"])
+    
+    calcset = CalcSet([
+        Number(
+            name="dilution_factor",
+            children=[
+                If([
+                    (f"{total_metals_expr} > 5", "1.05"),
+                    (f"{total_metals_expr} > 2", "1.10"),
+                ], otherwise=["1.15"])
+            ]
+        ),
+        
+        # CategoryFromThresholds without name returns If block
+        # Can be wrapped in Category for different name/comment
+        Number(
+            name="grade_multiplier",
+            children=[
+                If([
+                    ("[ore_class] = 'high_grade'", "1.2"),
+                    ("[ore_class] = 'medium_grade'", "1.0"),
+                ], otherwise=["0.8"])
+            ]
+        ),
+    ])
+
+Real-World Example: Multi-Metal Resource Model
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code-block:: python
+
+    from pollywog.core import CalcSet, Number
+    from pollywog.helpers import WeightedAverage, Sum, Product, Scale
+    
+    metals = ["Au", "Ag", "Cu", "Pb", "Zn"]
+    domains = ["oxide", "transition", "sulfide"]
+    
+    calculations = []
+    
+    # Step 1: Domain-weighted composites (with name)
+    for metal in metals:
+        calculations.append(
+            WeightedAverage(
+                variables=[f"{metal}_{d}" for d in domains],
+                weights=[f"prop_{d}" for d in domains],
+                name=f"{metal}_composite"
+            )
+        )
+    
+    # Step 2: Total metal value using expression composition
+    # Build sum expression without name, use in complex calc
+    metal_sum_expr = Sum([f"{m}_composite" for m in metals])
+    calculations.append(
+        Number(
+            name="total_metal_grade",
+            children=[f"{metal_sum_expr} * [grade_adjustment]"]
+        )
+    )
+    
+    # Step 3: Revenue calculation with nested helpers
+    prices = {"Au": 1800, "Ag": 22, "Cu": 3.5, "Pb": 0.9, "Zn": 1.2}
+    recoveries = {"Au": 0.88, "Ag": 0.75, "Cu": 0.85, "Pb": 0.80, "Zn": 0.82}
+    
+    revenue_terms = []
+    for metal in metals:
+        # Use Scale without name to get expression
+        recovered_expr = Scale(f"{metal}_composite", recoveries[metal])
+        # Use Product without name to get expression  
+        value_expr = Product([recovered_expr, str(prices[metal])])
+        revenue_terms.append(value_expr)
+    
+    # Sum all revenue terms
+    calculations.append(
+        Number(
+            name="total_revenue_per_tonne",
+            children=[Sum(revenue_terms)],
+            comment_equation="Total revenue from all metals after recovery"
+        )
+    )
+    
+    calcset = CalcSet(calculations)
+    calcset.to_lfcalc("complex_resource_model.lfcalc")
+
+This example shows how helpers with ``name=None`` enable building complex calculations while keeping code readable and maintainable.
             "[precious] * clamp([price_ratio], 0, 5) + [premium]"
         ]),
     ])
