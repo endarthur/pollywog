@@ -308,18 +308,6 @@ filtered = calcset.query('len(children) > 1 and "log" in name')
 
 ---
 
-## Legal Disclaimer
-
-**Pollywog is an independent open-source tool** developed to support automation of workflows involving `.lfcalc` files used in Leapfrog software by Seequent.
-
-- ⚠️ **Not affiliated**: Pollywog is not affiliated with, endorsed by, or sponsored by Seequent or Leapfrog
-- ✅ **No reverse engineering**: This tool does not modify Leapfrog or access its source code
-- ✅ **User files only**: Operates exclusively on user-generated `.lfcalc` files
-- 📋 **Review terms**: Users should review Leapfrog's terms of use before integrating into workflows
-- 🛡️ **No liability**: The author is not responsible for misuse that may breach licensing terms
-
----
-
 ## License
 
 MIT License – See [LICENSE](LICENSE) file for details.
@@ -340,6 +328,7 @@ Before contributing, please:
 - Ensure your changes align with the project’s goals
 - Maintain consistent code style
 - Test your modifications whenever possible
+- Though It's ok to use LLMs to help write code or documentation, please review and understand all contributions to ensure quality and accuracy.
 
 Feel free to open an issue if you have questions or suggestions.
 
@@ -359,5 +348,3 @@ Thanks to Debora Roldão for helping with organization of the project, documenta
 - 📖 **Examples**: [examples/](https://github.com/endarthur/pollywog/tree/main/examples) folder
 
 ---
-
-**Made with ❤️ for the geological modeling community**
