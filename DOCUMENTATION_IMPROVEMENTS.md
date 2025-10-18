@@ -5,21 +5,26 @@ This document summarizes the improvements made to the pollywog documentation to 
 
 ## Changes Made
 
-### 1. Visual Elements Added (UPDATED - Simplified)
+### 1. Visual Elements - Image Placeholders Added
 
-#### Diagrams Created (docs/_static/)
-After initial feedback about broken arrows, clipping, and redundancy, the diagrams were completely redesigned:
+**Status:** Commented placeholders added in RST files for future images/diagrams.
 
-- **workflow_diagram.png** - Simple 5-step workflow (Python → CalcSet → .lfcalc → Leapfrog → Results)
-- **use_cases_diagram.png** - 6 key use cases showing WHEN to use pollywog
+After feedback to skip generated diagrams and let the maintainer add images later, the approach was changed:
 
-**Key improvements:**
-- ✅ Reduced from 4 diagrams to 2 focused, non-redundant diagrams
-- ✅ Fixed all arrow rendering issues
-- ✅ Eliminated clipping problems
-- ✅ Each diagram provides unique, actionable value
-- ✅ Clean, professional appearance
-- ✅ Generated programmatically using matplotlib via `docs/_static/generate_diagrams.py`
+- ❌ Removed all generated diagram PNG files
+- ❌ Removed diagram generation script
+- ✅ Added commented `.. image::` placeholders in RST documentation
+- ✅ Maintained IMAGE_TODO.md with detailed instructions
+
+**Placeholders added:**
+1. **docs/index.rst**: Two diagram placeholders (workflow, use cases)
+2. **docs/getting_started.rst**: Two screenshot placeholders (Leapfrog import, Jupyter display)
+3. **docs/tutorials.rst**: Two screenshot placeholders (visualization, query results)
+
+**Instructions:**
+- All placeholders are commented with `.. TODO:` markers
+- To add images: uncomment the `.. image::` directive and place the image file in `docs/_static/`
+- See IMAGE_TODO.md for detailed guidance on what images to create
 
 ### 2. README.md Improvements
 

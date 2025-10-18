@@ -194,6 +194,14 @@ Step 5: Use in Leapfrog
 5. Choose your ``my_calculations.lfcalc`` file
 6. The calculations will appear in your evaluation tree
 
+.. TODO: Add screenshot of Leapfrog import process here
+.. .. image:: _static/leapfrog_import_process.png
+..    :alt: Importing calculations into Leapfrog
+..    :align: center
+..    :width: 80%
+..
+.. |
+
 Common Workflows
 ----------------
 
@@ -315,6 +323,14 @@ This creates an interactive tree view showing:
 - Expressions
 - Dependencies between calculations
 - Comments and metadata
+
+.. TODO: Add screenshot of Jupyter notebook display here
+.. .. image:: _static/jupyter_display_example.png
+..    :alt: Interactive calculation display in Jupyter
+..    :align: center
+..    :width: 90%
+..
+.. |
 
 Reading Existing Files
 ----------------------

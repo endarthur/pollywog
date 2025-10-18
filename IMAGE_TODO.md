@@ -1,22 +1,26 @@
 # Image and Screenshot TODO
 
-This document contains instructions for screenshots and images that should be added to the pollywog documentation to make it more visual and helpful.
+This document contains instructions for screenshots, diagrams, and images that should be added to the pollywog documentation to make it more visual and helpful.
 
-## ✅ Diagrams Included (Generated)
+## Diagrams and Images Needed
 
-The following diagrams have been created and are included in the documentation:
+### Placeholders Added in Documentation
 
-1. **workflow_diagram.png** - Simple, clear 5-step workflow showing: Python Code → Build CalcSet → Export .lfcalc → Import to Leapfrog → Run Calculations
-2. **use_cases_diagram.png** - Shows 6 key use cases radiating from a central "pollywog" hub, helping users understand WHEN to use pollywog
+The following locations in the RST documentation files have commented placeholders where images should be added. After creating the images, simply uncomment the `.. image::` directive and ensure the filename matches:
 
-These diagrams are:
-- Clean and professional
-- Generated programmatically (easy to update)
-- Focused on providing actual value
-- No clipping or broken arrows
-- Simple enough to be helpful without being redundant
+1. **docs/index.rst** (lines ~32-44): Two diagram placeholders
+   - `workflow_diagram.png` - Basic pollywog workflow (Python → CalcSet → .lfcalc → Leapfrog → Results)
+   - `use_cases_diagram.png` - When to use pollywog / value proposition
 
-## Screenshots Needed
+2. **docs/getting_started.rst**:
+   - Line ~196: `leapfrog_import_process.png` - Screenshot of importing .lfcalc into Leapfrog
+   - Line ~320: `jupyter_display_example.png` - Interactive CalcSet display in Jupyter
+
+3. **docs/tutorials.rst**:
+   - Line ~128: `tutorial_visualization_example.png` - CalcSet visualization example
+   - Line ~440: `query_example.png` - Query results showing filtered calculations
+
+## Screenshots and Images to Create
 
 ### 1. Leapfrog Import Process
 **File**: `docs/_static/leapfrog_import_process.png`

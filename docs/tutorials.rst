@@ -125,6 +125,14 @@ You can visualize any CalcSet in Jupyter for inspection.
     display_calcset(postprocess_manual)
     display_calcset(postprocess_helper)
 
+.. TODO: Add screenshot showing calcset visualization in Jupyter
+.. .. image:: _static/tutorial_visualization_example.png
+..    :alt: CalcSet visualization in Jupyter notebook
+..    :align: center
+..    :width: 90%
+..
+.. |
+
 For more advanced notebooks and real data examples, see the ``examples/`` folder in the repository.
 
 Step 6: More Helper Function Examples
@@ -430,6 +438,14 @@ Filter calculations by name or attributes:
     log_calcs = all_calcs.query('"log" in name')
     print(f"Log transforms: {[item.name for item in log_calcs.items]}")
     # Output: ['Au_log', 'Ag_log', 'Cu_log']
+
+.. TODO: Add screenshot showing query results in Jupyter
+.. .. image:: _static/query_example.png
+..    :alt: Query results showing filtered calculations
+..    :align: center
+..    :width: 85%
+..
+.. |
 
 Advanced Queries with External Variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
