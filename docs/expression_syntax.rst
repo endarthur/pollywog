@@ -3,6 +3,11 @@ Leapfrog Expression Syntax Guide
 
 This guide explains the expression syntax used in Leapfrog calculators and how pollywog represents them.
 
+.. seealso::
+   - :doc:`helpers_guide` - Use helper functions instead of manual expressions
+   - :doc:`tutorials` - See complete examples of expression usage
+   - :doc:`workflow_patterns` - Common expression patterns and recipes
+
 Understanding Leapfrog Calculations
 ------------------------------------
 

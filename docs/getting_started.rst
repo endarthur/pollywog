@@ -180,8 +180,9 @@ Step 4: Export to Leapfrog
     calcset.to_lfcalc("my_calculations.lfcalc")
     
     print(f"Exported {len(calcset.items)} calculations")
-        .. note::
-            In JupyterLite and Jupyter Notebooks, Pollywog provides an extension that makes a download button appear below the cell when you export with `to_lfcalc`. To enable this feature, first run ``%load_ext pollywog.magics`` in a cell, then ``%pollywog autodownload on``. When you export, simply click the button to save the file to your computer.
+
+.. note::
+    In JupyterLite and Jupyter Notebooks, Pollywog provides an extension that makes a download button appear below the cell when you export with ``to_lfcalc``. To enable this feature, first run ``%load_ext pollywog.magics`` in a cell, then ``%pollywog autodownload on``. When you export, simply click the button to save the file to your computer.
 
 Step 5: Use in Leapfrog
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -192,6 +193,14 @@ Step 5: Use in Leapfrog
 4. Select "Import" → "From File"
 5. Choose your ``my_calculations.lfcalc`` file
 6. The calculations will appear in your evaluation tree
+
+.. TODO: Add screenshot of Leapfrog import process here
+.. .. image:: _static/leapfrog_import_process.png
+..    :alt: Importing calculations into Leapfrog
+..    :align: center
+..    :width: 80%
+..
+.. |
 
 Common Workflows
 ----------------
@@ -273,21 +282,21 @@ Pollywog provides helper functions to simplify common patterns:
     from pollywog.core import CalcSet
     
     helpers_example = CalcSet([
-        # Sum multiple variables
-        Sum("Au", "Ag", "Cu", name="total_metals"),
+        # Sum multiple Au assays from different labs/methods
+        Sum(["Au_fire_assay", "Au_screen_assay", "Au_leach"], name="Au_total"),
         
-        # Multiply variables
-        Product("grade", "tonnage", name="metal_content"),
+        # Calculate tonnage: volume × density
+        Product(["block_volume", "density"], name="tonnage"),
         
-        # Scale by a factor
+        # Apply dilution factor
         Scale("Au", 0.95, name="Au_diluted"),
         
-        # Categorize by thresholds
+        # Categorize by grade thresholds
         CategoryFromThresholds(
             variable="Au",
             thresholds=[0.5, 2.0],
-            categories=["low", "medium", "high"],
-            name="grade_class"
+            categories=["low_grade", "medium_grade", "high_grade"],
+            name="ore_class"
         ),
     ])
     
@@ -314,6 +323,14 @@ This creates an interactive tree view showing:
 - Expressions
 - Dependencies between calculations
 - Comments and metadata
+
+.. TODO: Add screenshot of Jupyter notebook display here
+.. .. image:: _static/jupyter_display_example.png
+..    :alt: Interactive calculation display in Jupyter
+..    :align: center
+..    :width: 90%
+..
+.. |
 
 Reading Existing Files
 ----------------------

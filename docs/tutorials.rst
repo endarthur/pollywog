@@ -5,7 +5,7 @@ Tutorials
 This section provides step-by-step tutorials demonstrating complete workflows using pollywog. Each tutorial builds on the previous one, progressing from basic concepts to advanced techniques.
 
 .. note::
-    Many of these tutorials are also available as Jupyter notebooks in the `examples/ <https://github.com/endarthur/pollywog/tree/main/examples>`_ folder.
+    Many of these tutorials are also available as Jupyter notebooks in the `examples/ <https://github.com/endarthur/pollywog/tree/main/examples>`_ folder. Try them interactively in your browser at `JupyterLite <https://endarthur.github.io/pollyweb>`_!
 
 Tutorial Overview
 -----------------
@@ -61,8 +61,8 @@ Calculate the final grade as a weighted sum of domain grades, normalized by the 
     # Using WeightedAverage helper
     postprocess_helper = CalcSet([
         *[WeightedAverage(
-            values=[f"[{v}_{d}]" for d in domains],
-            weights=[f"[prop_{d}]" for d in domains],
+            variables=[f"{v}_{d}" for d in domains],
+            weights=[f"prop_{d}" for d in domains],
             name=f"{v}_final_weighted"
         ) for v in variables],
     ])
@@ -125,6 +125,14 @@ You can visualize any CalcSet in Jupyter for inspection.
     display_calcset(postprocess_manual)
     display_calcset(postprocess_helper)
 
+.. TODO: Add screenshot showing calcset visualization in Jupyter
+.. .. image:: _static/tutorial_visualization_example.png
+..    :alt: CalcSet visualization in Jupyter notebook
+..    :align: center
+..    :width: 90%
+..
+.. |
+
 For more advanced notebooks and real data examples, see the ``examples/`` folder in the repository.
 
 Step 6: More Helper Function Examples
@@ -133,33 +141,35 @@ Pollywog provides several helpers to simplify common calculation patterns. Here 
 
 .. code-block:: python
 
-    from pollywog.helpers import Sum, Product, Normalize, Scale, IfElse, CategoryFromThresholds
+    from pollywog.helpers import Sum, Product, Scale, CategoryFromThresholds
 
-    # Sum: Add several variables together
-    sum_example = Sum(["[Au_final]", "[Ag_final]", "[Cu_final]"], name="Total_Metals")
+    # Sum: Combine multiple Au estimates for validation
+    sum_example = Sum(["Au_kriging", "Au_idw", "Au_nn"], name="Au_estimates_total")
 
-    # Product: Multiply variables (e.g., grade * recovery)
-    product_example = Product(["[Au_final]", "[Au_recovery]"], name="Au_payable")
+    # Product: Calculate recovered gold (grade × recovery)
+    product_example = Product(["Au_final", "Au_recovery"], name="Au_payable")
 
-    # Normalize: Normalize proportions so they sum to 1
-    normalize_example = Normalize(["[prop_high]", "[prop_medium]", "[prop_low]"], name="DomainProportionsNorm")
+    # Scale: Apply dilution factor
+    scale_example = Scale("Au_final", 0.95, name="Au_diluted")
 
-    # Scale: Apply a scaling factor to a variable
-    scale_example = Scale("[Au_final]", 0.95, name="Au_final_scaled")
+    # Note: For normalizing proportions to sum to 1, use manual calculation:
+    # normalize_example = Number(
+    #     name="prop_high_norm",
+    #     children=["[prop_high] / ([prop_high] + [prop_medium] + [prop_low])"]
+    # )
 
-    # CategoryFromThresholds: Categorize based on thresholds
+    # CategoryFromThresholds: Categorize based on grade thresholds
     cat_example = CategoryFromThresholds(
-        value="[Au_final]",
+        variable="Au_final",
         thresholds=[0.3, 1.0],
-        categories=["Low", "Medium", "High"],
-        name="AuCategory"
+        categories=["Low_Grade", "Medium_Grade", "High_Grade"],
+        name="Au_OreClass"
     )
 
     # Add these to a CalcSet and export
     helpers_calcset = CalcSet([
         sum_example,
         product_example,
-        normalize_example,
         scale_example,
         cat_example,
     ])
@@ -428,6 +438,14 @@ Filter calculations by name or attributes:
     log_calcs = all_calcs.query('"log" in name')
     print(f"Log transforms: {[item.name for item in log_calcs.items]}")
     # Output: ['Au_log', 'Ag_log', 'Cu_log']
+
+.. TODO: Add screenshot showing query results in Jupyter
+.. .. image:: _static/query_example.png
+..    :alt: Query results showing filtered calculations
+..    :align: center
+..    :width: 85%
+..
+.. |
 
 Advanced Queries with External Variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
