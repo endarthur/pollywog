@@ -11,27 +11,39 @@ from pollywog.core import Number
 
 
 def test_average_helper():
-    n = Average("Au", "Ag", name="avg_Au_Ag")
+    n = Average(["Au", "Ag"], name="avg_Au_Ag")
     assert isinstance(n, Number)
     assert n.name == "avg_Au_Ag"
     assert "/ 2" in n.children[0]
     assert "[Au]" in n.children[0] and "[Ag]" in n.children[0]
+    # Test expression return
+    expr = Average(["Au", "Ag"])
+    assert isinstance(expr, str)
+    assert "/ 2" in expr
 
 
 def test_sum_helper():
-    n = Sum("Au", "Ag", name="sum_Au_Ag")
+    n = Sum(["Au", "Ag"], name="sum_Au_Ag")
     assert isinstance(n, Number)
     assert n.name == "sum_Au_Ag"
     assert "[Au]" in n.children[0] and "[Ag]" in n.children[0]
     assert "+" in n.children[0]
+    # Test expression return
+    expr = Sum(["Au", "Ag"])
+    assert isinstance(expr, str)
+    assert "+" in expr
 
 
 def test_product_helper():
-    n = Product("Au", "Ag", name="prod_Au_Ag")
+    n = Product(["Au", "Ag"], name="prod_Au_Ag")
     assert isinstance(n, Number)
     assert n.name == "prod_Au_Ag"
     assert "[Au]" in n.children[0] and "[Ag]" in n.children[0]
     assert "*" in n.children[0]
+    # Test expression return
+    expr = Product(["Au", "Ag"])
+    assert isinstance(expr, str)
+    assert "*" in expr
 
 
 def test_normalize_helper():
@@ -40,6 +52,10 @@ def test_normalize_helper():
     assert n.name == "norm_Au"
     assert "[Au]" in n.children[0]
     assert "/ (10 - 0)" in n.children[0]
+    # Test expression return
+    expr = Normalize("Au", 0, 10)
+    assert isinstance(expr, str)
+    assert "/ (10 - 0)" in expr
 
 
 def test_weighted_average_helper():
@@ -58,6 +74,10 @@ def test_weighted_average_helper():
     assert "[Au] * [w1]" in n2.children[0]
     assert "[Ag] * [w2]" in n2.children[0]
     assert "/ ([w1] + [w2])" in n2.children[0]
+    # Test expression return
+    expr = WeightedAverage(["Au", "Ag"], [0.7, 0.3])
+    assert isinstance(expr, str)
+    assert "/ (0.7 + 0.3)" in expr
 
 
 def test_scale_helper():
@@ -70,6 +90,10 @@ def test_scale_helper():
     assert isinstance(n2, Number)
     assert n2.name == "Ag_scaled"
     assert "[Ag] * [factor]" in n2.children[0]
+    # Test expression return
+    expr = Scale("Ag", "factor")
+    assert isinstance(expr, str)
+    assert "[Ag] * [factor]" in expr
 
 
 def test_category_from_thresholds_helper():
@@ -80,31 +104,44 @@ def test_category_from_thresholds_helper():
     # Should contain If block
     assert hasattr(n, "children")
     assert "Classify Au by thresholds [0.5, 1.0]" in n.comment_equation
+    # Test If block return
+    if_block = CategoryFromThresholds("Au", [0.5, 1.0], ["Low", "Medium", "High"])
+    from pollywog.core import If
+    assert isinstance(if_block, If)
 
 
 def test_sum_with_single_variable():
     """Test Sum with just one variable."""
-    n = Sum("Au", name="single_sum")
+    n = Sum(["Au"], name="single_sum")
     assert isinstance(n, Number)
     assert "[Au]" in n.children[0]
+    expr = Sum(["Au"])
+    assert isinstance(expr, str)
+    assert "[Au]" in expr
 
 
 def test_product_with_three_variables():
     """Test Product with multiple variables."""
-    n = Product("length", "width", "height", name="volume")
+    n = Product(["length", "width", "height"], name="volume")
     assert isinstance(n, Number)
     assert "[length]" in n.children[0]
     assert "[width]" in n.children[0]
     assert "[height]" in n.children[0]
+    expr = Product(["length", "width", "height"])
+    assert isinstance(expr, str)
+    assert "[length]" in expr and "[width]" in expr and "[height]" in expr
 
 
 def test_average_with_many_variables():
     """Test Average with many variables."""
-    n = Average("a", "b", "c", "d", "e", name="avg_five")
+    n = Average(["a", "b", "c", "d", "e"], name="avg_five")
     assert isinstance(n, Number)
     assert "/ 5" in n.children[0]
     for var in ["a", "b", "c", "d", "e"]:
         assert f"[{var}]" in n.children[0]
+    expr = Average(["a", "b", "c", "d", "e"])
+    assert isinstance(expr, str)
+    assert "/ 5" in expr
 
 
 def test_normalize_with_negative_range():
@@ -114,6 +151,9 @@ def test_normalize_with_negative_range():
     assert "[temperature]" in n.children[0]
     # Range should be 30 - (-10) = 40
     assert "40" in n.children[0] or "- -10" in n.children[0]
+    expr = Normalize("temperature", -10, 30)
+    assert isinstance(expr, str)
+    assert "[temperature]" in expr
 
 
 def test_scale_with_negative_factor():
@@ -122,6 +162,9 @@ def test_scale_with_negative_factor():
     assert isinstance(n, Number)
     assert "[value]" in n.children[0]
     assert "-2.5" in n.children[0]
+    expr = Scale("value", -2.5)
+    assert isinstance(expr, str)
+    assert "-2.5" in expr
 
 
 def test_weighted_average_edge_cases():
@@ -130,12 +173,17 @@ def test_weighted_average_edge_cases():
     n = WeightedAverage(["Au"], [1.0], name="single_weighted")
     assert isinstance(n, Number)
     assert "[Au]" in n.children[0]
-    
+    expr = WeightedAverage(["Au"], [1.0])
+    assert isinstance(expr, str)
+    assert "[Au]" in expr
     # Unequal weights
     n2 = WeightedAverage(["Au", "Ag", "Cu"], [0.5, 0.3, 0.2], name="multi_weighted")
     assert "[Au] * 0.5" in n2.children[0]
     assert "[Ag] * 0.3" in n2.children[0]
     assert "[Cu] * 0.2" in n2.children[0]
+    expr2 = WeightedAverage(["Au", "Ag", "Cu"], [0.5, 0.3, 0.2])
+    assert isinstance(expr2, str)
+    assert "[Cu] * 0.2" in expr2
 
 
 def test_category_from_thresholds_two_categories():
@@ -145,3 +193,6 @@ def test_category_from_thresholds_two_categories():
     )
     assert n.name == "grade_cat"
     assert "Classify grade by thresholds" in n.comment_equation
+    if_block = CategoryFromThresholds("grade", [1.0], ["Below", "Above"])
+    from pollywog.core import If
+    assert isinstance(if_block, If)
