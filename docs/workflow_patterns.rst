@@ -3,13 +3,6 @@ Common Workflow Patterns
 
 This guide presents common workflow patterns in geological modeling and resource estimation, demonstrating how to implement them using pollywog.
 
-.. image:: _static/estimation_workflow.png
-   :alt: Resource Estimation Workflow
-   :align: center
-   :width: 60%
-
-|
-
 Grade Estimation Workflows
 ---------------------------
 

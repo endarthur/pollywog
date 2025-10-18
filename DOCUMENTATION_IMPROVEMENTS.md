@@ -5,15 +5,21 @@ This document summarizes the improvements made to the pollywog documentation to 
 
 ## Changes Made
 
-### 1. Visual Elements Added
+### 1. Visual Elements Added (UPDATED - Simplified)
 
 #### Diagrams Created (docs/_static/)
-- **workflow_diagram.png** - High-level overview of pollywog workflow
-- **estimation_workflow.png** - Resource estimation workflow diagram
-- **helper_decision_tree.png** - Decision tree for choosing helper functions
-- **architecture_diagram.png** - Component architecture overview
+After initial feedback about broken arrows, clipping, and redundancy, the diagrams were completely redesigned:
 
-All diagrams are generated programmatically using matplotlib via `docs/_static/generate_diagrams.py`.
+- **workflow_diagram.png** - Simple 5-step workflow (Python → CalcSet → .lfcalc → Leapfrog → Results)
+- **use_cases_diagram.png** - 6 key use cases showing WHEN to use pollywog
+
+**Key improvements:**
+- ✅ Reduced from 4 diagrams to 2 focused, non-redundant diagrams
+- ✅ Fixed all arrow rendering issues
+- ✅ Eliminated clipping problems
+- ✅ Each diagram provides unique, actionable value
+- ✅ Clean, professional appearance
+- ✅ Generated programmatically using matplotlib via `docs/_static/generate_diagrams.py`
 
 ### 2. README.md Improvements
 

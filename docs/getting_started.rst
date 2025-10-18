@@ -3,13 +3,6 @@ Getting Started
 
 Welcome to pollywog! This guide will help you install the library, understand the basics, run your first calculation, and explore further resources.
 
-.. image:: _static/workflow_diagram.png
-   :alt: Pollywog Workflow Overview
-   :align: center
-   :width: 100%
-
-|
-
 What You Need to Know
 ----------------------
 

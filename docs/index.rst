@@ -2,11 +2,6 @@
 Welcome to pollywog's documentation!
 ====================================
 
-.. image:: _static/workflow_diagram.png
-   :alt: Pollywog Workflow
-   :align: center
-   :width: 100%
-
 .. toctree::
    :maxdepth: 2
    :caption: Getting Started
@@ -34,10 +29,17 @@ Introduction
 
 **pollywog** is a Python library designed to make it easy to build, manipulate, and visually inspect Leapfrog-style calculation sets—especially when those sets are large, complex, or involve repetitive logic.
 
-.. image:: _static/architecture_diagram.png
-   :alt: Pollywog Architecture
+.. image:: _static/workflow_diagram.png
+   :alt: Pollywog Workflow
    :align: center
-   :width: 80%
+   :width: 100%
+
+|
+
+.. image:: _static/use_cases_diagram.png
+   :alt: When to Use Pollywog
+   :align: center
+   :width: 100%
 
 |
 

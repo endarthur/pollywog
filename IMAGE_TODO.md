@@ -2,6 +2,20 @@
 
 This document contains instructions for screenshots and images that should be added to the pollywog documentation to make it more visual and helpful.
 
+## ✅ Diagrams Included (Generated)
+
+The following diagrams have been created and are included in the documentation:
+
+1. **workflow_diagram.png** - Simple, clear 5-step workflow showing: Python Code → Build CalcSet → Export .lfcalc → Import to Leapfrog → Run Calculations
+2. **use_cases_diagram.png** - Shows 6 key use cases radiating from a central "pollywog" hub, helping users understand WHEN to use pollywog
+
+These diagrams are:
+- Clean and professional
+- Generated programmatically (easy to update)
+- Focused on providing actual value
+- No clipping or broken arrows
+- Simple enough to be helpful without being redundant
+
 ## Screenshots Needed
 
 ### 1. Leapfrog Import Process
