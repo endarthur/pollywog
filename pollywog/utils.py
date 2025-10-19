@@ -73,7 +73,7 @@ def to_dict(items, guard_strings=False):
 
     Example:
         >>> from pollywog.core import Number
-        >>> num = Number(name="test", children=["5"])
+        >>> num = Number(name="test", expression=["5"])
         >>> to_dict(num)
         [{'type': 'calculation', 'name': 'test', ...}]
     """
