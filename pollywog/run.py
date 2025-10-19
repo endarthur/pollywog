@@ -527,7 +527,7 @@ def run_calcset(
 
     Example:
         >>> from pollywog.core import CalcSet, Number
-        >>> cs = CalcSet([Number(name="doubled", children=["[x] * 2"])])
+        >>> cs = CalcSet([Number("doubled", "[x] * 2")])
         >>> run_calcset(cs, inputs={"x": 5})
         {'doubled': 10}
     """
@@ -574,7 +574,7 @@ def run_calcset(
                 results[item.name] = context.get(item.name, None)
                 continue
             child_results = []
-            for child in item.children:
+            for child in item.expression:
                 child_results.append(eval_expr(child, {**context, **results}))
             results[item.name] = child_results[0] if child_results else None
         # Filter output according to output_variables flag
@@ -630,7 +630,7 @@ try:
             >>> import pandas as pd
             >>> from pollywog.core import CalcSet, Number
             >>> df = pd.DataFrame({'x': [1, 2, 3]})
-            >>> cs = CalcSet([Number(name="doubled", children=["[x] * 2"])])
+            >>> cs = CalcSet([Number("doubled", "[x] * 2")])
             >>> result = df.pw.run(cs)
         """
 

@@ -11,28 +11,28 @@ from pathlib import Path
 def test_complete_mining_workflow():
     """Test a complete mining grade estimation workflow."""
     # Variables for input data
-    block_au = Variable(name="block_au", children=[""])
-    block_ag = Variable(name="block_ag", children=[""])
-    block_cu = Variable(name="block_cu", children=[""])
-    block_tonnage = Variable(name="block_tonnage", children=[""])
+    block_au = Variable(name="block_au", expression=[""])
+    block_ag = Variable(name="block_ag", expression=[""])
+    block_cu = Variable(name="block_cu", expression=[""])
+    block_tonnage = Variable(name="block_tonnage", expression=[""])
 
     # Calculations for metal values
-    au_price = Number(name="au_price", children=["1800"])
-    ag_price = Number(name="ag_price", children=["25"])
-    cu_price = Number(name="cu_price", children=["3.5"])
+    au_price = Number(name="au_price", expression=["1800"])
+    ag_price = Number(name="ag_price", expression=["25"])
+    cu_price = Number(name="cu_price", expression=["3.5"])
 
     # Metal values per tonne
-    au_value = Number(name="au_value", children=["[block_au] * [au_price] / 31.1035"])
-    ag_value = Number(name="ag_value", children=["[block_ag] * [ag_price] / 31.1035"])
-    cu_value = Number(name="cu_value", children=["[block_cu] * [cu_price] * 22.046"])
+    au_value = Number(name="au_value", expression=["[block_au] * [au_price] / 31.1035"])
+    ag_value = Number(name="ag_value", expression=["[block_ag] * [ag_price] / 31.1035"])
+    cu_value = Number(name="cu_value", expression=["[block_cu] * [cu_price] * 22.046"])
 
     # Total value
     total_value = Sum(["au_value", "ag_value", "cu_value"], name="total_value")
 
     # Economic filter
-    cutoff = Number(name="cutoff_grade", children=["50"])
+    cutoff = Number(name="cutoff_grade", expression=["50"])
     economic_filter = Filter(
-        name="is_economic", children=["[total_value] >= [cutoff_grade]"]
+        name="is_economic", expression=["[total_value] >= [cutoff_grade]"]
     )
 
     cs = CalcSet(
@@ -77,19 +77,19 @@ def test_dataframe_workflow_with_filtering():
     df = pd.DataFrame(data)
 
     # Create calculation set
-    x_var = Variable(name="x", children=[""])
-    y_var = Variable(name="y", children=[""])
-    cat_var = Variable(name="category", children=[""])
+    x_var = Variable(name="x", expression=[""])
+    y_var = Variable(name="y", expression=[""])
+    cat_var = Variable(name="category", expression=[""])
 
     # Calculations
-    sum_xy = Number(name="sum", children=["[x] + [y]"])
-    prod_xy = Number(name="product", children=["[x] * [y]"])
-    ratio = Number(name="ratio", children=["[y] / ([x] + 0.001)"])
+    sum_xy = Number(name="sum", expression=["[x] + [y]"])
+    prod_xy = Number(name="product", expression=["[x] * [y]"])
+    ratio = Number(name="ratio", expression=["[y] / ([x] + 0.001)"])
 
     # Conditional calculation
     ifrow = IfRow(condition=["[category] == 'A'"], value=["[sum] * 2"])
     conditional = Number(
-        name="weighted_sum", children=[If(rows=[ifrow], otherwise=["[sum]"])]
+        name="weighted_sum", expression=[If(rows=[ifrow], otherwise=["[sum]"])]
     )
 
     cs = CalcSet([x_var, y_var, cat_var, sum_xy, prod_xy, ratio, conditional])
@@ -112,15 +112,15 @@ def test_dataframe_workflow_with_filtering():
 def test_file_roundtrip_workflow():
     """Test saving and loading a complete workflow."""
     # Create a complex calculation set
-    vars = [Variable(name=f"v{i}", children=[""]) for i in range(3)]
+    vars = [Variable(name=f"v{i}", expression=[""]) for i in range(3)]
 
     # Build calculations
-    calc1 = Number(name="c1", children=["[v0] + [v1]"])
-    calc2 = Number(name="c2", children=["[v1] * [v2]"])
-    calc3 = Number(name="c3", children=["[c1] + [c2]"])
+    calc1 = Number(name="c1", expression=["[v0] + [v1]"])
+    calc2 = Number(name="c2", expression=["[v1] * [v2]"])
+    calc3 = Number(name="c3", expression=["[c1] + [c2]"])
 
     # Add filter
-    filt = Filter(name="f1", children=["[c3] > 10"])
+    filt = Filter(name="f1", expression=["[c3] > 10"])
 
     cs = CalcSet(vars + [calc1, calc2, calc3, filt])
 
@@ -155,17 +155,17 @@ def test_query_and_rename_workflow():
     """Test querying and renaming in a workflow."""
     # Create items with prefixes
     vars = [
-        Variable(name="input_grade", children=[""]),
-        Variable(name="input_tonnage", children=[""]),
+        Variable(name="input_grade", expression=[""]),
+        Variable(name="input_tonnage", expression=[""]),
     ]
 
     calcs = [
-        Number(name="output_metal", children=["[input_grade] * [input_tonnage]"]),
-        Number(name="output_value", children=["[output_metal] * 1000"]),
+        Number(name="output_metal", expression=["[input_grade] * [input_tonnage]"]),
+        Number(name="output_value", expression=["[output_metal] * 1000"]),
     ]
 
     filters = [
-        Filter(name="filter_economic", children=["[output_value] > 50000"]),
+        Filter(name="filter_economic", expression=["[output_value] > 50000"]),
     ]
 
     cs = CalcSet(vars + calcs + filters)
@@ -186,9 +186,9 @@ def test_query_and_rename_workflow():
 
     # Check that references are updated
     metal_calc = cs_renamed["output_metal"]
-    assert "[grade]" in metal_calc.children[0]
-    assert "[tonnage]" in metal_calc.children[0]
-    assert "[input_grade]" not in metal_calc.children[0]
+    assert "[grade]" in metal_calc.expression[0]
+    assert "[tonnage]" in metal_calc.expression[0]
+    assert "[input_grade]" not in metal_calc.expression[0]
 
     # Test with regex rename
     cs_prefixed = cs.rename(
@@ -202,8 +202,8 @@ def test_query_and_rename_workflow():
 def test_complex_conditional_workflow():
     """Test complex nested conditional logic."""
     # Create a grading system with multiple nested conditions
-    score = Variable(name="score", children=[""])
-    attendance = Variable(name="attendance", children=[""])
+    score = Variable(name="score", expression=[""])
+    attendance = Variable(name="attendance", expression=[""])
 
     # Nested conditions: grade depends on both score and attendance
     # A: score >= 90 and attendance >= 90
@@ -223,7 +223,7 @@ def test_complex_conditional_workflow():
 
     grade = Number(
         name="final_grade",
-        children=[If(rows=[a_cond, b_cond, c_cond], otherwise=["'F'"])],
+        expression=[If(rows=[a_cond, b_cond, c_cond], otherwise=["'F'"])],
     )
 
     cs = CalcSet([score, attendance, grade])
@@ -246,12 +246,12 @@ def test_complex_conditional_workflow():
 def test_helper_integration():
     """Test integration of multiple helper functions."""
     # Create dataset with multiple measurements
-    v1 = Variable(name="measurement1", children=[""])
-    v2 = Variable(name="measurement2", children=[""])
-    v3 = Variable(name="measurement3", children=[""])
-    weight1 = Variable(name="weight1", children=[""])
-    weight2 = Variable(name="weight2", children=[""])
-    weight3 = Variable(name="weight3", children=[""])
+    v1 = Variable(name="measurement1", expression=[""])
+    v2 = Variable(name="measurement2", expression=[""])
+    v3 = Variable(name="measurement3", expression=[""])
+    weight1 = Variable(name="weight1", expression=[""])
+    weight2 = Variable(name="weight2", expression=[""])
+    weight3 = Variable(name="weight3", expression=[""])
 
     # Use helpers to create calculations
     total = Sum(["measurement1", "measurement2", "measurement3"], name="total")
@@ -284,11 +284,11 @@ def test_helper_integration():
 def test_topological_sort_integration():
     """Test that topological sort enables correct calculation order."""
     # Create calculations in wrong order
-    c3 = Number(name="result", children=["[intermediate1] + [intermediate2]"])
-    v1 = Variable(name="input1", children=[""])
-    c2 = Number(name="intermediate2", children=["[input2] * 2"])
-    v2 = Variable(name="input2", children=[""])
-    c1 = Number(name="intermediate1", children=["[input1] + 1"])
+    c3 = Number(name="result", expression=["[intermediate1] + [intermediate2]"])
+    v1 = Variable(name="input1", expression=[""])
+    c2 = Number(name="intermediate2", expression=["[input2] * 2"])
+    v2 = Variable(name="input2", expression=[""])
+    c1 = Number(name="intermediate1", expression=["[input1] + 1"])
 
     # Add in scrambled order
     cs = CalcSet([c3, v1, c2, v2, c1])
@@ -304,15 +304,15 @@ def test_topological_sort_integration():
 
 def test_error_recovery_integration():
     """Test that errors in some calculations don't break the entire workflow."""
-    v1 = Variable(name="x", children=[""])
-    v2 = Variable(name="y", children=[""])
+    v1 = Variable(name="x", expression=[""])
+    v2 = Variable(name="y", expression=[""])
 
     # This will fail with division by zero
-    bad_calc = Number(name="bad", children=["[x] / 0"])
+    bad_calc = Number(name="bad", expression=["[x] / 0"])
 
     # These should succeed
-    good_calc1 = Number(name="good1", children=["[x] + [y]"])
-    good_calc2 = Number(name="good2", children=["[x] * [y]"])
+    good_calc1 = Number(name="good1", expression=["[x] + [y]"])
+    good_calc2 = Number(name="good2", expression=["[x] * [y]"])
 
     cs = CalcSet([v1, v2, bad_calc, good_calc1, good_calc2])
 

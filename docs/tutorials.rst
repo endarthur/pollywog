@@ -154,8 +154,8 @@ Pollywog provides several helpers to simplify common calculation patterns. Here 
 
     # Note: For normalizing proportions to sum to 1, use manual calculation:
     # normalize_example = Number(
-    #     name="prop_high_norm",
-    #     children=["[prop_high] / ([prop_high] + [prop_medium] + [prop_low])"]
+    #     "prop_high_norm",
+    #     expression=["[prop_high] / ([prop_high] + [prop_medium] + [prop_low])"]
     # )
 
     # CategoryFromThresholds: Categorize based on grade thresholds
@@ -242,19 +242,19 @@ Combine multiple helpers to build sophisticated calculations:
         # 2. Apply dilution
         Scale("Au_composite", 0.95, name="Au_diluted", 
               comment="5% dilution from minimum mining width"),
-        Scale("Cu_composite", 0.95, name="Cu_diluted",
+        Scale("Cu_composite", 0.95, "Cu_diluted",
               comment="5% dilution from minimum mining width"),
         
         # 3. Apply recovery
-        Scale("Au_diluted", 0.88, name="Au_recovered",
+        Scale("Au_diluted", 0.88, "Au_recovered",
               comment="88% metallurgical recovery"),
-        Scale("Cu_diluted", 0.82, name="Cu_recovered",
+        Scale("Cu_diluted", 0.82, "Cu_recovered",
               comment="82% metallurgical recovery"),
         
         # 4. Calculate payable metal (ounces)
-        Product("Au_recovered", "tonnes", name="Au_ounces_total",
+        Product("Au_recovered", "tonnes", "Au_ounces_total",
                 comment="Total gold ounces in block"),
-        Product("Cu_recovered", "tonnes", name="Cu_pounds_total",
+        Product("Cu_recovered", "tonnes", "Cu_pounds_total",
                 comment="Total copper pounds in block"),
         
         # 5. Revenue per tonne (simplified)
@@ -421,12 +421,12 @@ Filter calculations by name or attributes:
     
     # Create a large calcset
     all_calcs = CalcSet([
-        Number(name="Au_clean", children=["clamp([Au], 0)"]),
-        Number(name="Au_log", children=["log([Au_clean] + 1e-6)"]),
-        Number(name="Ag_clean", children=["clamp([Ag], 0)"]),
-        Number(name="Ag_log", children=["log([Ag_clean] + 1e-6)"]),
-        Number(name="Cu_clean", children=["clamp([Cu], 0)"]),
-        Number(name="Cu_log", children=["log([Cu_clean] + 1e-6)"]),
+        Number(name="Au_clean", expression=["clamp([Au], 0)"]),
+        Number(name="Au_log", expression=["log([Au_clean] + 1e-6)"]),
+        Number(name="Ag_clean", expression=["clamp([Ag], 0)"]),
+        Number(name="Ag_log", expression=["log([Ag_clean] + 1e-6)"]),
+        Number(name="Cu_clean", expression=["clamp([Cu], 0)"]),
+        Number(name="Cu_log", expression=["log([Cu_clean] + 1e-6)"]),
     ])
     
     # Get only gold calculations
@@ -508,7 +508,7 @@ Simple Conditionals
     
     # Simple threshold
     calcset = CalcSet([
-        Number(name="mineable", children=[
+        Number(name="mineable", expression=[
             If("[Au] >= 0.3", "1", "0")
         ], comment_equation="Binary mineable flag, cutoff = 0.3 g/t"),
     ])
@@ -522,7 +522,7 @@ Multi-Condition Logic
     
     # Multiple conditions with different outcomes
     calcset = CalcSet([
-        Number(name="recovery_factor", children=[
+        Number(name="recovery_factor", expression=[
             If([
                 ("[domain] = 'oxide' and [grind] <= 75", "0.92"),
                 ("[domain] = 'oxide' and [grind] > 75", "0.88"),
@@ -541,7 +541,7 @@ Nested Conditionals
     
     # Complex classification
     calcset = CalcSet([
-        Category(name="material_type", children=[
+        Category(name="material_type", expression=[
             If([
                 ("[Au] >= 3", "'high_grade_ore'"),
                 ("[Au] >= 1 and [depth] <= 300", "'medium_grade_ore'"),

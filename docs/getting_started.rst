@@ -83,8 +83,8 @@ A ``CalcSet`` is a collection of calculation items that can be exported to a ``.
     from pollywog.core import CalcSet, Number
     
     calcset = CalcSet([
-        Number(name="Au_clean", children=["clamp([Au], 0)"]),
-        Number(name="Au_log", children=["log([Au_clean] + 1e-6)"]),
+        Number("Au_clean", "clamp([Au], 0)"),
+        Number("Au_log", "log([Au_clean] + 1e-6)"),
     ])
 
 Number
@@ -97,12 +97,12 @@ Number
     from pollywog.core import Number
     
     # Simple calculation
-    grade_calc = Number(name="Au_final", children=["[Au] * 0.95"])
+    grade_calc = Number("Au_final", "[Au] * 0.95")
     
     # With comment
     grade_calc = Number(
-        name="Au_final",
-        children=["[Au] * 0.95"],
+        "Au_final",
+        "[Au] * 0.95",
         comment_equation="Apply 5% dilution factor"
     )
 
@@ -116,7 +116,7 @@ Category
     from pollywog.core import Category, If
     
     # Categorical output
-    ore_type = Category(name="material_class", children=[
+    ore_type = Category(name="material_class", expression=[
         If("[Au] >= 0.5", "'ore'", "'waste'")
     ])
 
@@ -128,10 +128,38 @@ Variables are referenced using square brackets: ``[variable_name]``
 .. code-block:: python
 
     # Reference drillhole assays
-    Number(name="precious_metals", children=["[Au] + [Ag]"])
+    Number("precious_metals", "[Au] + [Ag]")
     
     # Reference block model variables
-    Number(name="density_calc", children=["[block_density] * [block_volume]"])
+    Number("density_calc", "[block_density] * [block_volume]")
+
+Understanding the Expression Parameter
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``expression`` parameter accepts either a **string** or a **list**:
+
+- **Use a string** for simple expressions (recommended for most cases):
+
+  .. code-block:: python
+
+      Number("doubled", "[x] * 2")
+      Category("rock_type", "'granite'")
+
+- **Use a list** when including ``If`` objects for conditional logic:
+
+  .. code-block:: python
+
+      Number("result", [If("[x] > 0", "[x]", "0")])
+
+**Why can expression be a list?**
+
+``If`` statements are separate Python objects that cannot be embedded in expression strings.
+Since the Leapfrog calculation format supports conditional logic, pollywog needs to handle
+these ``If`` objects alongside string expressions. That's why the parameter accepts lists.
+
+For convenience, single strings are automatically wrapped in a list internally, so you don't
+need to write ``expression=["[x] * 2"]`` - just use ``expression="[x] * 2"`` or the even
+simpler positional form: ``Number("doubled", "[x] * 2")``.
 
 Your First Calculation
 -----------------------
@@ -152,14 +180,14 @@ Step 2: Create Calculations
 
     # Create individual calculations
     au_clean = Number(
-        name="Au_clean",
-        children=["clamp([Au], 0)"],
+        "Au_clean",
+        "clamp([Au], 0)",
         comment_equation="Remove negative values"
     )
     
     au_scaled = Number(
-        name="Au_scaled",
-        children=["[Au_clean] * 0.95"],
+        "Au_scaled",
+        "[Au_clean] * 0.95",
         comment_equation="Apply 95% factor"
     )
 
@@ -216,14 +244,14 @@ Clean and transform drillhole assay data:
     
     preprocessing = CalcSet([
         # Remove outliers
-        Number(name="Au_capped", children=["clamp([Au], 0, 100)"],
+        Number("Au_capped", "clamp([Au], 0, 100)",
                comment_equation="Cap gold at 100 g/t"),
-        Number(name="Cu_capped", children=["clamp([Cu], 0, 5)"],
+        Number("Cu_capped", "clamp([Cu], 0, 5)",
                comment_equation="Cap copper at 5%"),
         
         # Log transforms for kriging
-        Number(name="Au_log", children=["log([Au_capped] + 0.01)"]),
-        Number(name="Cu_log", children=["log([Cu_capped] + 0.01)"]),
+        Number("Au_log", "log([Au_capped] + 0.01)"),
+        Number("Cu_log", "log([Cu_capped] + 0.01)"),
     ])
     
     preprocessing.to_lfcalc("drillhole_preprocessing.lfcalc")
@@ -240,13 +268,13 @@ Process estimated grades in a block model:
     
     postprocessing = CalcSet([
         # Back-transform from log space
-        Number(name="Au_est", children=["exp([Au_log_kriged]) - 0.01"]),
+        Number("Au_est", "exp([Au_log_kriged]) - 0.01"),
         
         # Apply dilution
-        Number(name="Au_diluted", children=["[Au_est] * 0.95"]),
+        Number("Au_diluted", "[Au_est] * 0.95"),
         
         # Apply recovery
-        Number(name="Au_recovered", children=["[Au_diluted] * 0.88"]),
+        Number("Au_recovered", "[Au_diluted] * 0.88"),
     ])
     
     postprocessing.to_lfcalc("block_postprocessing.lfcalc")
@@ -352,7 +380,7 @@ Load and modify existing .lfcalc files:
     # Modify
     from pollywog.core import Number
     existing.items.append(
-        Number(name="new_calc", children=["[existing_var] * 2"])
+        Number("new_calc", "[existing_var] * 2")
     )
     
     # Save modified version
@@ -378,41 +406,41 @@ Common Pitfalls
 .. code-block:: python
 
     # Wrong - Au is treated as undefined variable
-    Number(name="result", children=["Au * 2"])
+    Number("result", "Au * 2")
     
     # Correct - Au is a reference to existing variable
-    Number(name="result", children=["[Au] * 2"])
+    Number("result", "[Au] * 2")
 
 **Division by Zero**
 
 .. code-block:: python
 
     # Risky
-    Number(name="ratio", children=["[a] / [b]"])
+    Number("ratio", "[a] / [b]")
     
     # Safe
-    Number(name="ratio", children=["[a] / ([b] + 1e-10)"])
-    Number(name="ratio", children=["[a] / clamp([b], 0.001)"])
+    Number("ratio", "[a] / ([b] + 1e-10)")
+    Number("ratio", "[a] / clamp([b], 0.001)")
 
 **Log of Zero**
 
 .. code-block:: python
 
     # Risky
-    Number(name="Au_log", children=["log([Au])"])
+    Number("Au_log", "log([Au])")
     
     # Safe
-    Number(name="Au_log", children=["log([Au] + 1e-6)"])
+    Number("Au_log", "log([Au] + 1e-6)")
 
 **Missing Parentheses**
 
 .. code-block:: python
 
     # Ambiguous - may not compute as intended
-    Number(name="result", children=["[a] + [b] * [c]"])
+    Number("result", "[a] + [b] * [c]")
     
     # Clear
-    Number(name="result", children=["[a] + ([b] * [c])"])
+    Number("result", "[a] + ([b] * [c])")
 
 Next Steps
 ----------

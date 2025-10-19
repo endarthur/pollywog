@@ -68,8 +68,8 @@ def test_convert_linear_model():
     assert isinstance(result, Number)
     assert result.name == "target"
     assert "Converted from LinearRegression" in result.comment_equation
-    assert "1.000000" in result.children[0]
-    assert "2.000000 * [x1]" in result.children[0]
+    assert "1.000000" in result.expression[0]
+    assert "2.000000 * [x1]" in result.expression[0]
 
 
 def test_convert_tree_with_complex_structure():
@@ -105,7 +105,7 @@ def test_convert_linear_with_single_feature():
     result = convert_linear_model(lm, ["x"], "y_pred")
     assert isinstance(result, Number)
     assert result.name == "y_pred"
-    assert "[x]" in result.children[0]
+    assert "[x]" in result.expression[0]
 
 
 def test_convert_linear_with_zero_coefficients():
@@ -117,4 +117,4 @@ def test_convert_linear_with_zero_coefficients():
     # Should handle zero coefficient gracefully
     assert isinstance(result, Number)
     # x2 coefficient is 0, so it might be excluded or included as 0 * [x2]
-    assert "[x1]" in result.children[0]
+    assert "[x1]" in result.expression[0]

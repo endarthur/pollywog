@@ -114,9 +114,9 @@ Here's a simple example showing pollywog's power – creating a complete resourc
         ),
         
         # 2. Apply dilution and recovery
-        Number(name="Au_diluted", children=["[Au_composite] * 0.95"],
+        Number(name="Au_diluted", expression=["[Au_composite] * 0.95"],
                comment_equation="5% dilution factor"),
-        Number(name="Au_recovered", children=["[Au_diluted] * 0.88"],
+        Number(name="Au_recovered", expression=["[Au_diluted] * 0.88"],
                comment_equation="88% metallurgical recovery"),
         
         # 3. Classify by grade

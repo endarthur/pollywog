@@ -41,8 +41,8 @@ class CalcSet:
     Example:
         >>> from pollywog.core import CalcSet, Number
         >>> calcset = CalcSet([
-        ...     Number(name="Au_est", children=["block[Au] * 0.95"]),
-        ...     Number(name="Ag_est", children=["block[Ag] * 0.85"])
+        ...     Number("Au_est", "block[Au] * 0.95"),
+        ...     Number("Ag_est", "block[Ag] * 0.85")
         ... ])
     """
 
@@ -146,8 +146,8 @@ class CalcSet:
 
         Example:
             >>> cs = CalcSet([
-            ...     Number(name="result", children=["[intermediate] * 2"]),
-            ...     Number(name="intermediate", children=["[input] + 1"])
+            ...     Number("result", "[intermediate] * 2"),
+            ...     Number("intermediate", "[input] + 1")
             ... ])
             >>> sorted_cs = cs.topological_sort()
             # Now 'intermediate' will come before 'result'
@@ -373,7 +373,7 @@ class CalcSet:
         regex: bool = False,
     ) -> "CalcSet":
         """
-        Return a copy of the CalcSet with specified items renamed and/or variables in children renamed.
+        Return a copy of the CalcSet with specified items renamed and/or variables in expression renamed.
 
         Args:
             items (dict-like or function): Mapping of old item names to new names.
@@ -381,7 +381,7 @@ class CalcSet:
             regex (bool): Whether to treat keys in `items` and `variables` as regex patterns.
 
         Returns:
-            CalcSet: New instance with updated item names and/or children.
+            CalcSet: New instance with updated item names and/or expression.
         """
         new_items = []
         for item in self.items:
@@ -433,11 +433,19 @@ class Item:
     Base class for all items in a CalcSet.
 
     Subclasses represent specific calculation types (Number, Category, Variable, Filter, If, etc.).
-    Each item has a name, a list of child expressions, and optional comments.
+    Each item has a name, expressions, and optional comments.
+
+    The `expression` parameter can be either a string or a list:
+    - Use a string for simple expressions: ``Number("result", "[x] * 2")``
+    - Use a list when including If objects for conditional logic: ``Number("result", [If(...)])``
+    
+    Strings are automatically converted to single-element lists internally, but If objects
+    are separate structures that cannot be embedded in expression strings, which is why
+    the parameter accepts lists.
 
     Attributes:
         name (str): Name of the item.
-        children (list): List of child expressions/statements.
+        expression (list): List of expressions/statements (internally stored as a list).
         comment_item (str): Comment for the item.
         comment_equation (str): Comment for the equation.
     """
@@ -448,7 +456,7 @@ class Item:
     def __init__(
         self,
         name: str = "",
-        children: Optional[List[Any]] = None,
+        expression: Optional[List[Any]] = None,
         comment_item: str = "",
         comment_equation: str = "",
     ):
@@ -457,14 +465,20 @@ class Item:
 
         Args:
             name (str): Name of the item (e.g., variable name or calculation name).
-            children (list, optional): List of child expressions/statements. Defaults to empty list.
+            expression (str or list, optional): Expression(s) to evaluate. Can be:
+                - A string containing a Leapfrog expression (e.g., "[Au] * 2")
+                - A list of strings for multiple expressions
+                - A list containing If objects for conditional logic
+                The parameter accepts both strings and lists because If statements are
+                separate objects that cannot be embedded in expression strings.
+                Single strings are automatically wrapped in a list internally.
             comment_item (str): Comment describing the item itself. Defaults to empty string.
             comment_equation (str): Comment describing the equation/logic. Defaults to empty string.
         """
         self.name = name
-        if children is None:
-            children = []
-        self.children = ensure_list(children)
+        if expression is None:
+            expression = []
+        self.expression = ensure_list(expression)
         self.comment_item = comment_item
         self.comment_equation = comment_equation
 
@@ -477,7 +491,7 @@ class Item:
         """
         if self.item_type is None:
             raise NotImplementedError("item_type must be defined in subclass")
-        children = to_dict(self.children, guard_strings=True)
+        children = to_dict(self.expression, guard_strings=True)
         item = {
             "type": self.item_type,
             "name": self.name,
@@ -510,12 +524,12 @@ class Item:
             raise NotImplementedError("item_type must be defined in subclass")
         if data["type"] != cls.item_type:
             raise ValueError(f"Expected item type {cls.item_type}, got {data['type']}")
-        children = []
+        expression = []
         for child in ensure_list(data["equation"]["statement"]["children"]):
-            children.append(dispatch_expression(child))
+            expression.append(dispatch_expression(child))
         return cls(
             name=data["name"],
-            children=children,
+            expression=expression,
             comment_item=data.get("comment", ""),
             comment_equation=data["equation"].get("comment", ""),
         )
@@ -539,7 +553,7 @@ class Item:
         """
         return type(self)(
             name=self.name,
-            children=[c.copy() if hasattr(c, "copy") else c for c in self.children],
+            expression=[c.copy() if hasattr(c, "copy") else c for c in self.expression],
             comment_item=self.comment_item,
             comment_equation=self.comment_equation,
         )
@@ -556,7 +570,7 @@ class Item:
         """
         params = {
             "name": self.name,
-            "children": self.children,
+            "expression": self.expression,
             "comment_item": self.comment_item,
             "comment_equation": self.comment_equation,
         }
@@ -572,7 +586,7 @@ class Item:
         regex: bool = False,
     ) -> "Item":
         """
-        Return a copy of the Item with a new name and/or renamed variables in children.
+        Return a copy of the Item with a new name and/or renamed variables in expression.
 
         Args:
             name (str): New name for the item.
@@ -580,7 +594,7 @@ class Item:
             regex (bool): Whether to treat keys in `variables` as regex patterns.
 
         Returns:
-            Item: New instance with updated name and/or children.
+            Item: New instance with updated name and/or expression.
         """
         new = self.copy()
         # For any Item subclass, allow variable renaming to affect the name
@@ -820,7 +834,10 @@ class Number(Item):
 
     Example:
         >>> from pollywog.core import Number
-        >>> au_calc = Number(name="Au_adjusted", children=["[Au] * 0.95"])
+        >>> # Simple expression using positional arguments
+        >>> au_calc = Number("Au_adjusted", "[Au] * 0.95")
+        >>> # With comment
+        >>> au_calc = Number("Au_adjusted", "[Au] * 0.95", comment_equation="Apply dilution")
     """
 
     item_type = "calculation"
@@ -836,10 +853,10 @@ class Category(Item):
 
     Example:
         >>> from pollywog.core import Category, If
-        >>> grade_class = Category(
-        ...     name="grade_class",
-        ...     children=[If("[Au] > 1", "High", "Low")]
-        ... )
+        >>> # Simple string category
+        >>> domain = Category("rock_type", "'granite'")
+        >>> # Conditional category using If (requires list)
+        >>> grade_class = Category("grade_class", [If("[Au] > 1", "High", "Low")])
     """
 
     item_type = "calculation"
@@ -871,7 +888,7 @@ class Filter(Item):
 
     Example:
         >>> from pollywog.core import Filter
-        >>> ore_filter = Filter(name="is_ore", children=["[Au] > 0.5"])
+        >>> ore_filter = Filter("is_ore", "[Au] > 0.5")
     """
 
     item_type = "filter"
@@ -923,7 +940,7 @@ def get_dependencies(item: Any) -> Set[str]:
     deps = set()
 
     if isinstance(item, Item):
-        for child in item.children:
+        for child in item.expression:
             deps.update(get_dependencies(child))
     elif isinstance(item, If):
         for row in item.rows:
@@ -958,8 +975,8 @@ def rename(
         Item or expression: The renamed item or expression.
     """
     if isinstance(item, Item):
-        new_children = [rename(child, mapper, regex=regex) for child in item.children]
-        return item.replace(children=new_children)
+        new_expression = [rename(child, mapper, regex=regex) for child in item.expression]
+        return item.replace(expression=new_expression)
     elif isinstance(item, If):
         new_rows = [rename(row, mapper, regex=regex) for row in item.rows]
         new_otherwise = rename(item.otherwise, mapper, regex=regex)

@@ -1,9 +1,9 @@
 def test_query_with_external_variable():
     from pollywog.core import CalcSet, Variable, Number
 
-    a = Variable(name="a", children=["foo"])
-    b = Number(name="b1", children=["[a] + 1"])
-    c = Number(name="b2", children=["[b1] + 2"])
+    a = Variable(name="a", expression=["foo"])
+    b = Number(name="b1", expression=["[a] + 1"])
+    c = Number(name="b2", expression=["[b1] + 2"])
     cs = CalcSet([a, b, c])
     prefix = "b"
     # Should select items whose name starts with prefix
@@ -15,9 +15,9 @@ def test_query_with_external_variable():
 def test_query_with_multiple_external_vars():
     from pollywog.core import CalcSet, Variable, Number
 
-    a = Variable(name="a", children=["foo"])
-    b = Number(name="b1", children=["[a] + 1"])
-    c = Number(name="b2", children=["[b1] + 2"])
+    a = Variable(name="a", expression=["foo"])
+    b = Number(name="b1", expression=["[a] + 1"])
+    c = Number(name="b2", expression=["[b1] + 2"])
     cs = CalcSet([a, b, c])
     prefix = "b"
     suffix = "2"
@@ -30,9 +30,9 @@ def test_query_with_multiple_external_vars():
 def test_topological_sort_simple():
     from pollywog.core import Number, Variable, CalcSet
 
-    a = Variable(name="a", children=["foo"])
-    b = Number(name="b", children=["[a] + 1"])
-    c = Number(name="c", children=["[b] + 2"])
+    a = Variable(name="a", expression=["foo"])
+    b = Number(name="b", expression=["[a] + 1"])
+    c = Number(name="c", expression=["[b] + 2"])
     cs = CalcSet([c, b, a])
     sorted_cs = cs.topological_sort()
     names = [item.name for item in sorted_cs.items]
@@ -42,8 +42,8 @@ def test_topological_sort_simple():
 def test_topological_sort_external_dep():
     from pollywog.core import Number, Variable, CalcSet
 
-    a = Variable(name="a", children=["foo"])
-    b = Number(name="b", children=["[external] + 1"])
+    a = Variable(name="a", expression=["foo"])
+    b = Number(name="b", expression=["[external] + 1"])
     cs = CalcSet([b, a])
     sorted_cs = cs.topological_sort()
     names = [item.name for item in sorted_cs.items]
@@ -53,8 +53,8 @@ def test_topological_sort_external_dep():
 def test_topological_sort_cycle():
     from pollywog.core import Number, CalcSet
 
-    a = Number(name="a", children=["[b] + 1"])
-    b = Number(name="b", children=["[a] + 2"])
+    a = Number(name="a", expression=["[b] + 1"])
+    b = Number(name="b", expression=["[a] + 2"])
     cs = CalcSet([a, b])
     import pytest
 
@@ -63,24 +63,24 @@ def test_topological_sort_cycle():
 
 
 def test_item_rename():
-    num = Number(name="n1", children=["[x] + 1"])
+    num = Number(name="n1", expression=["[x] + 1"])
     # Rename item name only
     num2 = num.rename(name="n2")
     assert num2.name == "n2"
-    assert num2.children == ["[x] + 1"]
+    assert num2.expression == ["[x] + 1"]
     # Rename variable inside children
     num3 = num.rename(variables={"x": "y"})
-    assert num3.children == ["[y] + 1"]
+    assert num3.expression == ["[y] + 1"]
     # Rename both name and variable
     num4 = num.rename(name="n3", variables={"x": "z"})
     assert num4.name == "n3"
-    assert num4.children == ["[z] + 1"]
+    assert num4.expression == ["[z] + 1"]
 
 
 def test_calcset_rename_items_and_variables():
-    num = Number(name="n1", children=["[x] + 1"])
-    var = Variable(name="x", children=["foo"])
-    filt = Filter(name="f1", children=["[x] > 0"])
+    num = Number(name="n1", expression=["[x] + 1"])
+    var = Variable(name="x", expression=["foo"])
+    filt = Filter(name="f1", expression=["[x] > 0"])
     cs = CalcSet([num, var, filt])
     # Rename item names
     cs2 = cs.rename(items={"n1": "n2", "f1": "f2"})
@@ -88,35 +88,35 @@ def test_calcset_rename_items_and_variables():
     assert cs2.items[2].name == "f2"
     # Rename variable references in children
     cs3 = cs.rename(variables={"x": "y"})
-    assert cs3.items[0].children == ["[y] + 1"]
-    assert cs3.items[2].children == ["[y] > 0"]
+    assert cs3.items[0].expression == ["[y] + 1"]
+    assert cs3.items[2].expression == ["[y] > 0"]
     # Rename both items and variables
     cs4 = cs.rename(items={"n1": "n3"}, variables={"x": "z"})
     assert cs4.items[0].name == "n3"
-    assert cs4.items[0].children == ["[z] + 1"]
-    assert cs4.items[2].children == ["[z] > 0"]
+    assert cs4.items[0].expression == ["[z] + 1"]
+    assert cs4.items[2].expression == ["[z] > 0"]
 
 
 def test_rename_with_regex():
-    num = Number(name="prefix_n1", children=["[var_x] + 1"])
-    var = Variable(name="var_x", children=["foo"])
+    num = Number(name="prefix_n1", expression=["[var_x] + 1"])
+    var = Variable(name="var_x", expression=["foo"])
     cs = CalcSet([num, var])
     # Rename with regex
     cs2 = cs.rename(
         items={r"^prefix_": "renamed_"}, variables={r"^var_": "newvar_"}, regex=True
     )
     assert cs2.items[0].name == "renamed_n1"
-    assert cs2.items[0].children == ["[newvar_x] + 1"]
+    assert cs2.items[0].expression == ["[newvar_x] + 1"]
     assert cs2.items[1].name == "newvar_x"
 
 
 def test_rename_nested_if():
     ifrow = IfRow(condition=["[x] > 0"], value=["[x] + 1"])
     ifexpr = If(rows=[ifrow], otherwise=["[x] - 1"])
-    num = Number(name="n1", children=[ifexpr])
+    num = Number(name="n1", expression=[ifexpr])
     cs = CalcSet([num])
     cs2 = cs.rename(variables={"x": "y"})
-    nested_if = cs2.items[0].children[0]
+    nested_if = cs2.items[0].expression[0]
     assert isinstance(nested_if, If)
     assert nested_if.rows[0].condition == ["[y] > 0"]
     assert nested_if.rows[0].value == ["[y] + 1"]
@@ -130,22 +130,22 @@ from pollywog.core import Variable, Filter, If, IfRow, Category
 
 
 def test_number_to_dict_and_from_dict():
-    num = Number(name="n1", children=["1+2"])
+    num = Number(name="n1", expression=["1+2"])
     d = num.to_dict()
     num2 = Number.from_dict(d)
     assert num2.name == "n1"
-    assert num2.children == ["1+2"]
+    assert num2.expression == ["1+2"]
 
 
 def test_variable_and_filter():
-    var = Variable(name="v1", children=["foo"])
-    filt = Filter(name="f1", children=["bar"])
+    var = Variable(name="v1", expression=["foo"])
+    filt = Filter(name="f1", expression=["bar"])
     assert var.to_dict()["type"] == "variable"
     assert filt.to_dict()["type"] == "filter"
 
 
 def test_category():
-    cat = Category(name="cat1", children=["'A'"])
+    cat = Category(name="cat1", expression=["'A'"])
     d = cat.to_dict()
     assert d["calculation_type"] == "string"
 
@@ -174,8 +174,8 @@ def test_ifrow_and_if():
 
 
 def test_calcset_serialization():
-    num = Number(name="n1", children=["1+2"])
-    var = Variable(name="v1", children=["foo"])
+    num = Number(name="n1", expression=["1+2"])
+    var = Variable(name="v1", expression=["foo"])
     cs = CalcSet([num, var])
     json_str = cs.to_json()
     cs2 = CalcSet.from_dict(cs.to_dict())
@@ -184,16 +184,16 @@ def test_calcset_serialization():
 
 
 def test_calcset_repr():
-    num = Number(name="n1", children=["1+2"])
+    num = Number(name="n1", expression=["1+2"])
     cs = CalcSet([num])
     s = repr(cs)
     assert s.startswith("{")
 
 
 def test_calcset_add_multiple():
-    num1 = Number(name="a", children=["2"])
-    num2 = Number(name="b", children=["3"])
-    var = Variable(name="v", children=["foo"])
+    num1 = Number(name="a", expression=["2"])
+    num2 = Number(name="b", expression=["3"])
+    var = Variable(name="v", expression=["foo"])
     cs1 = CalcSet([num1])
     cs2 = CalcSet([num2, var])
     cs3 = cs1 + cs2
@@ -202,27 +202,27 @@ def test_calcset_add_multiple():
 
 
 def test_copy_independence():
-    num = Number(name="n1", children=["1+2"])
+    num = Number(name="n1", expression=["1+2"])
     num_copy = num.copy()
     assert isinstance(num_copy, Number)
     assert num_copy.name == num.name
-    assert num_copy.children == num.children
+    assert num_copy.expression == num.expression
     num_copy.name = "n2"
-    num_copy.children[0] = "3+4"
+    num_copy.expression[0] = "3+4"
     assert num.name == "n1"
-    assert num.children[0] == "1+2"
+    assert num.expression[0] == "1+2"
 
-    var = Variable(name="v1", children=["foo"])
+    var = Variable(name="v1", expression=["foo"])
     var_copy = var.copy()
     var_copy.name = "v2"
     assert var.name == "v1"
 
-    filt = Filter(name="f1", children=["bar"])
+    filt = Filter(name="f1", expression=["bar"])
     filt_copy = filt.copy()
     filt_copy.name = "f2"
     assert filt.name == "f1"
 
-    cat = Category(name="cat1", children=["'A'"])
+    cat = Category(name="cat1", expression=["'A'"])
     cat_copy = cat.copy()
     cat_copy.name = "cat2"
     assert cat.name == "cat1"
@@ -263,7 +263,7 @@ def test_if_invalid_type():
 
 
 def test_calcset_to_dict():
-    num = Number(name="test_num", children=["1+1"])
+    num = Number(name="test_num", expression=["1+1"])
     calcset = CalcSet([num])
     d = calcset.to_dict()
     assert d["type"] == "calculation-set"
@@ -272,8 +272,8 @@ def test_calcset_to_dict():
 
 
 def test_calcset_add():
-    num1 = Number(name="a", children=["2"])
-    num2 = Number(name="b", children=["3"])
+    num1 = Number(name="a", expression=["2"])
+    num2 = Number(name="b", expression=["3"])
     cs1 = CalcSet([num1])
     cs2 = CalcSet([num2])
     cs3 = cs1 + cs2
@@ -284,8 +284,8 @@ def test_calcset_add():
 
 def test_calcset_getitem():
     """Test retrieving items by name using __getitem__."""
-    num = Number(name="n1", children=["1+2"])
-    var = Variable(name="v1", children=["foo"])
+    num = Number(name="n1", expression=["1+2"])
+    var = Variable(name="v1", expression=["foo"])
     cs = CalcSet([num, var])
 
     # Get item by name
@@ -302,8 +302,8 @@ def test_calcset_file_operations():
     import tempfile
     from pathlib import Path
 
-    num = Number(name="n1", children=["1+2"])
-    var = Variable(name="v1", children=["foo"])
+    num = Number(name="n1", expression=["1+2"])
+    var = Variable(name="v1", expression=["foo"])
     cs = CalcSet([num, var])
 
     # Test with file path (string)
@@ -333,9 +333,9 @@ def test_calcset_file_operations():
 
 def test_calcset_query_edge_cases():
     """Test query with edge cases and error handling."""
-    a = Variable(name="a", children=["foo"])
-    b = Number(name="b1", children=["[a] + 1"])
-    c = Filter(name="f1", children=["[a] > 0"])
+    a = Variable(name="a", expression=["foo"])
+    b = Number(name="b1", expression=["[a] + 1"])
+    c = Filter(name="f1", expression=["[a] > 0"])
     cs = CalcSet([a, b, c])
 
     # Test query with item_type
@@ -357,7 +357,7 @@ def test_number_comment_and_precision():
     """Test Number with comment attributes."""
     num = Number(
         name="n1",
-        children=["1.23456789"],
+        expression=["1.23456789"],
         comment_equation="Test comment",
         comment_item="Item comment",
     )
@@ -375,7 +375,7 @@ def test_category_with_options():
     """Test Category with various options."""
     cat = Category(
         name="cat1",
-        children=["'A'"],
+        expression=["'A'"],
         comment_item="Category item",
         comment_equation="Category test",
     )
@@ -389,7 +389,7 @@ def test_filter_serialization():
     """Test Filter serialization and deserialization."""
     filt = Filter(
         name="f1",
-        children=["[x] > 0"],
+        expression=["[x] > 0"],
         comment_equation="Filter test",
         comment_item="Filter item",
     )
@@ -400,7 +400,7 @@ def test_filter_serialization():
 
     filt2 = Filter.from_dict(d)
     assert filt2.name == "f1"
-    assert filt2.children == ["[x] > 0"]
+    assert filt2.expression == ["[x] > 0"]
 
 
 def test_if_shorthand_creation():
@@ -419,19 +419,19 @@ def test_if_shorthand_creation():
 
 def test_rename_multiple_variables():
     """Test renaming multiple variables at once."""
-    num = Number(name="n1", children=["[x] + [y] + [z]"])
+    num = Number(name="n1", expression=["[x] + [y] + [z]"])
     num2 = num.rename(variables={"x": "a", "y": "b", "z": "c"})
-    assert num2.children == ["[a] + [b] + [c]"]
+    assert num2.expression == ["[a] + [b] + [c]"]
     # Original should be unchanged
-    assert num.children == ["[x] + [y] + [z]"]
+    assert num.expression == ["[x] + [y] + [z]"]
 
 
 def test_topological_sort_with_unnamed_items():
     """Test that topological sort handles items with hasattr check correctly."""
     # The topological_sort function filters items by hasattr(item, 'name')
     # so items without name are added at the end
-    a = Variable(name="a", children=["foo"])
-    b = Number(name="b", children=["[a] + 1"])
+    a = Variable(name="a", expression=["foo"])
+    b = Number(name="b", expression=["[a] + 1"])
 
     cs = CalcSet([b, a])
     sorted_cs = cs.topological_sort()
@@ -443,8 +443,8 @@ def test_topological_sort_with_unnamed_items():
 
 def test_calcset_json_operations():
     """Test JSON serialization and deserialization."""
-    num = Number(name="n1", children=["1+2"])
-    var = Variable(name="v1", children=["foo"])
+    num = Number(name="n1", expression=["1+2"])
+    var = Variable(name="v1", expression=["foo"])
     cs = CalcSet([num, var])
 
     # Test to_json with different parameters

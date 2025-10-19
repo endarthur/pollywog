@@ -110,7 +110,7 @@ Structure your scripts consistently:
         for metal in metals:
             calcs.append(Number(
                 name=f"{metal}_clean",
-                children=[f"clamp([{metal}], 0, {thresholds[metal]})"],
+                expression=[f"clamp([{metal}], 0, {thresholds[metal]})"],
                 comment_equation=f"Remove negatives and cap at {thresholds[metal]}"
             ))
         
@@ -118,7 +118,7 @@ Structure your scripts consistently:
         for metal in metals:
             calcs.append(Number(
                 name=f"{metal}_log",
-                children=[f"log([{metal}_clean] + {EPSILON})"],
+                expression=[f"log([{metal}_clean] + {EPSILON})"],
                 comment_equation="Log transform for kriging"
             ))
         
@@ -199,13 +199,13 @@ Always validate and clean input data:
     from pollywog.core import CalcSet, Number
     
     # Remove negative values
-    Number(name="Au_positive", children=["clamp([Au], 0)"])
+    Number(name="Au_positive", expression=["clamp([Au], 0)"])
     
     # Cap extreme outliers
-    Number(name="Au_capped", children=["clamp([Au], 0, 100)"])
+    Number(name="Au_capped", expression=["clamp([Au], 0, 100)"])
     
     # Handle missing/blank values using Leapfrog's is_normal function
-    Number(name="Au_default", children=[
+    Number(name="Au_default", expression=[
         "if(not is_normal([Au]), 0.001, [Au])"  # If blank/special value, use 0.001
     ])
 
@@ -220,17 +220,17 @@ Create flags for out-of-range values:
     
     qa_checks = CalcSet([
         # Flag impossible values
-        Number(name="flag_impossible", children=[
+        Number(name="flag_impossible", expression=[
             If("([Au] < 0) or ([Cu] < 0) or ([density] < 0)", "1", "0")
         ]),
         
         # Flag extreme values for review
-        Number(name="flag_extreme", children=[
+        Number(name="flag_extreme", expression=[
             If("([Au] > 100) or ([Cu] > 10)", "1", "0")
         ]),
         
         # Flag missing critical data
-        Number(name="flag_incomplete", children=[
+        Number(name="flag_incomplete", expression=[
             If("([domain] = '') or (not is_normal([density]))", "1", "0")
         ]),
     ])
@@ -246,18 +246,18 @@ Always protect against division by zero:
 .. code-block:: python
 
     # Bad
-    Number(name="ratio", children=["[numerator] / [denominator]"])
+    Number(name="ratio", expression=["[numerator] / [denominator]"])
     
     # Good - add small epsilon
-    Number(name="ratio", children=["[numerator] / ([denominator] + 1e-10)"])
+    Number(name="ratio", expression=["[numerator] / ([denominator] + 1e-10)"])
     
     # Good - use conditional
-    Number(name="ratio", children=[
+    Number(name="ratio", expression=[
         If("[denominator] != 0", "[numerator] / [denominator]", "0")
     ])
     
     # Good - clamp denominator
-    Number(name="ratio", children=["[numerator] / clamp([denominator], 0.001)"])
+    Number(name="ratio", expression=["[numerator] / clamp([denominator], 0.001)"])
 
 Logarithms of Zero/Negative
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -267,13 +267,13 @@ Add epsilon before taking logarithms:
 .. code-block:: python
 
     # Bad
-    Number(name="Au_log", children=["log([Au])"])
+    Number(name="Au_log", expression=["log([Au])"])
     
     # Good
-    Number(name="Au_log", children=["log([Au] + 1e-6)"])
+    Number(name="Au_log", expression=["log([Au] + 1e-6)"])
     
     # Good - clamp first
-    Number(name="Au_log", children=["log(clamp([Au], 1e-6))"])
+    Number(name="Au_log", expression=["log(clamp([Au], 1e-6))"])
 
 Expression Complexity
 ~~~~~~~~~~~~~~~~~~~~~
@@ -283,18 +283,18 @@ Break complex expressions into steps:
 .. code-block:: python
 
     # Bad - hard to read and debug
-    Number(name="value", children=[
+    Number(name="value", expression=[
         "(([Au] * 1800 / 31.1035 * 0.88) + ([Cu] * 3.5 * 22.046 * 0.85)) * [tonnes] - ([mining_cost] + [processing_cost])"
     ])
     
     # Good - break into logical steps
     CalcSet([
-        Number(name="Au_value_per_t", children=["[Au] * 1800 / 31.1035 * 0.88"]),
-        Number(name="Cu_value_per_t", children=["[Cu] * 3.5 * 22.046 * 0.85"]),
-        Number(name="revenue_per_t", children=["[Au_value_per_t] + [Cu_value_per_t]"]),
-        Number(name="total_cost", children=["[mining_cost] + [processing_cost]"]),
-        Number(name="nsr", children=["[revenue_per_t] - [total_cost]"]),
-        Number(name="block_value", children=["[nsr] * [tonnes]"]),
+        Number(name="Au_value_per_t", expression=["[Au] * 1800 / 31.1035 * 0.88"]),
+        Number(name="Cu_value_per_t", expression=["[Cu] * 3.5 * 22.046 * 0.85"]),
+        Number(name="revenue_per_t", expression=["[Au_value_per_t] + [Cu_value_per_t]"]),
+        Number(name="total_cost", expression=["[mining_cost] + [processing_cost]"]),
+        Number(name="nsr", expression=["[revenue_per_t] - [total_cost]"]),
+        Number(name="block_value", expression=["[nsr] * [tonnes]"]),
     ])
 
 Parentheses
@@ -305,10 +305,10 @@ Use parentheses liberally for clarity:
 .. code-block:: python
 
     # Ambiguous
-    Number(name="result", children=["[a] + [b] * [c] / [d]"])
+    Number(name="result", expression=["[a] + [b] * [c] / [d]"])
     
     # Clear
-    Number(name="result", children=["[a] + (([b] * [c]) / [d])"])
+    Number(name="result", expression=["[a] + (([b] * [c]) / [d])"])
 
 Documentation and Comments
 --------------------------
@@ -329,7 +329,7 @@ Document your intent:
         WeightedAverage(
             variables=["Au_oxide", "Au_sulfide", "Au_transition"],
             weights=["prop_oxide", "prop_sulfide", "prop_transition"],
-            name="Au_composite",
+            "Au_composite",
             comment="Domain-weighted Au grade, normalized by proportion sum"
         ),
     ])
@@ -342,14 +342,14 @@ Use ``comment_equation`` for business rules:
 .. code-block:: python
 
     Number(
-        name="Au_recovered",
-        children=["[Au_diluted] * 0.88"],
+        "Au_recovered",
+        "[Au_diluted] * 0.88",
         comment_equation="88% recovery per metallurgical test work (Report XYZ-2023)"
     )
     
     Number(
-        name="cutoff_grade",
-        children=["0.3"],
+        "cutoff_grade",
+        "0.3",
         comment_equation="Economic cutoff at $1800/oz Au, $3.50/lb Cu (Jan 2024 prices)"
     )
 
@@ -464,8 +464,8 @@ Store parameters separately from code:
     from pollywog.core import CalcSet, Number
     
     calcset = CalcSet([
-        Number(name="Au_diluted", children=[f"[Au_est] * {DILUTION_FACTOR}"]),
-        Number(name="Au_recovered", children=[f"[Au_diluted] * {RECOVERIES['Au']}"]),
+        Number(name="Au_diluted", expression=[f"[Au_est] * {DILUTION_FACTOR}"]),
+        Number(name="Au_recovered", expression=[f"[Au_diluted] * {RECOVERIES['Au']}"]),
     ])
 
 Environment-Specific Settings
@@ -510,9 +510,9 @@ Test your calculation logic:
     def test_nsr_calculation():
         """Test NSR calculation with known inputs."""
         calcset = CalcSet([
-            Number(name="revenue", children=["[grade] * [price]"]),
-            Number(name="cost", children=["35"]),
-            Number(name="nsr", children=["[revenue] - [cost]"]),
+            Number(name="revenue", expression=["[grade] * [price]"]),
+            Number(name="cost", expression=["35"]),
+            Number(name="nsr", expression=["[revenue] - [cost]"]),
         ])
         
         # Test with known values
@@ -553,8 +553,8 @@ Export small test cases and validate in Leapfrog:
 
     # Create simple test case
     test_calcset = CalcSet([
-        Number(name="test_sum", children=["[a] + [b]"]),
-        Number(name="test_product", children=["[a] * [b]"]),
+        Number(name="test_sum", expression=["[a] + [b]"]),
+        Number(name="test_product", expression=["[a] * [b]"]),
     ])
     
     test_calcset.to_lfcalc("test_calculations.lfcalc")
@@ -574,15 +574,15 @@ Avoid redundant calculations:
 
     # Bad - calculates Au + Ag twice
     CalcSet([
-        Number(name="sum_scaled", children=["([Au] + [Ag]) * 2"]),
-        Number(name="sum_offset", children=["([Au] + [Ag]) + 10"]),
+        Number(name="sum_scaled", expression=["([Au] + [Ag]) * 2"]),
+        Number(name="sum_offset", expression=["([Au] + [Ag]) + 10"]),
     ])
     
     # Good - calculate once, reuse
     CalcSet([
-        Number(name="sum_Au_Ag", children=["[Au] + [Ag]"]),
-        Number(name="sum_scaled", children=["[sum_Au_Ag] * 2"]),
-        Number(name="sum_offset", children=["[sum_Au_Ag] + 10"]),
+        Number(name="sum_Au_Ag", expression=["[Au] + [Ag]"]),
+        Number(name="sum_scaled", expression=["[sum_Au_Ag] * 2"]),
+        Number(name="sum_offset", expression=["[sum_Au_Ag] + 10"]),
     ])
 
 Topological Sorting
@@ -596,9 +596,9 @@ Ensure correct calculation order:
     
     # Create calculations (order doesn't matter)
     calcset = CalcSet([
-        Number(name="final", children=["[intermediate] * 2"]),
-        Number(name="intermediate", children=["[Au] + [Ag]"]),
-        Number(name="Au", children=["clamp([raw_Au], 0)"]),
+        Number(name="final", expression=["[intermediate] * 2"]),
+        Number(name="intermediate", expression=["[Au] + [Ag]"]),
+        Number(name="Au", expression=["clamp([raw_Au], 0)"]),
     ])
     
     # Sort by dependencies before exporting

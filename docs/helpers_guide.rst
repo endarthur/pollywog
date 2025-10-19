@@ -48,7 +48,7 @@ This flexibility allows you to use helpers both for simple standalone calculatio
     # Use this in more complex expressions:
     tonnage_calc = Number(
         name="tonnage",
-        children=[f"{volume_expr} * [density]"]
+        expression=[f"{volume_expr} * [density]"]
     )
 
 **When to use each mode:**
@@ -70,7 +70,7 @@ Add multiple variables together.
     
     # With name: Returns a Number
     total = Sum(["Au_assay1", "Au_assay2", "Au_assay3"], name="Au_composite")
-    # Generates: Number(name="Au_composite", children=["([Au_assay1] + [Au_assay2] + [Au_assay3])"])
+    # Generates: Number(name="Au_composite", expression=["([Au_assay1] + [Au_assay2] + [Au_assay3])"])
     
     # Without name: Returns expression string
     sum_expr = Sum(["length", "width", "height"])
@@ -80,7 +80,7 @@ Add multiple variables together.
     from pollywog.core import Number
     value_calc = Number(
         name="total_dimension",
-        children=[f"{sum_expr} * [scale_factor]"]
+        expression=[f"{sum_expr} * [scale_factor]"]
     )
 
 **Parameters:**
@@ -102,7 +102,7 @@ Multiply multiple variables together.
     
     # With name: Returns a Number
     payable = Product(["grade", "recovery", "tonnes"], name="payable_metal")
-    # Generates: Number(name="payable_metal", children=["([grade] * [recovery] * [tonnes])"])
+    # Generates: Number(name="payable_metal", expression=["([grade] * [recovery] * [tonnes])"])
     
     # Without name: Returns expression string
     prod_expr = Product(["grade", "recovery"])
@@ -112,7 +112,7 @@ Multiply multiple variables together.
     from pollywog.core import Number
     metal_value = Number(
         name="metal_value_usd",
-        children=[f"{prod_expr} * [tonnes] * [price_per_oz]"]
+        expression=[f"{prod_expr} * [tonnes] * [price_per_oz]"]
     )
 
 **Parameters:**
@@ -413,7 +413,7 @@ Example comparing both approaches:
     
     # Using manual expressions (needed for complex logic)
     manual_approach = CalcSet([
-        Number(name="complex_calc", children=[
+        Number(name="complex_calc", expression=[
             "log([Au] + 0.01) * clamp([recovery], 0.5, 1.0) + [base_adjustment]"
         ]),
     ])
@@ -426,7 +426,7 @@ Example comparing both approaches:
         # Complex: Calculate NSR using helper composition
         Number(
             name="NSR_Au", 
-            children=[
+            expression=[
                 # Gold revenue: grade * price * recovery * conversion
                 f"{Product(['Au_composite', '31.1035'])} * [Au_price_per_oz] * [Au_recovery]"
             ]
@@ -451,7 +451,7 @@ Nested Helper Expressions
         # Calculate total block dimensions for geometric checks
         Number(
             name="total_block_dimension",
-            children=[
+            expression=[
                 f"({Sum(['block_x', 'block_y', 'block_z'])})"
             ]
         ),
@@ -459,7 +459,7 @@ Nested Helper Expressions
         # Average of multiple Au estimates times tonnage
         Number(
             name="Au_metal_content",
-            children=[
+            expression=[
                 f"{Average(['Au_kriging', 'Au_idw', 'Au_nn'])} * "
                 f"{Product(['block_volume', 'density'])}"
             ]
@@ -468,7 +468,7 @@ Nested Helper Expressions
         # Weighted average grade with clamping for safety
         Number(
             name="Au_composite_safe",
-            children=[
+            expression=[
                 f"clamp({WeightedAverage(['Au_oxide', 'Au_sulfide'], ['prop_oxide', 'prop_sulfide'])}, 0, 100)"
             ]
         ),
@@ -487,7 +487,7 @@ Using Helper Expressions in Conditional Logic
     calcset = CalcSet([
         Number(
             name="dilution_factor",
-            children=[
+            expression=[
                 If([
                     ("[Au_composite] > 5", "1.05"),  # High grade: 5% dilution
                     ("[Au_composite] > 2", "1.10"),  # Medium grade: 10% dilution
@@ -498,7 +498,7 @@ Using Helper Expressions in Conditional Logic
         # Calculate metal content with grade-dependent recovery
         Number(
             name="Au_recovered_oz",
-            children=[
+            expression=[
                 If([
                     ("[Au_composite] > 3", 
                      f"{Product(['Au_composite', '31.1035', 'tonnage', '0.92'])}"),  # High grade: 92% recovery
@@ -548,7 +548,7 @@ Real-World Example: Multi-Metal Resource Model
     calculations.append(
         Number(
             name="total_revenue_per_tonne",
-            children=[Sum(revenue_terms)],
+            expression=[Sum(revenue_terms)],
             comment_equation="Total revenue from all metals after recovery"
         )
     )
@@ -682,8 +682,8 @@ Economic Calculations
         Product("Cu_recovered", "Cu_price", name="Cu_revenue_per_lb"),
         
         # Convert to $/tonne
-        Number(name="Au_value", children=["[Au_revenue_per_oz] / 31.1035"]),
-        Number(name="Cu_value", children=["[Cu_revenue_per_lb] * 22.046"]),
+        Number(name="Au_value", expression=["[Au_revenue_per_oz] / 31.1035"]),
+        Number(name="Cu_value", expression=["[Cu_revenue_per_lb] * 22.046"]),
         
         # Total revenue
         Sum("Au_value", "Cu_value", name="total_revenue_per_tonne"),
