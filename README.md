@@ -1,4 +1,4 @@
-# Pollywog – Automate Your Leapfrog Workflows
+# Automating Leapfrog Workflows with Pollywog – An Independent Open-Source Tool
 
 [![DOI-badge]][DOI] [![docs-badge]][docs] [![lite-badge]][lite]
 
@@ -9,9 +9,8 @@
 [lite-badge]: https://jupyterlite.rtfd.io/en/latest/_static/badge.svg
 [lite]: https://endarthur.github.io/pollyweb
 
-> **Pollywog** is a Python library for building, manipulating, and automating Leapfrog calculation sets programmatically. Stop clicking through UIs—write code instead.
+> **Pollywog** is a Python library for building, manipulating, and automating Leapfrog calculation sets programmatically.
 
----
 
 ## Table of Contents
 
@@ -24,55 +23,49 @@
 - [Contributing](#contributions)
 - [License](#license)
 
----
-
 ## Why Pollywog?
 
 If you work with [Leapfrog](https://www.seequent.com/products-solutions/leapfrog-geo/) for geological modeling and resource estimation, you know that building calculation sets (`.lfcalc` files) manually can be:
 
-- ⏱️ **Time-consuming** – Repetitive point-and-click operations
-- 🐛 **Error-prone** – Easy to make mistakes in complex formulas
-- 🔄 **Hard to maintain** – Difficult to update across multiple projects
-- 📦 **Not version-controlled** – Changes are hard to track and review
-- 🤖 **Not automatable** – Can't script or integrate with other tools
+- **Time-consuming** – Repetitive point-and-click operations
+- **Error-prone** – Easy to make mistakes in complex formulas
+- **Hard to maintain** – Difficult to update across multiple projects
+- **Not version-controlled** – Changes are hard to track and review
+- **Not automatable** – Can't script or integrate with other tools
 
 **Pollywog solves these problems** by letting you define calculations in Python code that is:
 
-- ✅ Programmatic and automatable
-- ✅ Version-controlled (Git-friendly)
-- ✅ Testable and reproducible
-- ✅ Easy to refactor and maintain
-- ✅ Integrated with ML pipelines (scikit-learn)
-
----
+- Programmatic and automatable
+- Version-controlled (Git-friendly)
+- Testable and reproducible
+- Easy to refactor and maintain
+- Integrated with ML pipelines (scikit-learn)
 
 ## Key Features
 
-### 🔧 Core Functionality
+### Core Functionality
 - **Read and write** `.lfcalc` files programmatically
 - **Create calculations** with Python classes (`Number`, `Category`, `If`, etc.)
 - **Query and filter** calculation sets like pandas DataFrames
 - **Topological sorting** for automatic dependency resolution
 - **Rich display** in Jupyter notebooks with interactive trees
 
-### 🧮 Helper Functions
+### Helper Functions
 - **Mathematical operations**: `Sum`, `Product`, `Average`, `WeightedAverage`
 - **Transformations**: `Scale`, `Normalize`
 - **Classification**: `CategoryFromThresholds`
 - **Dual mode**: Return complete calculations (with `name`) or expressions (without `name`) for composition
 
-### 🤖 Machine Learning Integration
+### Machine Learning Integration
 - Convert **scikit-learn decision trees** to Leapfrog calculations
 - Convert **random forests** to ensemble calculations
 - Convert **linear models** to equations
 - Support for both **regression and classification**
 
-### 📊 Domain-Based Calculations
+### Domain-Based Calculations
 - Multi-domain resource modeling
 - Weighted averages by domain proportions
 - Conditional logic for different geological units
-
----
 
 ## Quick Start
 
@@ -107,8 +100,6 @@ Then import `my_calculations.lfcalc` into Leapfrog and you're done! ✨
 
 > ⚠️ **Note**: Pollywog is in active development. Always backup your Leapfrog projects before testing. Report issues on [GitHub](https://github.com/endarthur/pollywog/issues).
 
----
-
 ## Legal Disclaimer
 
 Pollywog is an independent open-source tool developed to support the automation of workflows involving .lfcalc files used in Leapfrog software by Seequent.
@@ -139,9 +130,7 @@ pip install git+https://github.com/endarthur/pollywog.git
 
 Try Pollywog without installing anything using **JupyterLite**: [https://endarthur.github.io/pollyweb](https://endarthur.github.io/pollyweb)
 
-> **Note**: JupyterLite runs in your browser and has limitations (no file system access, limited libraries). Files are stored in browser memory and won't persist if you clear your cache. Download your work regularly! For production use, install locally.
-
----
+> **Note**: JupyterLite runs in your browser and has limitations (no file system access, limited libraries). Files are stored in browser memory and won't persist if you clear your cache. Download your work regularly! For production use, preferably install locally.
 
 ## Usage Examples
 
@@ -301,7 +290,9 @@ selected = calcset.query('any(name.startswith(m) for m in @metals_of_interest)')
 filtered = calcset.query('len(children) > 1 and "log" in name')
 ```
 
----
+- Use item attributes (e.g., `name`, `item_type`) in expressions.
+- Reference external variables using `@var` syntax (e.g., `name.startswith(@prefix)`).
+- Supported helpers: `len`, `any`, `all`, `min`, `max`, `sorted`, `re`, `str`.
 
 ## Documentation
 
@@ -315,13 +306,9 @@ filtered = calcset.query('len(children) > 1 and "log" in name')
 - **[Best Practices](https://pollywog.readthedocs.io/en/latest/best_practices.html)** – Production recommendations
 - **[API Reference](https://pollywog.readthedocs.io/en/latest/api_reference.html)** – Complete API documentation
 
----
-
 ## License
 
 MIT License – See [LICENSE](LICENSE) file for details.
-
----
 
 ## Contributions
 
@@ -345,8 +332,6 @@ Feel free to open an issue if you have questions or suggestions.
 
 Thanks to Debora Roldão for helping with organization of the project, documentation and design, Eduardo Takafuji for the initial discussion of the feasability of this all those years ago and Jessica da Matta for support and sanity checks along the way.
 
----
-
 ## Links
 
 - 📘 **Documentation**: https://pollywog.readthedocs.io
@@ -355,5 +340,3 @@ Thanks to Debora Roldão for helping with organization of the project, documenta
 - 📦 **PyPI**: https://pypi.org/project/lf-pollywog/
 - 🐛 **Issues**: https://github.com/endarthur/pollywog/issues
 - 📖 **Examples**: [examples/](https://github.com/endarthur/pollywog/tree/main/examples) folder
-
----

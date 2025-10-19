@@ -287,11 +287,11 @@ def test_calcset_getitem():
     num = Number(name="n1", children=["1+2"])
     var = Variable(name="v1", children=["foo"])
     cs = CalcSet([num, var])
-    
+
     # Get item by name
     assert cs["n1"].name == "n1"
     assert cs["v1"].name == "v1"
-    
+
     # Test KeyError for non-existent item
     with pytest.raises(KeyError):
         cs["non_existent"]
@@ -301,15 +301,15 @@ def test_calcset_file_operations():
     """Test writing and reading .lfcalc files."""
     import tempfile
     from pathlib import Path
-    
+
     num = Number(name="n1", children=["1+2"])
     var = Variable(name="v1", children=["foo"])
     cs = CalcSet([num, var])
-    
+
     # Test with file path (string)
     with tempfile.NamedTemporaryFile(mode="wb", delete=False, suffix=".lfcalc") as f:
         temp_path = f.name
-    
+
     try:
         cs.to_lfcalc(temp_path)
         cs2 = CalcSet.read_lfcalc(temp_path)
@@ -318,11 +318,11 @@ def test_calcset_file_operations():
         assert cs2.items[1].name == "n1"
     finally:
         Path(temp_path).unlink(missing_ok=True)
-    
+
     # Test with Path object
     with tempfile.NamedTemporaryFile(mode="wb", delete=False, suffix=".lfcalc") as f:
         temp_path = Path(f.name)
-    
+
     try:
         cs.to_lfcalc(temp_path)
         cs3 = CalcSet.read_lfcalc(temp_path)
@@ -337,17 +337,17 @@ def test_calcset_query_edge_cases():
     b = Number(name="b1", children=["[a] + 1"])
     c = Filter(name="f1", children=["[a] > 0"])
     cs = CalcSet([a, b, c])
-    
+
     # Test query with item_type
     result = cs.query('item_type == "variable"')
     assert len(result.items) == 1
     assert result.items[0].name == "a"
-    
+
     # Test query with item_type filter
     result = cs.query('item_type == "filter"')
     assert len(result.items) == 1
     assert result.items[0].name == "f1"
-    
+
     # Query that returns no results
     result = cs.query('name == "nonexistent"')
     assert len(result.items) == 0
@@ -359,12 +359,12 @@ def test_number_comment_and_precision():
         name="n1",
         children=["1.23456789"],
         comment_equation="Test comment",
-        comment_item="Item comment"
+        comment_item="Item comment",
     )
     d = num.to_dict()
     assert d["equation"]["comment"] == "Test comment"
     assert d["comment"] == "Item comment"
-    
+
     # Test from_dict reconstruction
     num2 = Number.from_dict(d)
     assert num2.comment_equation == "Test comment"
@@ -373,7 +373,12 @@ def test_number_comment_and_precision():
 
 def test_category_with_options():
     """Test Category with various options."""
-    cat = Category(name="cat1", children=["'A'"], comment_item="Category item", comment_equation="Category test")
+    cat = Category(
+        name="cat1",
+        children=["'A'"],
+        comment_item="Category item",
+        comment_equation="Category test",
+    )
     d = cat.to_dict()
     assert d["calculation_type"] == "string"
     assert d["equation"]["comment"] == "Category test"
@@ -382,12 +387,17 @@ def test_category_with_options():
 
 def test_filter_serialization():
     """Test Filter serialization and deserialization."""
-    filt = Filter(name="f1", children=["[x] > 0"], comment_equation="Filter test", comment_item="Filter item")
+    filt = Filter(
+        name="f1",
+        children=["[x] > 0"],
+        comment_equation="Filter test",
+        comment_item="Filter item",
+    )
     d = filt.to_dict()
     assert d["type"] == "filter"
     assert d["equation"]["comment"] == "Filter test"
     assert d["comment"] == "Filter item"
-    
+
     filt2 = Filter.from_dict(d)
     assert filt2.name == "f1"
     assert filt2.children == ["[x] > 0"]
@@ -400,7 +410,7 @@ def test_if_shorthand_creation():
     assert isinstance(ifexpr.rows[0], IfRow)
     assert ifexpr.rows[0].condition == "[x] > 0"
     assert ifexpr.rows[0].value == "1"
-    
+
     # If with list parameters
     ifexpr2 = If(["[x] > 0"], ["1"], ["0"])
     assert ifexpr2.rows[0].condition == ["[x] > 0"]
@@ -422,10 +432,10 @@ def test_topological_sort_with_unnamed_items():
     # so items without name are added at the end
     a = Variable(name="a", children=["foo"])
     b = Number(name="b", children=["[a] + 1"])
-    
+
     cs = CalcSet([b, a])
     sorted_cs = cs.topological_sort()
-    
+
     # Named items should be sorted correctly
     assert sorted_cs.items[0].name == "a"
     assert sorted_cs.items[1].name == "b"
@@ -436,15 +446,16 @@ def test_calcset_json_operations():
     num = Number(name="n1", children=["1+2"])
     var = Variable(name="v1", children=["foo"])
     cs = CalcSet([num, var])
-    
+
     # Test to_json with different parameters
     json_str = cs.to_json(sort_items=True, indent=2)
     assert "calculation-set" in json_str
     assert "n1" in json_str
     assert "v1" in json_str
-    
+
     # Test from_dict from JSON
     import json
+
     data = json.loads(json_str)
     cs2 = CalcSet.from_dict(data)
     assert len(cs2.items) == 2

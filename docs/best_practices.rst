@@ -6,7 +6,7 @@ This guide provides recommendations for effectively using pollywog in production
 .. tip::
    **Quick Checklist**
    
-   ✅ Use version control (Git) for all scripts
+   ✅ Use version control (Git) for all scripts (or at least keep a copy of the notebook in Central)
    
    ✅ Add comments and docstrings to your code
    
@@ -46,6 +46,11 @@ Organize your pollywog scripts in a consistent directory structure:
     ├── tests/
     │   └── test_calculations.py
     └── README.md
+
+You could also create an orchestration script (e.g., ``run_all.py``) to execute all steps in sequence,
+or if using jupyter notebooks instead of scripts, use `Papermill`_ to parameterize and run them.
+
+.. _Papermill: https://papermill.readthedocs.io/en/latest/
 
 Script Organization
 ~~~~~~~~~~~~~~~~~~~

@@ -78,7 +78,7 @@ def test_convert_tree_with_complex_structure():
     X = np.array([[0, 0], [0, 1], [1, 0], [1, 1], [2, 2]])
     y = np.array([0, 1, 1, 0, 2])
     tree = DecisionTreeRegressor(max_depth=2).fit(X, y)
-    
+
     result = convert_tree(tree, ["feature1", "feature2"], "output")
     assert isinstance(result, Number)
     assert result.name == "output"
@@ -90,7 +90,7 @@ def test_convert_tree_classifier_multiclass():
     X = np.array([[0, 0], [1, 1], [2, 2], [3, 3], [4, 4]])
     y = np.array([0, 1, 2, 0, 1])  # 3 classes
     tree = DecisionTreeClassifier().fit(X, y)
-    
+
     result = convert_tree(tree, ["x1", "x2"], "class_output")
     assert isinstance(result, Category)
     assert result.name == "class_output"
@@ -101,7 +101,7 @@ def test_convert_linear_with_single_feature():
     X = np.array([[1], [2], [3]])
     y = np.array([2, 4, 6])
     lm = LinearRegression().fit(X, y)
-    
+
     result = convert_linear_model(lm, ["x"], "y_pred")
     assert isinstance(result, Number)
     assert result.name == "y_pred"
@@ -113,7 +113,7 @@ def test_convert_linear_with_zero_coefficients():
     lm = make_linear()
     # Second coefficient is already 0 in make_linear
     result = convert_linear_model(lm, ["x1", "x2"], "target")
-    
+
     # Should handle zero coefficient gracefully
     assert isinstance(result, Number)
     # x2 coefficient is 0, so it might be excluded or included as 0 * [x2]

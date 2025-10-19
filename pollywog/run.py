@@ -11,11 +11,11 @@ import numpy as np
 def log(n, base=10):
     """
     Compute logarithm of n with the specified base.
-    
+
     Args:
         n (float): The value to compute the logarithm of.
         base (float, optional): The logarithm base. Defaults to 10.
-    
+
     Returns:
         float: The logarithm of n with the specified base.
     """
@@ -25,10 +25,10 @@ def log(n, base=10):
 def ln(n):
     """
     Compute natural logarithm (base e) of n.
-    
+
     Args:
         n (float): The value to compute the natural logarithm of.
-    
+
     Returns:
         float: The natural logarithm of n.
     """
@@ -38,10 +38,10 @@ def ln(n):
 def exp(n):
     """
     Compute the exponential function e^n.
-    
+
     Args:
         n (float): The exponent value.
-    
+
     Returns:
         float: e raised to the power of n.
     """
@@ -51,10 +51,10 @@ def exp(n):
 def sqrt(n):
     """
     Compute the square root of n.
-    
+
     Args:
         n (float): The value to compute the square root of.
-    
+
     Returns:
         float: The square root of n.
     """
@@ -64,14 +64,15 @@ def sqrt(n):
 def abs_(n):
     """
     Compute the absolute value of n.
-    
+
     Args:
         n (float): The value to compute the absolute value of.
-    
+
     Returns:
         float: The absolute value of n.
     """
     import builtins
+
     return builtins.abs(n)
 
 
@@ -79,10 +80,10 @@ def abs_(n):
 def sin(x):
     """
     Compute the sine of x (in radians).
-    
+
     Args:
         x (float): Angle in radians.
-    
+
     Returns:
         float: The sine of x.
     """
@@ -92,10 +93,10 @@ def sin(x):
 def cos(x):
     """
     Compute the cosine of x (in radians).
-    
+
     Args:
         x (float): Angle in radians.
-    
+
     Returns:
         float: The cosine of x.
     """
@@ -105,10 +106,10 @@ def cos(x):
 def tan(x):
     """
     Compute the tangent of x (in radians).
-    
+
     Args:
         x (float): Angle in radians.
-    
+
     Returns:
         float: The tangent of x.
     """
@@ -118,10 +119,10 @@ def tan(x):
 def asin(x):
     """
     Compute the arcsine (inverse sine) of x.
-    
+
     Args:
         x (float): Value between -1 and 1.
-    
+
     Returns:
         float: The arcsine of x in radians.
     """
@@ -131,10 +132,10 @@ def asin(x):
 def acos(x):
     """
     Compute the arccosine (inverse cosine) of x.
-    
+
     Args:
         x (float): Value between -1 and 1.
-    
+
     Returns:
         float: The arccosine of x in radians.
     """
@@ -144,10 +145,10 @@ def acos(x):
 def atan(x):
     """
     Compute the arctangent (inverse tangent) of x.
-    
+
     Args:
         x (float): Any real number.
-    
+
     Returns:
         float: The arctangent of x in radians.
     """
@@ -158,43 +159,45 @@ def atan(x):
 def min_(*args):
     """
     Return the minimum value from the given arguments.
-    
+
     Args:
         *args: Variable number of values to compare.
-    
+
     Returns:
         The minimum value among the arguments.
     """
     import builtins
+
     return builtins.min(args)
 
 
 def max_(*args):
     """
     Return the maximum value from the given arguments.
-    
+
     Args:
         *args: Variable number of values to compare.
-    
+
     Returns:
         The maximum value among the arguments.
     """
     import builtins
+
     return builtins.max(args)
 
 
 def clamp(n, lower, upper=None):
     """
     Clamp a value between lower and upper bounds.
-    
+
     If only lower is provided, returns max(n, lower).
     If both lower and upper are provided, returns a value between lower and upper.
-    
+
     Args:
         n (float): The value to clamp.
         lower (float): The lower bound.
         upper (float, optional): The upper bound. If None, only lower bound is enforced.
-    
+
     Returns:
         float: The clamped value.
     """
@@ -206,11 +209,11 @@ def clamp(n, lower, upper=None):
 def round_(n, dp=None):
     """
     Round a number to a specified number of decimal places.
-    
+
     Args:
         n (float): The number to round.
         dp (int, optional): Number of decimal places. If None, rounds to nearest integer.
-    
+
     Returns:
         float: The rounded value.
     """
@@ -222,11 +225,11 @@ def round_(n, dp=None):
 def roundsf(n, sf):
     """
     Round a number to a specified number of significant figures.
-    
+
     Args:
         n (float): The number to round.
         sf (int): Number of significant figures.
-    
+
     Returns:
         float: The number rounded to the specified significant figures.
     """
@@ -241,10 +244,10 @@ def roundsf(n, sf):
 def floor_(n):
     """
     Return the floor of n (largest integer less than or equal to n).
-    
+
     Args:
         n (float): The value to floor.
-    
+
     Returns:
         float: The floor of n.
     """
@@ -254,10 +257,10 @@ def floor_(n):
 def ceiling(n):
     """
     Return the ceiling of n (smallest integer greater than or equal to n).
-    
+
     Args:
         n (float): The value to ceiling.
-    
+
     Returns:
         float: The ceiling of n.
     """
@@ -267,10 +270,10 @@ def ceiling(n):
 def truncate(n):
     """
     Truncate n to an integer by removing the decimal part.
-    
+
     Args:
         n (float): The value to truncate.
-    
+
     Returns:
         int: The integer part of n.
     """
@@ -281,10 +284,10 @@ def truncate(n):
 def concat(*args):
     """
     Concatenate multiple values into a single string.
-    
+
     Args:
         *args: Variable number of values to concatenate.
-    
+
     Returns:
         str: The concatenated string.
     """
@@ -294,11 +297,11 @@ def concat(*args):
 def startswith(t, prefix):
     """
     Check if text starts with the specified prefix.
-    
+
     Args:
         t: The text to check (converted to string).
         prefix (str): The prefix to check for.
-    
+
     Returns:
         bool: True if text starts with prefix, False otherwise.
     """
@@ -308,11 +311,11 @@ def startswith(t, prefix):
 def endswith(t, suffix):
     """
     Check if text ends with the specified suffix.
-    
+
     Args:
         t: The text to check (converted to string).
         suffix (str): The suffix to check for.
-    
+
     Returns:
         bool: True if text ends with suffix, False otherwise.
     """
@@ -322,11 +325,11 @@ def endswith(t, suffix):
 def contains(t, part):
     """
     Check if text contains the specified substring.
-    
+
     Args:
         t: The text to check (converted to string).
         part (str): The substring to check for.
-    
+
     Returns:
         bool: True if text contains part, False otherwise.
     """
@@ -336,11 +339,11 @@ def contains(t, part):
 def like(t, pattern):
     """
     Check if text matches a regular expression pattern.
-    
+
     Args:
         t: The text to check (converted to string).
         pattern (str): The regular expression pattern.
-    
+
     Returns:
         bool: True if pattern matches anywhere in text, False otherwise.
     """
@@ -352,11 +355,11 @@ def like(t, pattern):
 def regexp(t, pattern):
     """
     Check if text matches a regular expression pattern (alias for like).
-    
+
     Args:
         t: The text to check (converted to string).
         pattern (str): The regular expression pattern.
-    
+
     Returns:
         bool: True if pattern matches anywhere in text, False otherwise.
     """
@@ -368,10 +371,10 @@ def regexp(t, pattern):
 def min(*args):
     """
     Wrapper for min_ to match Leapfrog function naming.
-    
+
     Args:
         *args: Variable number of values to compare.
-    
+
     Returns:
         The minimum value among the arguments.
     """
@@ -381,10 +384,10 @@ def min(*args):
 def max(*args):
     """
     Wrapper for max_ to match Leapfrog function naming.
-    
+
     Args:
         *args: Variable number of values to compare.
-    
+
     Returns:
         The maximum value among the arguments.
     """
@@ -394,11 +397,11 @@ def max(*args):
 def round(n, dp=None):
     """
     Wrapper for round_ to match Leapfrog function naming.
-    
+
     Args:
         n (float): The number to round.
         dp (int, optional): Number of decimal places. If None, rounds to nearest integer.
-    
+
     Returns:
         float: The rounded value.
     """
@@ -408,10 +411,10 @@ def round(n, dp=None):
 def floor(n):
     """
     Wrapper for floor_ to match Leapfrog function naming.
-    
+
     Args:
         n (float): The value to floor.
-    
+
     Returns:
         float: The floor of n.
     """
@@ -421,10 +424,10 @@ def floor(n):
 def abs(n):
     """
     Wrapper for abs_ to match Leapfrog function naming.
-    
+
     Args:
         n (float): The value to compute the absolute value of.
-    
+
     Returns:
         float: The absolute value of n.
     """
@@ -434,16 +437,16 @@ def abs(n):
 def is_normal(n):
     """
     Check if a value is a normal (valid) number.
-    
+
     Returns True for finite numbers (int, float), False for None, NaN, or infinity.
     Treats anything that isn't a normal number as NaN for run.py purposes.
-    
+
     Args:
         n: The value to check.
-    
+
     Returns:
         bool: True if n is a finite number, False otherwise.
-    
+
     Example:
         >>> is_normal(5.0)
         True
@@ -458,6 +461,7 @@ def is_normal(n):
         return False
     try:
         import math
+
         # Check if it's a number and is finite (not NaN, not inf)
         return isinstance(n, (int, float)) and math.isfinite(n)
     except (TypeError, ValueError):
@@ -501,26 +505,26 @@ def run_calcset(
 ):
     """
     Evaluate a CalcSet with external inputs or a pandas DataFrame.
-    
+
     This function executes a calculation set using either a dictionary of input values
     or a pandas DataFrame. When using a DataFrame, calculations are applied row-by-row.
-    
+
     Args:
         calcset (CalcSet): The calculation set to evaluate.
         inputs (dict, optional): Dictionary of input variable values for single evaluation.
         dataframe (pd.DataFrame, optional): DataFrame for row-by-row evaluation.
         assign_results (bool): Whether to assign results to output. Defaults to True.
-        output_variables (bool): Whether to include variables in output. 
+        output_variables (bool): Whether to include variables in output.
             Defaults to False (Leapfrog-like behavior: only calculations, categories, and filters).
-    
+
     Returns:
-        dict or pd.DataFrame: 
+        dict or pd.DataFrame:
             - If inputs provided: Dictionary of calculation results.
             - If dataframe provided: DataFrame with calculated columns added.
-    
+
     Note:
         pandas is only required when using DataFrame input/output.
-    
+
     Example:
         >>> from pollywog.core import CalcSet, Number
         >>> cs = CalcSet([Number(name="doubled", children=["[x] * 2"])])
@@ -618,10 +622,10 @@ try:
     class PollywogAccessor:
         """
         Pandas DataFrame accessor for running pollywog calculations.
-        
+
         This accessor provides a convenient way to run CalcSets on DataFrames
         using the .pw namespace.
-        
+
         Example:
             >>> import pandas as pd
             >>> from pollywog.core import CalcSet, Number
@@ -629,11 +633,11 @@ try:
             >>> cs = CalcSet([Number(name="doubled", children=["[x] * 2"])])
             >>> result = df.pw.run(cs)
         """
-        
+
         def __init__(self, pandas_obj):
             """
             Initialize the accessor with a DataFrame.
-            
+
             Args:
                 pandas_obj (pd.DataFrame): The DataFrame to operate on.
             """
@@ -642,11 +646,11 @@ try:
         def run(self, calcset, assign_results=True):
             """
             Run a CalcSet on this DataFrame, returning a copy with results assigned.
-            
+
             Args:
                 calcset (CalcSet): The calculation set to run.
                 assign_results (bool): Whether to assign results to output. Defaults to True.
-            
+
             Returns:
                 pd.DataFrame: A copy of the DataFrame with calculated columns added.
             """

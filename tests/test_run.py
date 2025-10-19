@@ -81,10 +81,10 @@ def test_run_with_math_functions():
     c = Number(name="ln_result", children=["ln([a])"])
     d = Number(name="exp_result", children=["exp([a])"])
     e = Number(name="sqrt_result", children=["sqrt([a])"])
-    
+
     cs = CalcSet([a, b, c, d, e])
     results = run_calcset(cs, inputs={"a": 100})
-    
+
     assert abs(results["log10_result"] - 2.0) < 0.001
     assert abs(results["ln_result"] - math.log(100)) < 0.001
     assert abs(results["exp_result"] - math.exp(100)) < 0.001
@@ -99,10 +99,10 @@ def test_run_with_trig_functions():
     b = Number(name="sin_result", children=["sin([angle])"])
     c = Number(name="cos_result", children=["cos([angle])"])
     d = Number(name="tan_result", children=["tan([angle])"])
-    
+
     cs = CalcSet([a, b, c, d])
     results = run_calcset(cs, inputs={"angle": math.pi / 4})
-    
+
     assert abs(results["sin_result"] - math.sqrt(2) / 2) < 0.001
     assert abs(results["cos_result"] - math.sqrt(2) / 2) < 0.001
     assert abs(results["tan_result"] - 1.0) < 0.001
@@ -116,10 +116,10 @@ def test_run_with_inverse_trig_functions():
     b = Number(name="asin_result", children=["asin([x])"])
     c = Number(name="acos_result", children=["acos([x])"])
     d = Number(name="atan_result", children=["atan([x])"])
-    
+
     cs = CalcSet([a, b, c, d])
     results = run_calcset(cs, inputs={"x": 0.5})
-    
+
     assert abs(results["asin_result"] - math.asin(0.5)) < 0.001
     assert abs(results["acos_result"] - math.acos(0.5)) < 0.001
     assert abs(results["atan_result"] - math.atan(0.5)) < 0.001
@@ -133,10 +133,10 @@ def test_run_with_trig_functions():
     b = Number(name="sin_result", children=["sin([angle])"])
     c = Number(name="cos_result", children=["cos([angle])"])
     d = Number(name="tan_result", children=["tan([angle])"])
-    
+
     cs = CalcSet([a, b, c, d])
     results = run_calcset(cs, inputs={"angle": math.pi / 4})
-    
+
     assert abs(results["sin_result"] - math.sqrt(2) / 2) < 0.001
     assert abs(results["cos_result"] - math.sqrt(2) / 2) < 0.001
     assert abs(results["tan_result"] - 1.0) < 0.001
@@ -150,10 +150,10 @@ def test_run_with_inverse_trig_functions():
     b = Number(name="asin_result", children=["asin([x])"])
     c = Number(name="acos_result", children=["acos([x])"])
     d = Number(name="atan_result", children=["atan([x])"])
-    
+
     cs = CalcSet([a, b, c, d])
     results = run_calcset(cs, inputs={"x": 0.5})
-    
+
     assert abs(results["asin_result"] - math.asin(0.5)) < 0.001
     assert abs(results["acos_result"] - math.acos(0.5)) < 0.001
     assert abs(results["atan_result"] - math.atan(0.5)) < 0.001
@@ -165,15 +165,15 @@ def test_run_with_string_functions():
     b = Number(name="starts", children=["startswith([text], 'Hello')"])
     c = Number(name="ends", children=["endswith([text], 'world')"])
     d = Number(name="has", children=["contains([text], 'beautiful')"])
-    
+
     cs = CalcSet([a, b, c, d])
-    
+
     # Test with matching string
     results = run_calcset(cs, inputs={"text": "Hello beautiful world"})
     assert results["starts"] is True
     assert results["ends"] is True
     assert results["has"] is True
-    
+
     # Test with non-matching string
     results = run_calcset(cs, inputs={"text": "Goodbye cruel world"})
     assert results["starts"] is False
@@ -186,10 +186,10 @@ def test_run_with_concat():
     a = Variable(name="first", children=[""])
     b = Variable(name="last", children=[""])
     c = Number(name="full_name", children=["concat([first], ' ', [last])"])
-    
+
     cs = CalcSet([a, b, c])
     results = run_calcset(cs, inputs={"first": "John", "last": "Doe"})
-    
+
     assert results["full_name"] == "John Doe"
 
 
@@ -200,10 +200,10 @@ def test_run_with_error_handling():
     b = Number(name="div_zero", children=["[x] / 0"])
     # Undefined variable should return None
     c = Number(name="undefined", children=["[y] + 1"])
-    
+
     cs = CalcSet([a, b, c])
     results = run_calcset(cs, inputs={"x": 5})
-    
+
     # Errors should result in None values
     assert results["div_zero"] is None
     assert results["undefined"] is None
@@ -217,9 +217,9 @@ def test_run_with_complex_if():
     ifrow3 = IfRow(condition=["[grade] >= 70"], value=["'C'"])
     ifexpr = If(rows=[ifrow1, ifrow2, ifrow3], otherwise=["'F'"])
     b = Number(name="letter_grade", children=[ifexpr])
-    
+
     cs = CalcSet([a, b])
-    
+
     # Test different grade ranges
     assert run_calcset(cs, inputs={"grade": 95})["letter_grade"] == "A"
     assert run_calcset(cs, inputs={"grade": 85})["letter_grade"] == "B"
@@ -237,9 +237,9 @@ def test_run_with_nested_if():
     outer_ifrow = IfRow(condition=["[x] != 0"], value=[inner_if])
     outer_if = If(rows=[outer_ifrow], otherwise=["0"])
     b = Number(name="result", children=[outer_if])
-    
+
     cs = CalcSet([a, b])
-    
+
     assert run_calcset(cs, inputs={"x": 5})["result"] == 1
     assert run_calcset(cs, inputs={"x": -5})["result"] == -1
     assert run_calcset(cs, inputs={"x": 0})["result"] == 0
@@ -250,19 +250,19 @@ def test_run_with_clamp():
     a = Variable(name="x", children=[""])
     b = Number(name="clamped", children=["clamp([x], 0, 10)"])
     c = Number(name="clamped_lower", children=["clamp([x], 5)"])
-    
+
     cs = CalcSet([a, b, c])
-    
+
     # Test value within bounds
     results = run_calcset(cs, inputs={"x": 5})
     assert results["clamped"] == 5
     assert results["clamped_lower"] == 5
-    
+
     # Test value below lower bound
     results = run_calcset(cs, inputs={"x": -5})
     assert results["clamped"] == 0
     assert results["clamped_lower"] == 5
-    
+
     # Test value above upper bound
     results = run_calcset(cs, inputs={"x": 15})
     assert results["clamped"] == 10
@@ -275,13 +275,13 @@ def test_run_with_min_max():
     b = Variable(name="y", children=[""])
     c = Number(name="min_result", children=["min([x], [y])"])
     d = Number(name="max_result", children=["max([x], [y])"])
-    
+
     cs = CalcSet([a, b, c, d])
     results = run_calcset(cs, inputs={"x": 5, "y": 10})
-    
+
     assert results["min_result"] == 5
     assert results["max_result"] == 10
-    
+
     # Test with negative values
     results = run_calcset(cs, inputs={"x": -3, "y": -7})
     assert results["min_result"] == -7
@@ -292,13 +292,13 @@ def test_run_with_roundsf():
     """Test roundsf (round to significant figures) function with fixed bug."""
     a = Variable(name="x", children=[""])
     b = Number(name="rounded_sf", children=["roundsf([x], 3)"])
-    
+
     cs = CalcSet([a, b])
-    
+
     # Test various roundsf cases
     results = run_calcset(cs, inputs={"x": 123.456})
     assert results["rounded_sf"] == 123
-    
+
     results = run_calcset(cs, inputs={"x": 0.001234})
     assert results["rounded_sf"] == 0.00123
 
@@ -307,21 +307,21 @@ def test_run_with_is_normal():
     """Test is_normal function for detecting valid numbers."""
     a = Variable(name="x", children=[""])
     b = Number(name="is_valid", children=["is_normal([x])"])
-    
+
     cs = CalcSet([a, b])
-    
+
     # Test normal number
     results = run_calcset(cs, inputs={"x": 5.0})
     assert results["is_valid"] is True
-    
+
     # Test None value
     results = run_calcset(cs, inputs={"x": None})
     assert results["is_valid"] is False
-    
+
     # Test with zero (should be normal)
     results = run_calcset(cs, inputs={"x": 0})
     assert results["is_valid"] is True
-    
+
     # Test with negative number
     results = run_calcset(cs, inputs={"x": -123.456})
     assert results["is_valid"] is True
@@ -331,21 +331,21 @@ def test_run_with_abs():
     """Test abs function with fixed infinite recursion bug."""
     a = Variable(name="x", children=[""])
     b = Number(name="abs_result", children=["abs([x])"])
-    
+
     cs = CalcSet([a, b])
-    
+
     # Test positive number
     results = run_calcset(cs, inputs={"x": 5})
     assert results["abs_result"] == 5
-    
+
     # Test negative number
     results = run_calcset(cs, inputs={"x": -5})
     assert results["abs_result"] == 5
-    
+
     # Test zero
     results = run_calcset(cs, inputs={"x": 0})
     assert results["abs_result"] == 0
-    
+
     # Test decimal
     results = run_calcset(cs, inputs={"x": -3.14})
     assert abs(results["abs_result"] - 3.14) < 0.001
