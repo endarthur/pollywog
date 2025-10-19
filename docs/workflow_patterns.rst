@@ -19,15 +19,15 @@ This is the most common workflow in resource estimation:
     # Create a calcset for drillhole composites
     preprocess = CalcSet([
         # Remove outliers using clamping
-        Number(name="Au_clamped", children=["clamp([Au], 0, 100)"],
+        Number(name="Au_clamped", expression=["clamp([Au], 0, 100)"],
                comment_equation="Cap gold at 100 g/t to remove outliers"),
-        Number(name="Cu_clamped", children=["clamp([Cu], 0, 5)"],
+        Number(name="Cu_clamped", expression=["clamp([Cu], 0, 5)"],
                comment_equation="Cap copper at 5% to remove outliers"),
         
         # Log transforms for geostatistics
-        Number(name="Au_log", children=["log([Au_clamped] + 0.01)"],
+        Number(name="Au_log", expression=["log([Au_clamped] + 0.01)"],
                comment_equation="Log transform for kriging"),
-        Number(name="Cu_log", children=["log([Cu_clamped] + 0.01)"],
+        Number(name="Cu_log", expression=["log([Cu_clamped] + 0.01)"],
                comment_equation="Log transform for kriging"),
     ])
     
@@ -41,21 +41,21 @@ This is the most common workflow in resource estimation:
     # Back-transform and apply recovery
     postprocess = CalcSet([
         # Back-transform from log space
-        Number(name="Au_est", children=["exp([Au_log_kriged]) - 0.01"],
+        Number(name="Au_est", expression=["exp([Au_log_kriged]) - 0.01"],
                comment_equation="Back-transform from log space"),
-        Number(name="Cu_est", children=["exp([Cu_log_kriged]) - 0.01"],
+        Number(name="Cu_est", expression=["exp([Cu_log_kriged]) - 0.01"],
                comment_equation="Back-transform from log space"),
         
         # Apply minimum mining width dilution
-        Number(name="Au_diluted", children=["[Au_est] * 0.95"],
+        Number(name="Au_diluted", expression=["[Au_est] * 0.95"],
                comment_equation="5% dilution factor"),
-        Number(name="Cu_diluted", children=["[Cu_est] * 0.95"],
+        Number(name="Cu_diluted", expression=["[Cu_est] * 0.95"],
                comment_equation="5% dilution factor"),
         
         # Apply metallurgical recovery
-        Number(name="Au_recovered", children=["[Au_diluted] * 0.88"],
+        Number(name="Au_recovered", expression=["[Au_diluted] * 0.88"],
                comment_equation="88% Au recovery"),
-        Number(name="Cu_recovered", children=["[Cu_diluted] * 0.82"],
+        Number(name="Cu_recovered", expression=["[Cu_diluted] * 0.82"],
                comment_equation="82% Cu recovery"),
     ])
     
@@ -103,7 +103,7 @@ Apply different estimation approaches based on rock type:
     
     calcset = CalcSet([
         # Use different estimation methods based on rock type
-        Number(name="Au_final", children=[
+        Number(name="Au_final", expression=[
             If([
                 ("[rocktype] = 'basalt'", "[Au_ordinary_kriging]"),
                 ("[rocktype] = 'breccia'", "[Au_indicator_kriging]"),
@@ -129,7 +129,7 @@ Integrate metallurgical test data to predict recovery:
     # Based on geometallurgical domains and test work
     recovery_model = CalcSet([
         # Gold recovery as a function of grind size and domain
-        Number(name="Au_recovery", children=[
+        Number(name="Au_recovery", expression=[
             If([
                 ("([geo_domain] = 'free_milling') and ([p80] <= 75)", "0.92"),
                 ("([geo_domain] = 'free_milling') and ([p80] > 75)", "0.88"),
@@ -139,7 +139,7 @@ Integrate metallurgical test data to predict recovery:
         ], comment_equation="Recovery by geo-domain and grind size"),
         
         # Copper recovery based on mineralogy
-        Number(name="Cu_recovery", children=[
+        Number(name="Cu_recovery", expression=[
             If([
                 ("[Cu_sulfide_pct] > 80", "0.85"),
                 ("[Cu_sulfide_pct] > 50", "0.78"),
@@ -148,9 +148,9 @@ Integrate metallurgical test data to predict recovery:
         ], comment_equation="Recovery based on sulfide content"),
         
         # Recoverable metal
-        Number(name="Au_payable", children=["[Au_est] * [Au_recovery]"],
+        Number(name="Au_payable", expression=["[Au_est] * [Au_recovery]"],
                comment_equation="Payable gold"),
-        Number(name="Cu_payable", children=["[Cu_est] * [Cu_recovery]"],
+        Number(name="Cu_payable", expression=["[Cu_est] * [Cu_recovery]"],
                comment_equation="Payable copper"),
     ])
     
@@ -167,17 +167,17 @@ Model mill throughput and blending constraints:
     
     mill_performance = CalcSet([
         # Hardness-based throughput adjustment
-        Number(name="relative_throughput", children=[
+        Number(name="relative_throughput", expression=[
             "100 / (([bond_wi] / 15) ^ 0.82)"
         ], comment_equation="Throughput relative to 15 kWh/t reference"),
         
         # Tonnes per hour
-        Number(name="tph", children=[
+        Number(name="tph", expression=[
             "[relative_throughput] * [base_tph]"
         ], comment_equation="Estimated mill throughput"),
         
         # Metals production per hour
-        Number(name="Au_oz_per_hour", children=[
+        Number(name="Au_oz_per_hour", expression=[
             "[Au_payable] * [tph] / 31.1035"
         ], comment_equation="Gold ounces per hour"),
     ])
@@ -199,33 +199,33 @@ Calculate the value of ore based on multiple commodities:
     # Define metal prices and costs
     nsr_model = CalcSet([
         # Gross revenue per tonne
-        Number(name="Au_revenue_per_t", children=[
+        Number(name="Au_revenue_per_t", expression=[
             "[Au_recovered] * [Au_price] / 31.1035"
         ], comment_equation="Gold revenue ($/t), price in $/oz"),
         
-        Number(name="Ag_revenue_per_t", children=[
+        Number(name="Ag_revenue_per_t", expression=[
             "[Ag_recovered] * [Ag_price] / 31.1035"
         ], comment_equation="Silver revenue ($/t), price in $/oz"),
         
-        Number(name="Cu_revenue_per_t", children=[
+        Number(name="Cu_revenue_per_t", expression=[
             "[Cu_recovered] * [Cu_price] * 10"
         ], comment_equation="Copper revenue ($/t), price in $/lb, grade in %"),
         
         # Total gross revenue
-        Number(name="gross_revenue", children=[
+        Number(name="gross_revenue", expression=[
             "[Au_revenue_per_t] + [Ag_revenue_per_t] + [Cu_revenue_per_t]"
         ], comment_equation="Total revenue per tonne"),
         
         # Deduct costs
-        Number(name="mining_cost", children=["35"],
+        Number(name="mining_cost", expression=["35"],
                comment_equation="Mining cost $/t"),
-        Number(name="processing_cost", children=["18"],
+        Number(name="processing_cost", expression=["18"],
                comment_equation="Processing cost $/t"),
-        Number(name="admin_cost", children=["5"],
+        Number(name="admin_cost", expression=["5"],
                comment_equation="G&A cost $/t"),
         
         # NSR calculation
-        Number(name="nsr", children=[
+        Number(name="nsr", expression=[
             "[gross_revenue] - [mining_cost] - [processing_cost] - [admin_cost]"
         ], comment_equation="Net Smelter Return ($/t)"),
     ])
@@ -247,7 +247,7 @@ Classify blocks as ore or waste based on economic cut-off:
         # Assume [nsr] is already calculated
         
         # Simple ore/waste classification
-        Category(name="ore_waste", children=[
+        Category(name="ore_waste", expression=[
             If("[nsr] >= [cutoff_grade]", "'ore'", "'waste'")
         ], comment_equation="Binary ore/waste flag"),
         
@@ -261,7 +261,7 @@ Classify blocks as ore or waste based on economic cut-off:
         ),
         
         # Tonnage flag (1 for ore, 0 for waste)
-        Number(name="ore_tonnes_flag", children=[
+        Number(name="ore_tonnes_flag", expression=[
             If("[nsr] >= [cutoff_grade]", "1", "0")
         ], comment_equation="Flag for ore tonnage reporting"),
     ])
@@ -282,22 +282,22 @@ Create flags to identify data quality issues:
     
     qa_qc = CalcSet([
         # Flag negative grades
-        Number(name="flag_negative", children=[
+        Number(name="flag_negative", expression=[
             If("([Au] < 0) or ([Cu] < 0) or ([Ag] < 0)", "1", "0")
         ], comment_equation="Flag negative assays"),
         
         # Flag extreme values (potential outliers)
-        Number(name="flag_extreme", children=[
+        Number(name="flag_extreme", expression=[
             If("([Au] > 100) or ([Cu] > 10) or ([Ag] > 500)", "1", "0")
         ], comment_equation="Flag extreme values"),
         
         # Flag missing critical data
-        Number(name="flag_missing", children=[
+        Number(name="flag_missing", expression=[
             If("(not is_normal([density])) or ([domain] = '')", "1", "0")
         ], comment_equation="Flag missing density or domain"),
         
         # Overall QA/QC status
-        Category(name="qa_status", children=[
+        Category(name="qa_status", expression=[
             If([
                 ("[flag_negative] = 1", "'FAILED_NEGATIVE'"),
                 ("[flag_extreme] = 1", "'REVIEW_OUTLIER'"),
@@ -319,27 +319,27 @@ Compare estimated vs. actual grades for reconciliation:
     
     reconciliation = CalcSet([
         # Calculate difference between estimate and actual
-        Number(name="Au_variance", children=[
+        Number(name="Au_variance", expression=[
             "[Au_actual] - [Au_estimated]"
         ], comment_equation="Grade variance"),
         
         # Percent difference
-        Number(name="Au_pct_diff", children=[
+        Number(name="Au_pct_diff", expression=[
             "100 * ([Au_actual] - [Au_estimated]) / [Au_estimated]"
         ], comment_equation="Percentage difference"),
         
         # Tonnage difference
-        Number(name="tonnes_variance", children=[
+        Number(name="tonnes_variance", expression=[
             "[tonnes_actual] - [tonnes_estimated]"
         ], comment_equation="Tonnage variance"),
         
         # Metal difference
-        Number(name="metal_variance_oz", children=[
+        Number(name="metal_variance_oz", expression=[
             "([Au_actual] * [tonnes_actual] - [Au_estimated] * [tonnes_estimated]) / 31.1035"
         ], comment_equation="Metal variance in ounces"),
         
         # Reconciliation ratio
-        Number(name="recon_ratio", children=[
+        Number(name="recon_ratio", expression=[
             "[Au_actual] / [Au_estimated]"
         ], comment_equation="Actual to estimated ratio"),
     ])
@@ -439,13 +439,13 @@ Build complex workflows by combining calculation sets:
     
     # Create separate calculation sets for different purposes
     data_prep = CalcSet([
-        Number(name="Au_clamped", children=["clamp([Au], 0, 50)"]),
-        Number(name="Cu_clamped", children=["clamp([Cu], 0, 5)"]),
+        Number(name="Au_clamped", expression=["clamp([Au], 0, 50)"]),
+        Number(name="Cu_clamped", expression=["clamp([Cu], 0, 5)"]),
     ])
     
     estimation_support = CalcSet([
-        Number(name="Au_log", children=["log([Au_clamped] + 0.01)"]),
-        Number(name="Cu_log", children=["log([Cu_clamped] + 0.01)"]),
+        Number(name="Au_log", expression=["log([Au_clamped] + 0.01)"]),
+        Number(name="Cu_log", expression=["log([Cu_clamped] + 0.01)"]),
     ])
     
     # Combine them
@@ -476,7 +476,7 @@ Create reusable calculation components:
         if apply_recovery:
             calcs.append(
                 Number(name=f"{metal}_recovered", 
-                       children=[f"[{metal}_composite] * [recovery_{metal}]"])
+                       expression=[f"[{metal}_composite] * [recovery_{metal}]"])
             )
         
         return calcs
@@ -502,8 +502,8 @@ Ensure calculations are ordered correctly:
     
     # Create calculations in any order
     unordered = CalcSet([
-        Number(name="final_value", children=["[intermediate] * 2"]),
-        Number(name="intermediate", children=["[Au] + [Ag]"]),
+        Number(name="final_value", expression=["[intermediate] * 2"]),
+        Number(name="intermediate", expression=["[Au] + [Ag]"]),
     ])
     
     # Sort by dependencies

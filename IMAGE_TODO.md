@@ -68,13 +68,13 @@ from pollywog.core import CalcSet, Number, If
 from pollywog.helpers import WeightedAverage
 
 calcset = CalcSet([
-    Number(name="Au_clean", children=["clamp([Au], 0)"]),
+    Number(name="Au_clean", expression=["clamp([Au], 0)"]),
     WeightedAverage(
         variables=["Au_oxide", "Au_sulfide"],
         weights=["prop_oxide", "prop_sulfide"],
         name="Au_composite"
     ),
-    Number(name="recovery", children=[
+    Number(name="recovery", expression=[
         If([
             ("[domain] = 'oxide'", "0.92"),
             ("[domain] = 'sulfide'", "0.78"),
@@ -119,12 +119,12 @@ from pollywog.core import CalcSet, Number
 
 # Create many calculations
 calcset = CalcSet([
-    Number(name="Au_clean", children=["clamp([Au], 0)"]),
-    Number(name="Au_log", children=["log([Au_clean] + 0.01)"]),
-    Number(name="Ag_clean", children=["clamp([Ag], 0)"]),
-    Number(name="Ag_log", children=["log([Ag_clean] + 0.01)"]),
-    Number(name="Cu_clean", children=["clamp([Cu], 0)"]),
-    Number(name="Cu_log", children=["log([Cu_clean] + 0.01)"]),
+    Number(name="Au_clean", expression=["clamp([Au], 0)"]),
+    Number(name="Au_log", expression=["log([Au_clean] + 0.01)"]),
+    Number(name="Ag_clean", expression=["clamp([Ag], 0)"]),
+    Number(name="Ag_log", expression=["log([Ag_clean] + 0.01)"]),
+    Number(name="Cu_clean", expression=["clamp([Cu], 0)"]),
+    Number(name="Cu_log", expression=["log([Cu_clean] + 0.01)"]),
 ])
 
 print("Original calcset:")

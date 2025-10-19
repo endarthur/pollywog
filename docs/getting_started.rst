@@ -83,8 +83,8 @@ A ``CalcSet`` is a collection of calculation items that can be exported to a ``.
     from pollywog.core import CalcSet, Number
     
     calcset = CalcSet([
-        Number(name="Au_clean", children=["clamp([Au], 0)"]),
-        Number(name="Au_log", children=["log([Au_clean] + 1e-6)"]),
+        Number(name="Au_clean", expression=["clamp([Au], 0)"]),
+        Number(name="Au_log", expression=["log([Au_clean] + 1e-6)"]),
     ])
 
 Number
@@ -97,12 +97,12 @@ Number
     from pollywog.core import Number
     
     # Simple calculation
-    grade_calc = Number(name="Au_final", children=["[Au] * 0.95"])
+    grade_calc = Number(name="Au_final", expression=["[Au] * 0.95"])
     
     # With comment
     grade_calc = Number(
         name="Au_final",
-        children=["[Au] * 0.95"],
+        expression=["[Au] * 0.95"],
         comment_equation="Apply 5% dilution factor"
     )
 
@@ -116,7 +116,7 @@ Category
     from pollywog.core import Category, If
     
     # Categorical output
-    ore_type = Category(name="material_class", children=[
+    ore_type = Category(name="material_class", expression=[
         If("[Au] >= 0.5", "'ore'", "'waste'")
     ])
 
@@ -128,10 +128,10 @@ Variables are referenced using square brackets: ``[variable_name]``
 .. code-block:: python
 
     # Reference drillhole assays
-    Number(name="precious_metals", children=["[Au] + [Ag]"])
+    Number(name="precious_metals", expression=["[Au] + [Ag]"])
     
     # Reference block model variables
-    Number(name="density_calc", children=["[block_density] * [block_volume]"])
+    Number(name="density_calc", expression=["[block_density] * [block_volume]"])
 
 Your First Calculation
 -----------------------
@@ -153,13 +153,13 @@ Step 2: Create Calculations
     # Create individual calculations
     au_clean = Number(
         name="Au_clean",
-        children=["clamp([Au], 0)"],
+        expression=["clamp([Au], 0)"],
         comment_equation="Remove negative values"
     )
     
     au_scaled = Number(
         name="Au_scaled",
-        children=["[Au_clean] * 0.95"],
+        expression=["[Au_clean] * 0.95"],
         comment_equation="Apply 95% factor"
     )
 
@@ -216,14 +216,14 @@ Clean and transform drillhole assay data:
     
     preprocessing = CalcSet([
         # Remove outliers
-        Number(name="Au_capped", children=["clamp([Au], 0, 100)"],
+        Number(name="Au_capped", expression=["clamp([Au], 0, 100)"],
                comment_equation="Cap gold at 100 g/t"),
-        Number(name="Cu_capped", children=["clamp([Cu], 0, 5)"],
+        Number(name="Cu_capped", expression=["clamp([Cu], 0, 5)"],
                comment_equation="Cap copper at 5%"),
         
         # Log transforms for kriging
-        Number(name="Au_log", children=["log([Au_capped] + 0.01)"]),
-        Number(name="Cu_log", children=["log([Cu_capped] + 0.01)"]),
+        Number(name="Au_log", expression=["log([Au_capped] + 0.01)"]),
+        Number(name="Cu_log", expression=["log([Cu_capped] + 0.01)"]),
     ])
     
     preprocessing.to_lfcalc("drillhole_preprocessing.lfcalc")
@@ -240,13 +240,13 @@ Process estimated grades in a block model:
     
     postprocessing = CalcSet([
         # Back-transform from log space
-        Number(name="Au_est", children=["exp([Au_log_kriged]) - 0.01"]),
+        Number(name="Au_est", expression=["exp([Au_log_kriged]) - 0.01"]),
         
         # Apply dilution
-        Number(name="Au_diluted", children=["[Au_est] * 0.95"]),
+        Number(name="Au_diluted", expression=["[Au_est] * 0.95"]),
         
         # Apply recovery
-        Number(name="Au_recovered", children=["[Au_diluted] * 0.88"]),
+        Number(name="Au_recovered", expression=["[Au_diluted] * 0.88"]),
     ])
     
     postprocessing.to_lfcalc("block_postprocessing.lfcalc")
@@ -352,7 +352,7 @@ Load and modify existing .lfcalc files:
     # Modify
     from pollywog.core import Number
     existing.items.append(
-        Number(name="new_calc", children=["[existing_var] * 2"])
+        Number(name="new_calc", expression=["[existing_var] * 2"])
     )
     
     # Save modified version
@@ -378,41 +378,41 @@ Common Pitfalls
 .. code-block:: python
 
     # Wrong - Au is treated as undefined variable
-    Number(name="result", children=["Au * 2"])
+    Number(name="result", expression=["Au * 2"])
     
     # Correct - Au is a reference to existing variable
-    Number(name="result", children=["[Au] * 2"])
+    Number(name="result", expression=["[Au] * 2"])
 
 **Division by Zero**
 
 .. code-block:: python
 
     # Risky
-    Number(name="ratio", children=["[a] / [b]"])
+    Number(name="ratio", expression=["[a] / [b]"])
     
     # Safe
-    Number(name="ratio", children=["[a] / ([b] + 1e-10)"])
-    Number(name="ratio", children=["[a] / clamp([b], 0.001)"])
+    Number(name="ratio", expression=["[a] / ([b] + 1e-10)"])
+    Number(name="ratio", expression=["[a] / clamp([b], 0.001)"])
 
 **Log of Zero**
 
 .. code-block:: python
 
     # Risky
-    Number(name="Au_log", children=["log([Au])"])
+    Number(name="Au_log", expression=["log([Au])"])
     
     # Safe
-    Number(name="Au_log", children=["log([Au] + 1e-6)"])
+    Number(name="Au_log", expression=["log([Au] + 1e-6)"])
 
 **Missing Parentheses**
 
 .. code-block:: python
 
     # Ambiguous - may not compute as intended
-    Number(name="result", children=["[a] + [b] * [c]"])
+    Number(name="result", expression=["[a] + [b] * [c]"])
     
     # Clear
-    Number(name="result", children=["[a] + ([b] * [c])"])
+    Number(name="result", expression=["[a] + ([b] * [c])"])
 
 Next Steps
 ----------

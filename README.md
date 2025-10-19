@@ -76,7 +76,7 @@ from pollywog.helpers import WeightedAverage
 # Create a calculation set
 calcset = CalcSet([
     # Clean data
-    Number(name="Au_clean", children=["clamp([Au], 0)"],
+    Number(name="Au_clean", expression=["clamp([Au], 0)"],
            comment_equation="Remove negative values"),
     
     # Domain-weighted grade
@@ -88,7 +88,7 @@ calcset = CalcSet([
     ),
     
     # Apply recovery
-    Number(name="Au_recovered", children=["[Au_composite] * 0.88"],
+    Number(name="Au_recovered", expression=["[Au_composite] * 0.88"],
            comment_equation="88% metallurgical recovery"),
 ])
 
@@ -143,7 +143,7 @@ from pollywog.core import CalcSet, Number
 calcset = CalcSet.read_lfcalc("path/to/file.lfcalc")
 
 # Modify calculations
-calcset.items.append(Number(name="new_calc", children=["[Au] * 2"]))
+calcset.items.append(Number(name="new_calc", expression=["[Au] * 2"]))
 
 # Export modified version
 calcset.to_lfcalc("output.lfcalc")
@@ -155,9 +155,9 @@ calcset.to_lfcalc("output.lfcalc")
 from pollywog.core import Number, CalcSet
 
 calcset = CalcSet([
-    Number(name="Au_clean", children=["clamp([Au], 0)"],
+    Number(name="Au_clean", expression=["clamp([Au], 0)"],
            comment_equation="Remove negative values"),
-    Number(name="Au_log", children=["log([Au_clean] + 1e-6)"],
+    Number(name="Au_log", expression=["log([Au_clean] + 1e-6)"],
            comment_equation="Log transform for kriging"),
 ])
 
@@ -184,7 +184,7 @@ calcset = CalcSet([
     # Calculate gold equivalent (Ag and Cu converted to Au)
     Number(
         name="AuEq",
-        children=["[Au_composite] + ([Ag_composite] * 0.011) + ([Cu_composite] * 1.5)"],
+        expression=["[Au_composite] + ([Ag_composite] * 0.011) + ([Cu_composite] * 1.5)"],
         comment_equation="Gold equivalent grade (Ag/91, Cu*1.5 for price ratio)"
     ),
     
@@ -192,7 +192,7 @@ calcset = CalcSet([
     # Calculate net smelter return (NSR) per tonne
     Number(
         name="NSR_per_tonne",
-        children=[
+        expression=[
             f"{Product(['Au_composite', '1800', '0.88'])} + "  # Au: price $1800/oz, 88% recovery
             f"{Product(['Ag_composite', '22', '0.75'])} + "    # Ag: price $22/oz, 75% recovery  
             f"{Product(['Cu_composite', '3.5', '0.85'])}"      # Cu: price $3.5/lb, 85% recovery
@@ -262,7 +262,7 @@ calcset = CalcSet([
 
 # Apply domain-specific recovery
 calcset.items.append(
-    Number(name="Au_recovered", children=[
+    Number(name="Au_recovered", expression=[
         If([
             ("[domain] = 'oxide'", "[Au_composite] * 0.92"),
             ("[domain] = 'transition'", "[Au_composite] * 0.85"),
@@ -287,7 +287,7 @@ metals_of_interest = ["Au", "Ag"]
 selected = calcset.query('any(name.startswith(m) for m in @metals_of_interest)')
 
 # Complex queries
-filtered = calcset.query('len(children) > 1 and "log" in name')
+filtered = calcset.query('len(expression) > 1 and "log" in name')
 ```
 
 - Use item attributes (e.g., `name`, `item_type`) in expressions.
