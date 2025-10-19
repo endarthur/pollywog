@@ -41,8 +41,8 @@ class CalcSet:
     Example:
         >>> from pollywog.core import CalcSet, Number
         >>> calcset = CalcSet([
-        ...     Number(name="Au_est", expression=["block[Au] * 0.95"]),
-        ...     Number(name="Ag_est", expression=["block[Ag] * 0.85"])
+        ...     Number("Au_est", "block[Au] * 0.95"),
+        ...     Number("Ag_est", "block[Ag] * 0.85")
         ... ])
     """
 
@@ -146,8 +146,8 @@ class CalcSet:
 
         Example:
             >>> cs = CalcSet([
-            ...     Number(name="result", expression=["[intermediate] * 2"]),
-            ...     Number(name="intermediate", expression=["[input] + 1"])
+            ...     Number("result", "[intermediate] * 2"),
+            ...     Number("intermediate", "[input] + 1")
             ... ])
             >>> sorted_cs = cs.topological_sort()
             # Now 'intermediate' will come before 'result'
@@ -433,11 +433,19 @@ class Item:
     Base class for all items in a CalcSet.
 
     Subclasses represent specific calculation types (Number, Category, Variable, Filter, If, etc.).
-    Each item has a name, a list of expressions, and optional comments.
+    Each item has a name, expressions, and optional comments.
+
+    The `expression` parameter can be either a string or a list:
+    - Use a string for simple expressions: ``Number("result", "[x] * 2")``
+    - Use a list when including If objects for conditional logic: ``Number("result", [If(...)])``
+    
+    Strings are automatically converted to single-element lists internally, but If objects
+    are separate structures that cannot be embedded in expression strings, which is why
+    the parameter accepts lists.
 
     Attributes:
         name (str): Name of the item.
-        expression (list): List of expressions/statements.
+        expression (list): List of expressions/statements (internally stored as a list).
         comment_item (str): Comment for the item.
         comment_equation (str): Comment for the equation.
     """
@@ -457,7 +465,13 @@ class Item:
 
         Args:
             name (str): Name of the item (e.g., variable name or calculation name).
-            expression (list, optional): List of expressions/statements. Defaults to empty list.
+            expression (str or list, optional): Expression(s) to evaluate. Can be:
+                - A string containing a Leapfrog expression (e.g., "[Au] * 2")
+                - A list of strings for multiple expressions
+                - A list containing If objects for conditional logic
+                The parameter accepts both strings and lists because If statements are
+                separate objects that cannot be embedded in expression strings.
+                Single strings are automatically wrapped in a list internally.
             comment_item (str): Comment describing the item itself. Defaults to empty string.
             comment_equation (str): Comment describing the equation/logic. Defaults to empty string.
         """
@@ -820,7 +834,10 @@ class Number(Item):
 
     Example:
         >>> from pollywog.core import Number
-        >>> au_calc = Number(name="Au_adjusted", expression=["[Au] * 0.95"])
+        >>> # Simple expression using positional arguments
+        >>> au_calc = Number("Au_adjusted", "[Au] * 0.95")
+        >>> # With comment
+        >>> au_calc = Number("Au_adjusted", "[Au] * 0.95", comment_equation="Apply dilution")
     """
 
     item_type = "calculation"
@@ -836,10 +853,10 @@ class Category(Item):
 
     Example:
         >>> from pollywog.core import Category, If
-        >>> grade_class = Category(
-        ...     name="grade_class",
-        ...     expression=[If("[Au] > 1", "High", "Low")]
-        ... )
+        >>> # Simple string category
+        >>> domain = Category("rock_type", "'granite'")
+        >>> # Conditional category using If (requires list)
+        >>> grade_class = Category("grade_class", [If("[Au] > 1", "High", "Low")])
     """
 
     item_type = "calculation"
@@ -871,7 +888,7 @@ class Filter(Item):
 
     Example:
         >>> from pollywog.core import Filter
-        >>> ore_filter = Filter(name="is_ore", expression=["[Au] > 0.5"])
+        >>> ore_filter = Filter("is_ore", "[Au] > 0.5")
     """
 
     item_type = "filter"

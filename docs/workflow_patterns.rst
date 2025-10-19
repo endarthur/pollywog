@@ -19,15 +19,15 @@ This is the most common workflow in resource estimation:
     # Create a calcset for drillhole composites
     preprocess = CalcSet([
         # Remove outliers using clamping
-        Number(name="Au_clamped", expression=["clamp([Au], 0, 100)"],
+        Number(name="Au_clamped", "clamp([Au], 0, 100)",
                comment_equation="Cap gold at 100 g/t to remove outliers"),
-        Number(name="Cu_clamped", expression=["clamp([Cu], 0, 5)"],
+        Number(name="Cu_clamped", "clamp([Cu], 0, 5)",
                comment_equation="Cap copper at 5% to remove outliers"),
         
         # Log transforms for geostatistics
-        Number(name="Au_log", expression=["log([Au_clamped] + 0.01)"],
+        Number(name="Au_log", "log([Au_clamped] + 0.01)",
                comment_equation="Log transform for kriging"),
-        Number(name="Cu_log", expression=["log([Cu_clamped] + 0.01)"],
+        Number(name="Cu_log", "log([Cu_clamped] + 0.01)",
                comment_equation="Log transform for kriging"),
     ])
     
@@ -41,21 +41,21 @@ This is the most common workflow in resource estimation:
     # Back-transform and apply recovery
     postprocess = CalcSet([
         # Back-transform from log space
-        Number(name="Au_est", expression=["exp([Au_log_kriged]) - 0.01"],
+        Number(name="Au_est", "exp([Au_log_kriged]) - 0.01",
                comment_equation="Back-transform from log space"),
-        Number(name="Cu_est", expression=["exp([Cu_log_kriged]) - 0.01"],
+        Number(name="Cu_est", "exp([Cu_log_kriged]) - 0.01",
                comment_equation="Back-transform from log space"),
         
         # Apply minimum mining width dilution
-        Number(name="Au_diluted", expression=["[Au_est] * 0.95"],
+        Number(name="Au_diluted", "[Au_est] * 0.95",
                comment_equation="5% dilution factor"),
-        Number(name="Cu_diluted", expression=["[Cu_est] * 0.95"],
+        Number(name="Cu_diluted", "[Cu_est] * 0.95",
                comment_equation="5% dilution factor"),
         
         # Apply metallurgical recovery
-        Number(name="Au_recovered", expression=["[Au_diluted] * 0.88"],
+        Number(name="Au_recovered", "[Au_diluted] * 0.88",
                comment_equation="88% Au recovery"),
-        Number(name="Cu_recovered", expression=["[Cu_diluted] * 0.82"],
+        Number(name="Cu_recovered", "[Cu_diluted] * 0.82",
                comment_equation="82% Cu recovery"),
     ])
     
@@ -148,9 +148,9 @@ Integrate metallurgical test data to predict recovery:
         ], comment_equation="Recovery based on sulfide content"),
         
         # Recoverable metal
-        Number(name="Au_payable", expression=["[Au_est] * [Au_recovery]"],
+        Number(name="Au_payable", "[Au_est] * [Au_recovery]",
                comment_equation="Payable gold"),
-        Number(name="Cu_payable", expression=["[Cu_est] * [Cu_recovery]"],
+        Number(name="Cu_payable", "[Cu_est] * [Cu_recovery]",
                comment_equation="Payable copper"),
     ])
     
@@ -217,11 +217,11 @@ Calculate the value of ore based on multiple commodities:
         ], comment_equation="Total revenue per tonne"),
         
         # Deduct costs
-        Number(name="mining_cost", expression=["35"],
+        Number(name="mining_cost", "35",
                comment_equation="Mining cost $/t"),
-        Number(name="processing_cost", expression=["18"],
+        Number(name="processing_cost", "18",
                comment_equation="Processing cost $/t"),
-        Number(name="admin_cost", expression=["5"],
+        Number(name="admin_cost", "5",
                comment_equation="G&A cost $/t"),
         
         # NSR calculation
@@ -256,7 +256,7 @@ Classify blocks as ore or waste based on economic cut-off:
             variable="nsr",
             thresholds=[0, 20, 40],
             categories=["waste", "marginal", "ore", "high_grade"],
-            name="material_type",
+            "material_type",
             comment="Material classification by NSR value"
         ),
         

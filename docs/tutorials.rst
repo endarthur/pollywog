@@ -154,7 +154,7 @@ Pollywog provides several helpers to simplify common calculation patterns. Here 
 
     # Note: For normalizing proportions to sum to 1, use manual calculation:
     # normalize_example = Number(
-    #     name="prop_high_norm",
+    #     "prop_high_norm",
     #     expression=["[prop_high] / ([prop_high] + [prop_medium] + [prop_low])"]
     # )
 
@@ -242,19 +242,19 @@ Combine multiple helpers to build sophisticated calculations:
         # 2. Apply dilution
         Scale("Au_composite", 0.95, name="Au_diluted", 
               comment="5% dilution from minimum mining width"),
-        Scale("Cu_composite", 0.95, name="Cu_diluted",
+        Scale("Cu_composite", 0.95, "Cu_diluted",
               comment="5% dilution from minimum mining width"),
         
         # 3. Apply recovery
-        Scale("Au_diluted", 0.88, name="Au_recovered",
+        Scale("Au_diluted", 0.88, "Au_recovered",
               comment="88% metallurgical recovery"),
-        Scale("Cu_diluted", 0.82, name="Cu_recovered",
+        Scale("Cu_diluted", 0.82, "Cu_recovered",
               comment="82% metallurgical recovery"),
         
         # 4. Calculate payable metal (ounces)
-        Product("Au_recovered", "tonnes", name="Au_ounces_total",
+        Product("Au_recovered", "tonnes", "Au_ounces_total",
                 comment="Total gold ounces in block"),
-        Product("Cu_recovered", "tonnes", name="Cu_pounds_total",
+        Product("Cu_recovered", "tonnes", "Cu_pounds_total",
                 comment="Total copper pounds in block"),
         
         # 5. Revenue per tonne (simplified)

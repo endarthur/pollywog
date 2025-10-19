@@ -329,7 +329,7 @@ Document your intent:
         WeightedAverage(
             variables=["Au_oxide", "Au_sulfide", "Au_transition"],
             weights=["prop_oxide", "prop_sulfide", "prop_transition"],
-            name="Au_composite",
+            "Au_composite",
             comment="Domain-weighted Au grade, normalized by proportion sum"
         ),
     ])
@@ -342,14 +342,14 @@ Use ``comment_equation`` for business rules:
 .. code-block:: python
 
     Number(
-        name="Au_recovered",
-        expression=["[Au_diluted] * 0.88"],
+        "Au_recovered",
+        "[Au_diluted] * 0.88",
         comment_equation="88% recovery per metallurgical test work (Report XYZ-2023)"
     )
     
     Number(
-        name="cutoff_grade",
-        expression=["0.3"],
+        "cutoff_grade",
+        "0.3",
         comment_equation="Economic cutoff at $1800/oz Au, $3.50/lb Cu (Jan 2024 prices)"
     )
 
