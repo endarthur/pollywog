@@ -3,6 +3,23 @@ Best Practices
 
 This guide provides recommendations for effectively using pollywog in production geological modeling and resource estimation workflows.
 
+.. tip::
+   **Quick Checklist**
+   
+   ✅ Use version control (Git) for all scripts (or at least keep a copy of the notebook in Central)
+   
+   ✅ Add comments and docstrings to your code
+   
+   ✅ Test calculations on small datasets first
+   
+   ✅ Use configuration files for parameters
+   
+   ✅ Follow consistent naming conventions
+   
+   ✅ Validate results against known values
+   
+   ✅ Document assumptions and data sources
+
 Code Organization
 -----------------
 
@@ -29,6 +46,11 @@ Organize your pollywog scripts in a consistent directory structure:
     ├── tests/
     │   └── test_calculations.py
     └── README.md
+
+You could also create an orchestration script (e.g., ``run_all.py``) to execute all steps in sequence,
+or if using jupyter notebooks instead of scripts, use `Papermill`_ to parameterize and run them.
+
+.. _Papermill: https://papermill.readthedocs.io/en/latest/
 
 Script Organization
 ~~~~~~~~~~~~~~~~~~~

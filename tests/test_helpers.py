@@ -107,6 +107,7 @@ def test_category_from_thresholds_helper():
     # Test If block return
     if_block = CategoryFromThresholds("Au", [0.5, 1.0], ["Low", "Medium", "High"])
     from pollywog.core import If
+
     assert isinstance(if_block, If)
 
 
@@ -188,11 +189,10 @@ def test_weighted_average_edge_cases():
 
 def test_category_from_thresholds_two_categories():
     """Test CategoryFromThresholds with just two categories."""
-    n = CategoryFromThresholds(
-        "grade", [1.0], ["Below", "Above"], name="grade_cat"
-    )
+    n = CategoryFromThresholds("grade", [1.0], ["Below", "Above"], name="grade_cat")
     assert n.name == "grade_cat"
     assert "Classify grade by thresholds" in n.comment_equation
     if_block = CategoryFromThresholds("grade", [1.0], ["Below", "Above"])
     from pollywog.core import If
+
     assert isinstance(if_block, If)

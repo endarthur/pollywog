@@ -27,74 +27,115 @@ Welcome to pollywog's documentation!
 Introduction
 ------------
 
-pollywog is a Python library designed to make it easy to build, manipulate, and visually inspect Leapfrog-style calculation sets—especially when those sets are large, complex, or involve repetitive logic.
+**pollywog** is a Python library designed to make it easy to build, manipulate, and visually inspect Leapfrog-style calculation sets—especially when those sets are large, complex, or involve repetitive logic.
+
+.. TODO: Add workflow diagram here
+.. .. image:: _static/workflow_diagram.png
+..    :alt: Pollywog Workflow
+..    :align: center
+..    :width: 100%
+..
+.. |
+
+.. TODO: Add use cases/value proposition diagram here
+.. .. image:: _static/use_cases_diagram.png
+..    :alt: When to Use Pollywog
+..    :align: center
+..    :width: 100%
+..
+.. |
 
 What is Leapfrog?
 ~~~~~~~~~~~~~~~~~
 
-Leapfrog is industry-leading 3D geological modeling and mine planning software developed by Seequent. It is widely used in mining and resource estimation for:
+`Leapfrog <https://www.seequent.com/products-solutions/leapfrog-geo/>`_ is industry-leading 3D geological modeling and mine planning software developed by Seequent. It is widely used in mining and resource estimation for:
 
-- Drillhole database management and visualization
-- Geological modeling (surfaces, solids, block models)
-- Grade estimation (kriging, IDW, nearest neighbor)
-- Resource and reserve calculation
-- Mine planning and design
+- **Drillhole database management** and visualization
+- **Geological modeling** (surfaces, solids, block models)
+- **Grade estimation** (kriging, IDW, nearest neighbor)
+- **Resource and reserve calculation**
+- **Mine planning and design**
 
-Leapfrog uses **calculation sets** (.lfcalc files) to define formulas and transformations applied to data. These calculations can become complex when dealing with multiple domains, conditional logic, and multi-commodity resources.
+Leapfrog uses **calculation sets** (``.lfcalc`` files) to define formulas and transformations applied to data. These calculations can become complex when dealing with multiple domains, conditional logic, and multi-commodity resources.
 
-Problems pollywog solves
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Why pollywog?
+~~~~~~~~~~~~~
 
-- **Building large calculation sets:** Writing and maintaining hundreds of calculations by hand in Leapfrog can be error-prone and tedious. pollywog lets you generate, organize, and refactor these sets programmatically in Python.
-- **Complicated logic:** Many workflows require conditional logic, grouping, and dependencies between variables. pollywog provides constructs like ``If`` blocks, ``Category`` grouping, and dependency analysis to help you manage complexity.
-- **Repetitive tasks:** When you need to apply similar logic to many variables (e.g., clamping, scaling, filtering), pollywog enables you to automate these patterns with Python code, reducing manual effort and mistakes.
-- **Visual inspection:** pollywog can render calculation sets as rich HTML trees in Jupyter, making it easy to review and debug logic before exporting to Leapfrog.
-- **Machine learning integration:** Deploy scikit-learn models (decision trees, random forests, linear models) directly as Leapfrog calculations for predictive modeling.
-- **Version control:** Keep calculation logic in Python scripts under Git version control for better traceability and collaboration.
+**Problems pollywog solves:**
 
-By using pollywog, you can:
+.. list-table::
+   :widths: 30 70
+   :header-rows: 1
 
-- Automate the creation and modification of calculation sets
-- Refactor and query calculations with code
-- Export directly to Leapfrog ``.lfcalc`` format
-- Visualize and validate logic interactively in Jupyter notebooks
-- Deploy machine learning models in your resource models
-- Maintain calculation logic in version-controlled scripts
+   * - Challenge
+     - Solution
+   * - 📝 **Large calculation sets**
+     - Generate hundreds of calculations programmatically instead of point-and-click
+   * - 🔀 **Complex logic**
+     - Use Python's control flow (loops, conditionals) to build calculations
+   * - 🔁 **Repetitive tasks**
+     - Automate patterns with helper functions and templates
+   * - 🔍 **Hard to review**
+     - Display calculation trees interactively in Jupyter notebooks
+   * - 🤖 **ML integration**
+     - Deploy scikit-learn models directly as Leapfrog calculations
+   * - 📋 **Version control**
+     - Keep calculation logic in Git-trackable Python scripts
+   * - 🧪 **Testing**
+     - Write unit tests for calculation logic before deploying
+
+**By using pollywog, you can:**
+
+- ✅ Automate creation and modification of calculation sets
+- ✅ Refactor and query calculations with code
+- ✅ Export directly to Leapfrog ``.lfcalc`` format
+- ✅ Visualize and validate logic interactively
+- ✅ Deploy machine learning models in resource models
+- ✅ Maintain calculation logic in version-controlled scripts
 
 Quick Example
 ~~~~~~~~~~~~~
 
-Here's a simple example showing pollywog's power:
+Here's a simple example showing pollywog's power – creating a complete resource estimation postprocessing workflow in just a few lines:
 
 .. code-block:: python
 
     from pollywog.core import CalcSet, Number
     from pollywog.helpers import WeightedAverage, CategoryFromThresholds
     
-    # Create domain-weighted grade calculation
+    # Build a complete calculation set
     calcset = CalcSet([
-        # Weighted average across geological domains
+        # 1. Weighted average across geological domains
         WeightedAverage(
             variables=["Au_oxide", "Au_sulfide", "Au_transition"],
             weights=["prop_oxide", "prop_sulfide", "prop_transition"],
-            name="Au_composite"
+            name="Au_composite",
+            comment="Domain-weighted gold grade"
         ),
         
-        # Apply dilution and recovery
-        Number(name="Au_diluted", children=["[Au_composite] * 0.95"]),
-        Number(name="Au_recovered", children=["[Au_diluted] * 0.88"]),
+        # 2. Apply dilution and recovery
+        Number(name="Au_diluted", children=["[Au_composite] * 0.95"],
+               comment_equation="5% dilution factor"),
+        Number(name="Au_recovered", children=["[Au_diluted] * 0.88"],
+               comment_equation="88% metallurgical recovery"),
         
-        # Classify by grade
+        # 3. Classify by grade
         CategoryFromThresholds(
             variable="Au_recovered",
             thresholds=[0.3, 1.0, 3.0],
             categories=["waste", "low_grade", "medium_grade", "high_grade"],
-            name="ore_class"
+            name="ore_class",
+            comment="Material classification"
         ),
     ])
     
-    # Export to Leapfrog
+    # Export to Leapfrog - done!
     calcset.to_lfcalc("resource_model.lfcalc")
+
+**Compare this to manually creating 6+ calculations in Leapfrog's UI!** 🎉
+
+.. note::
+   This example creates 6 calculations that would take 10-15 minutes to build manually in Leapfrog. With pollywog, it takes seconds and is version-controlled, testable, and reusable!
 
 Key Features
 ~~~~~~~~~~~~

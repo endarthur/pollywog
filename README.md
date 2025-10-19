@@ -9,23 +9,96 @@
 [lite-badge]: https://jupyterlite.rtfd.io/en/latest/_static/badge.svg
 [lite]: https://endarthur.github.io/pollyweb
 
+> **Pollywog** is a Python library for building, manipulating, and automating Leapfrog calculation sets programmatically.
 
-Professionals using Seequent solutions for geological modeling and resource estimation often work with .lfcalc files. These files can be repetitive to manage and prone to manual errors. This is especially true when dealing with conditional logic, domain-based dilution calculations, or predictive model integration.
 
-Pollywog was developed to support this technical audience. It is a Python package that enables:
+## Table of Contents
 
-- Programmatic reading and writing of .lfcalc files, making calculations more standardized and reproducible
-- Automation of complex workflows, including conditional equations and post-processing of results
-- Integration with machine learning models via scikit-learn, allowing classifiers or regressions to be applied directly within Leapfrog calculations
-- Creation of reusable scripts, which can be versioned and audited, providing greater control over modeling processes
+- [Why Pollywog?](#why-pollywog)
+- [Key Features](#key-features)
+- [Quick Start](#quick-start)
+- [Installation](#installation)
+- [Usage Examples](#usage-examples)
+- [Documentation](#documentation)
+- [Contributing](#contributions)
+- [License](#license)
 
-Pollywog aims to reduce time spent on manual tasks, minimize input errors, and increase efficiency in geological modeling.
+## Why Pollywog?
 
-The documentation includes practical examples and tutorials to help technical teams get started quickly.
+If you work with [Leapfrog](https://www.seequent.com/products-solutions/leapfrog-geo/) for geological modeling and resource estimation, you know that building calculation sets (`.lfcalc` files) manually can be:
 
-If you work with Leapfrog and are looking to optimize your workflows, Pollywog is worth exploring.
+- **Time-consuming** – Repetitive point-and-click operations
+- **Error-prone** – Easy to make mistakes in complex formulas
+- **Hard to maintain** – Difficult to update across multiple projects
+- **Not version-controlled** – Changes are hard to track and review
+- **Not automatable** – Can't script or integrate with other tools
 
-Pollywog is still very much a work in progress, so take care in its use and make sure to not have anything important open and not saved in Leapfrog while testing it out. Also, please report any issues you encounter. Suggestions and contributions are very welcome!
+**Pollywog solves these problems** by letting you define calculations in Python code that is:
+
+- Programmatic and automatable
+- Version-controlled (Git-friendly)
+- Testable and reproducible
+- Easy to refactor and maintain
+- Integrated with ML pipelines (scikit-learn)
+
+## Key Features
+
+### Core Functionality
+- **Read and write** `.lfcalc` files programmatically
+- **Create calculations** with Python classes (`Number`, `Category`, `If`, etc.)
+- **Query and filter** calculation sets like pandas DataFrames
+- **Topological sorting** for automatic dependency resolution
+- **Rich display** in Jupyter notebooks with interactive trees
+
+### Helper Functions
+- **Mathematical operations**: `Sum`, `Product`, `Average`, `WeightedAverage`
+- **Transformations**: `Scale`, `Normalize`
+- **Classification**: `CategoryFromThresholds`
+- **Dual mode**: Return complete calculations (with `name`) or expressions (without `name`) for composition
+
+### Machine Learning Integration
+- Convert **scikit-learn decision trees** to Leapfrog calculations
+- Convert **random forests** to ensemble calculations
+- Convert **linear models** to equations
+- Support for both **regression and classification**
+
+### Domain-Based Calculations
+- Multi-domain resource modeling
+- Weighted averages by domain proportions
+- Conditional logic for different geological units
+
+## Quick Start
+
+```python
+from pollywog.core import CalcSet, Number
+from pollywog.helpers import WeightedAverage
+
+# Create a calculation set
+calcset = CalcSet([
+    # Clean data
+    Number(name="Au_clean", children=["clamp([Au], 0)"],
+           comment_equation="Remove negative values"),
+    
+    # Domain-weighted grade
+    WeightedAverage(
+        variables=["Au_oxide", "Au_sulfide", "Au_transition"],
+        weights=["prop_oxide", "prop_sulfide", "prop_transition"],
+        name="Au_composite",
+        comment="Domain-weighted gold grade"
+    ),
+    
+    # Apply recovery
+    Number(name="Au_recovered", children=["[Au_composite] * 0.88"],
+           comment_equation="88% metallurgical recovery"),
+])
+
+# Export to Leapfrog
+calcset.to_lfcalc("my_calculations.lfcalc")
+```
+
+Then import `my_calculations.lfcalc` into Leapfrog and you're done! ✨
+
+> ⚠️ **Note**: Pollywog is in active development. Always backup your Leapfrog projects before testing. Report issues on [GitHub](https://github.com/endarthur/pollywog/issues).
 
 ## Legal Disclaimer
 
@@ -41,56 +114,46 @@ Important:
 
 ## Installation
 
-Install from pypi:
+### From PyPI (Recommended)
 
 ```bash
 pip install lf_pollywog
 ```
 
-Or install the latest development version from GitHub:
+### From GitHub (Latest Development Version)
 
 ```bash
 pip install git+https://github.com/endarthur/pollywog.git
 ```
 
-### JupyterLite
+### Try in Your Browser (No Installation)
 
-You can also try Pollywog in your browser without any installation using JupyterLite: https://endarthur.github.io/pollyweb
+Try Pollywog without installing anything using **JupyterLite**: [https://endarthur.github.io/pollyweb](https://endarthur.github.io/pollyweb)
 
-Please be aware that JupyterLite has some limitations, such as restricted file system access and limited support for certain libraries. It also saves files in the browser's memory, which may not persist across sessions, and will be deleted if you clear your browser's cache. For full functionality and to avoid losing work, it is recommended to install Pollywog in a local Python environment.
+> **Note**: JupyterLite runs in your browser and has limitations (no file system access, limited libraries). Files are stored in browser memory and won't persist if you clear your cache. Download your work regularly! For production use, preferably install locally.
 
-Having said that, if you take care to download your notebooks and lfcalc files from time to time, JupyterLite can be a convenient way to experiment with Pollywog without any installation. Check the quickstart notebook in the JupyterLite environment for a brief introduction and some helper functions to automatically download lfcalc files you export.
+## Usage Examples
 
-## Usage
-
-Pollywog makes it easy to automate Leapfrog calculation workflows. Here are some common use cases:
-
-### Reading and Writing `.lfcalc` files
-
-Read existing calculation files, modify them, and write them back:
+### 1. Reading and Writing `.lfcalc` Files
 
 ```python
-import pollywog as pw
+from pollywog.core import CalcSet, Number
 
 # Read existing file
-calcset = pw.CalcSet.read_lfcalc("path/to/file.lfcalc")
+calcset = CalcSet.read_lfcalc("path/to/file.lfcalc")
 
-# Modify or add calculations
-from pollywog.core import Number
+# Modify calculations
 calcset.items.append(Number(name="new_calc", children=["[Au] * 2"]))
 
 # Export modified version
 calcset.to_lfcalc("output.lfcalc")
 ```
 
-### Creating a Simple Calculation Set
-
-Build calculation sets programmatically with clear, version-controlled code:
+### 2. Creating Calculations from Scratch
 
 ```python
 from pollywog.core import Number, CalcSet
 
-# Create calculations for drillhole preprocessing
 calcset = CalcSet([
     Number(name="Au_clean", children=["clamp([Au], 0)"],
            comment_equation="Remove negative values"),
@@ -101,16 +164,16 @@ calcset = CalcSet([
 calcset.to_lfcalc("drillhole_preprocessing.lfcalc")
 ```
 
-### Using Helper Functions
+### 3. Using Helper Functions
 
-Simplify common patterns with helper functions:
+Helpers can return either complete calculations or just expressions for composition:
 
 ```python
-from pollywog.helpers import WeightedAverage, Sum, CategoryFromThresholds
-from pollywog.core import CalcSet
+from pollywog.helpers import WeightedAverage, Product, CategoryFromThresholds
+from pollywog.core import CalcSet, Number
 
-# Domain-weighted grades
 calcset = CalcSet([
+    # With name: Returns complete Number object
     WeightedAverage(
         variables=["Au_oxide", "Au_sulfide", "Au_transition"],
         weights=["prop_oxide", "prop_sulfide", "prop_transition"],
@@ -118,22 +181,39 @@ calcset = CalcSet([
         comment="Domain-weighted gold grade"
     ),
     
-    Sum("Au", "Ag", "Cu", name="total_metals"),
+    # Calculate gold equivalent (Ag and Cu converted to Au)
+    Number(
+        name="AuEq",
+        children=["[Au_composite] + ([Ag_composite] * 0.011) + ([Cu_composite] * 1.5)"],
+        comment_equation="Gold equivalent grade (Ag/91, Cu*1.5 for price ratio)"
+    ),
     
+    # Without name: Returns expression for composition
+    # Calculate net smelter return (NSR) per tonne
+    Number(
+        name="NSR_per_tonne",
+        children=[
+            f"{Product(['Au_composite', '1800', '0.88'])} + "  # Au: price $1800/oz, 88% recovery
+            f"{Product(['Ag_composite', '22', '0.75'])} + "    # Ag: price $22/oz, 75% recovery  
+            f"{Product(['Cu_composite', '3.5', '0.85'])}"      # Cu: price $3.5/lb, 85% recovery
+        ]
+    ),
+    
+    # Classify by gold equivalent grade
     CategoryFromThresholds(
-        variable="Au_composite",
+        variable="AuEq",
         thresholds=[0.5, 2.0],
-        categories=["low", "medium", "high"],
-        name="grade_class"
+        categories=["waste", "low_grade", "high_grade"],
+        name="ore_class"
     ),
 ])
 
 calcset.to_lfcalc("resource_model.lfcalc")
 ```
 
-### Converting a scikit-learn model
+### 4. Machine Learning Model Conversion
 
-Deploy machine learning models directly in Leapfrog calculations:
+Deploy machine learning models directly in Leapfrog:
 
 ```python
 from pollywog.conversion.sklearn import convert_tree, convert_forest
@@ -142,35 +222,25 @@ from sklearn.ensemble import RandomForestRegressor
 from pollywog.core import CalcSet
 import numpy as np
 
-# Example: Predict metallurgical recovery from grade and mineralogy
-X = np.array([
-    [1.2, 0.3, 75],  # Au grade, Cu grade, grind size (P80)
-    [0.8, 0.5, 100],
-    [2.0, 0.2, 75],
-])
+# Training data: Au grade, Cu grade, grind size (P80)
+X = np.array([[1.2, 0.3, 75], [0.8, 0.5, 100], [2.0, 0.2, 75]])
 y = np.array([0.88, 0.82, 0.91])  # Recovery values
 
-# Train decision tree
-tree_model = DecisionTreeRegressor(max_depth=3, random_state=42)
-tree_model.fit(X, y)
+# Train and convert decision tree
+model = DecisionTreeRegressor(max_depth=3, random_state=42)
+model.fit(X, y)
 
-# Convert to Leapfrog calculation
-feature_names = ["Au_composite", "Cu_composite", "P80"]
-recovery_calc = convert_tree(tree_model, feature_names, "Au_recovery_predicted")
+recovery_calc = convert_tree(
+    model, 
+    ["Au_composite", "Cu_composite", "P80"], 
+    "Au_recovery_predicted"
+)
 
-# Export to .lfcalc file
+# Export to Leapfrog
 CalcSet([recovery_calc]).to_lfcalc("ml_recovery_model.lfcalc")
-
-# Or use random forest for ensemble predictions
-rf_model = RandomForestRegressor(n_estimators=5, max_depth=3, random_state=42)
-rf_model.fit(X, y)
-rf_calc = convert_forest(rf_model, feature_names, "Au_recovery_rf")
-CalcSet([rf_calc]).to_lfcalc("rf_recovery_model.lfcalc")
 ```
 
-### Domain-Based Calculations
-
-Handle multi-domain resource estimation with ease:
+### 5. Domain-Based Calculations
 
 ```python
 from pollywog.core import CalcSet, Number, If
@@ -179,8 +249,8 @@ from pollywog.helpers import WeightedAverage
 domains = ["oxide", "transition", "sulfide"]
 metals = ["Au", "Ag", "Cu"]
 
-# Create weighted averages for all metals across all domains
-domain_calcs = CalcSet([
+# Domain-weighted grades for all metals
+calcset = CalcSet([
     WeightedAverage(
         variables=[f"{metal}_{domain}" for domain in domains],
         weights=[f"prop_{domain}" for domain in domains],
@@ -190,61 +260,55 @@ domain_calcs = CalcSet([
     for metal in metals
 ])
 
-# Apply domain-specific recovery factors
-recovery_calcs = CalcSet([
+# Apply domain-specific recovery
+calcset.items.append(
     Number(name="Au_recovered", children=[
         If([
             ("[domain] = 'oxide'", "[Au_composite] * 0.92"),
             ("[domain] = 'transition'", "[Au_composite] * 0.85"),
             ("[domain] = 'sulfide'", "[Au_composite] * 0.78"),
         ], otherwise=["[Au_composite] * 0.75"])
-    ], comment_equation="Domain-specific Au recovery"),
-])
+    ])
+)
 
-# Combine and export
-combined = CalcSet(domain_calcs.items + recovery_calcs.items)
-combined.to_lfcalc("multi_domain_workflow.lfcalc")
+calcset.to_lfcalc("multi_domain_workflow.lfcalc")
 ```
 
-For more advanced workflows and complete tutorials, see the [documentation](https://pollywog.readthedocs.io/en/latest/).
+### 6. Querying CalcSets
 
-## Querying CalcSets
+Filter calculations like pandas DataFrames:
 
-Pollywog provides a powerful query method for filtering items in a `CalcSet`, inspired by pandas' DataFrame.query. You can use Python-like expressions to select items based on their attributes and external variables.
+```python
+# Select items by name pattern
+au_calcs = calcset.query('name.startswith("Au")')
 
-### Syntax
+# Use external variables
+metals_of_interest = ["Au", "Ag"]
+selected = calcset.query('any(name.startswith(m) for m in @metals_of_interest)')
+
+# Complex queries
+filtered = calcset.query('len(children) > 1 and "log" in name')
+```
+
 - Use item attributes (e.g., `name`, `item_type`) in expressions.
 - Reference external variables using `@var` syntax (e.g., `name.startswith(@prefix)`).
 - Supported helpers: `len`, `any`, `all`, `min`, `max`, `sorted`, `re`, `str`.
 
-### Examples
+## Documentation
 
-```python
-# Select items whose name starts with 'Au'
-calcset.query('name.startswith("Au")')
+📚 **Full documentation**: [https://pollywog.readthedocs.io](https://pollywog.readthedocs.io/en/latest/)
 
-# Select items whose name starts with an external variable 'prefix'
-prefix = "Ag"
-calcset.query('name.startswith(@prefix)')
-
-# Select items with more than one child
-calcset.query('len(children) > 1')
-
-# Use regular expressions
-calcset.query('re.match(r"^A", name)')
-```
-
-### Notes
-- External variables (`@var`) are resolved from the caller's scope or passed as keyword arguments.
-- Only items matching the query expression are returned in the new `CalcSet`.
+- **[Getting Started](https://pollywog.readthedocs.io/en/latest/getting_started.html)** – Installation and first steps
+- **[Tutorials](https://pollywog.readthedocs.io/en/latest/tutorials.html)** – Complete workflow examples
+- **[Expression Syntax](https://pollywog.readthedocs.io/en/latest/expression_syntax.html)** – Leapfrog expression reference
+- **[Workflow Patterns](https://pollywog.readthedocs.io/en/latest/workflow_patterns.html)** – Common patterns and recipes
+- **[Helper Functions](https://pollywog.readthedocs.io/en/latest/helpers_guide.html)** – Helper function guide
+- **[Best Practices](https://pollywog.readthedocs.io/en/latest/best_practices.html)** – Production recommendations
+- **[API Reference](https://pollywog.readthedocs.io/en/latest/api_reference.html)** – Complete API documentation
 
 ## License
 
-MIT License
-
-<!-- ## Authors
-
-See `AUTHORS` file or repository contributors. -->
+MIT License – See [LICENSE](LICENSE) file for details.
 
 ## Contributions
 
@@ -260,9 +324,19 @@ Before contributing, please:
 - Ensure your changes align with the project’s goals
 - Maintain consistent code style
 - Test your modifications whenever possible
+- Though It's ok to use LLMs to help write code or documentation, please review and understand all contributions to ensure quality and accuracy.
 
 Feel free to open an issue if you have questions or suggestions.
 
 ## Acknowledgements
 
 Thanks to Debora Roldão for helping with organization of the project, documentation and design, Eduardo Takafuji for the initial discussion of the feasability of this all those years ago and Jessica da Matta for support and sanity checks along the way.
+
+## Links
+
+- 📘 **Documentation**: https://pollywog.readthedocs.io
+- 💻 **GitHub**: https://github.com/endarthur/pollywog
+- 🚀 **Try Online**: https://endarthur.github.io/pollyweb
+- 📦 **PyPI**: https://pypi.org/project/lf-pollywog/
+- 🐛 **Issues**: https://github.com/endarthur/pollywog/issues
+- 📖 **Examples**: [examples/](https://github.com/endarthur/pollywog/tree/main/examples) folder
