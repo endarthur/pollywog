@@ -1,8 +1,8 @@
 from .core import If, IfRow, Number, Category
-from .utils import ensure_variables
+from .utils import ensure_variables, ensure_brackets
 
 
-def Sum(variables, name=None, comment=None):
+def Sum(variables, name=None, comment=None, ignore_functions=True):
     """
     Create a sum expression or a Number representing the sum of the given variables.
 
@@ -10,6 +10,8 @@ def Sum(variables, name=None, comment=None):
         variables (list of str): Variable names (as strings) to sum, e.g. ["Au", "Ag"].
         name (str, optional): Name for the output variable. If provided, returns a Number; if None, returns the sum expression as a string.
         comment (str, optional): Optional comment for the calculation. Used only if name is provided.
+        ignore_functions (bool): If True, strings that appear to be function
+            calls (e.g., "max([Au], [Ag])") are not wrapped in brackets. Defaults to True.
 
     Returns:
         Number or str: If name is provided, returns a pollywog Number representing the sum calculation. If name is None, returns the sum expression as a string.
@@ -24,7 +26,8 @@ def Sum(variables, name=None, comment=None):
     """
     if not variables:
         raise ValueError("At least one variable must be provided.")
-    expr = f"({' + '.join(f'[{v}]' for v in variables)})"
+    variables = ensure_variables(variables, ignore_functions=ignore_functions)
+    expr = f"({' + '.join(f'{v}' for v in variables)})"
     if name is None:
         return expr
     return Number(
@@ -32,7 +35,42 @@ def Sum(variables, name=None, comment=None):
     )
 
 
-def Product(variables, name=None, comment=None):
+def WeightedSum(variables, weights, name=None, comment=None, ignore_functions=True):
+    """
+    Create a weighted sum expression or a Number representing the weighted sum of the given variables.
+
+    Args:
+        variables (list of str): Variable names (as strings) to sum, e.g. ["Au", "Ag"].
+        weights (list of float or str): Corresponding weights for each variable. Can be constants or variable names.
+        name (str, optional): Name for the output variable. If provided, returns a Number; if None, returns the weighted sum expression as a string.
+        comment (str, optional): Optional comment for the calculation. Used only if name is provided.
+        ignore_functions (bool): If True, strings that appear to be function
+            calls (e.g., "max([Au], [Ag])") are not wrapped in brackets.
+            Defaults to True.
+
+    Returns:
+        Number or str: If name is provided, returns a pollywog Number representing the weighted sum calculation. If name is None, returns the weighted sum expression as a string.
+
+    Raises:
+        ValueError: If variables and weights are empty or have different lengths.
+    """
+    if not variables or not weights or len(variables) != len(weights):
+        raise ValueError("variables and weights must be non-empty and of equal length.")
+    weights = ensure_variables(weights, ignore_functions=ignore_functions)
+    variables = ensure_variables(variables, ignore_functions=ignore_functions)
+    weighted_terms = [f"{v} * {w}" for v, w in zip(variables, weights)]
+    expr = f"({' + '.join(weighted_terms)})"
+    if name is None:
+        return expr
+    return Number(
+        name,
+        [expr],
+        comment_equation=comment
+        or f"Weighted sum of {', '.join(variables)} with weights {weights}",
+    )
+
+
+def Product(variables, name=None, comment=None, ignore_functions=True):
     """
     Create a product expression or a Number representing the product of the given variables.
 
@@ -40,6 +78,8 @@ def Product(variables, name=None, comment=None):
         variables (list of str): Variable names (as strings) to multiply, e.g. ["Au", "Ag"].
         name (str, optional): Name for the output variable. If provided, returns a Number; if None, returns the product expression as a string.
         comment (str, optional): Optional comment for the calculation. Used only if name is provided.
+        ignore_functions (bool): If True, strings that appear to be function
+            calls (e.g., "max([Au], [Ag])") are not wrapped in brackets. Defaults to True.
 
     Returns:
         Number or str: If name is provided, returns a pollywog Number representing the product calculation. If name is None, returns the product expression as a string.
@@ -54,7 +94,8 @@ def Product(variables, name=None, comment=None):
     """
     if not variables:
         raise ValueError("At least one variable must be provided.")
-    expr = f"({' * '.join(f'[{v}]' for v in variables)})"
+    variables = ensure_variables(variables, ignore_functions=ignore_functions)
+    expr = f"({' * '.join(f'{v}' for v in variables)})"
     if name is None:
         return expr
     return Number(
@@ -62,7 +103,7 @@ def Product(variables, name=None, comment=None):
     )
 
 
-def Normalize(variable, min_value, max_value, name=None, comment=None):
+def Normalize(variable, min_value, max_value, name=None, comment=None, ignore_functions=True):
     """
     Create a normalization expression or a Number that normalizes a variable to the range [0, 1].
 
@@ -72,6 +113,8 @@ def Normalize(variable, min_value, max_value, name=None, comment=None):
         max_value (float): Maximum value for normalization (maps to 1).
         name (str, optional): Name for the output variable. If provided, returns a Number; if None, returns the normalization expression as a string.
         comment (str, optional): Optional comment for the calculation. Used only if name is provided.
+        ignore_functions (bool): If True, strings that appear to be function
+            calls (e.g., "max([Au], [Ag])") are not wrapped in brackets. Defaults to True.
 
     Returns:
         Number or str: If name is provided, returns a pollywog Number representing the normalization calculation. If name is None, returns the normalization expression as a string.
@@ -81,7 +124,8 @@ def Normalize(variable, min_value, max_value, name=None, comment=None):
         >>> Normalize("Au", 0, 10, name="Au_normalized")
         >>> Normalize("porosity", 0.1, 0.3)
     """
-    expr = f"([{variable}] - {min_value}) / ({max_value} - {min_value})"
+    variable = ensure_brackets(variable, ignore_functions=ignore_functions)
+    expr = f"({variable} - {min_value}) / ({max_value} - {min_value})"
     if name is None:
         return expr
     return Number(
@@ -92,7 +136,7 @@ def Normalize(variable, min_value, max_value, name=None, comment=None):
     )
 
 
-def Average(variables, name=None, comment=None):
+def Average(variables, name=None, comment=None, ignore_functions=True):
     """
     Create an average expression or a Number representing the arithmetic mean of the given variables.
 
@@ -100,6 +144,8 @@ def Average(variables, name=None, comment=None):
         variables (list of str): Variable names (as strings) to average, e.g. ["Au", "Ag"].
         name (str, optional): Name for the output variable. If provided, returns a Number; if None, returns the average expression as a string.
         comment (str, optional): Optional comment for the calculation. Used only if name is provided.
+        ignore_functions (bool): If True, strings that appear to be function
+            calls (e.g., "max([Au], [Ag])") are not wrapped in brackets. Defaults to True.
 
     Returns:
         Number or str: If name is provided, returns a pollywog Number representing the average calculation. If name is None, returns the average expression as a string.
@@ -114,7 +160,8 @@ def Average(variables, name=None, comment=None):
     """
     if not variables:
         raise ValueError("At least one variable must be provided.")
-    expr = f"({' + '.join(f'[{v}]' for v in variables)}) / {len(variables)}"
+    variables = ensure_variables(variables, ignore_functions=ignore_functions)
+    expr = f"({' + '.join(f'{v}' for v in variables)}) / {len(variables)}"
     if name is None:
         return expr
     return Number(
@@ -122,7 +169,7 @@ def Average(variables, name=None, comment=None):
     )
 
 
-def WeightedAverage(variables, weights, name=None, comment=None):
+def WeightedAverage(variables, weights, name=None, comment=None, ignore_functions=True):
     """
     Create a weighted average expression or a Number representing the weighted average of variables.
 
@@ -131,6 +178,9 @@ def WeightedAverage(variables, weights, name=None, comment=None):
         weights (list of float or str): Corresponding weights for each variable. Can be constants or variable names.
         name (str, optional): Name for the output variable. If provided, returns a Number; if None, returns the weighted average expression as a string.
         comment (str, optional): Optional comment for the calculation. Used only if name is provided.
+        ignore_functions (bool): If True, strings that appear to be function
+            calls (e.g., "max([Au], [Ag])") are not wrapped in brackets.
+            Defaults to True.
 
     Returns:
         Number or str: If name is provided, returns a pollywog Number representing the weighted average calculation. If name is None, returns the weighted average expression as a string.
@@ -145,9 +195,10 @@ def WeightedAverage(variables, weights, name=None, comment=None):
     """
     if not variables or not weights or len(variables) != len(weights):
         raise ValueError("variables and weights must be non-empty and of equal length.")
-    weights = ensure_variables(weights)
+    weights = ensure_variables(weights, ignore_functions=ignore_functions)
+    variables = ensure_variables(variables, ignore_functions=ignore_functions)
     sum_weights = " + ".join(weights)
-    weighted_terms = [f"[{v}] * {w}" for v, w in zip(variables, weights)]
+    weighted_terms = [f"{v} * {w}" for v, w in zip(variables, weights)]
     expr = f"({' + '.join(weighted_terms)}) / ({sum_weights})"
     if name is None:
         return expr
@@ -186,16 +237,19 @@ def Scale(variable, factor, name=None, comment=None):
     )
 
 
-def CategoryFromThresholds(variable, thresholds, categories, name=None, comment=None):
+def CategoryFromThresholds(variable, thresholds, categories, name=None, comment=None, ignore_functions=True):
     """
     Create a conditional block or a Category that assigns labels based on value thresholds.
 
     Args:
-        variable (str): Variable to classify.
+        variable (str): Variable to classify, with or without brackets.
         thresholds (list of float): Threshold values in ascending order. These define the boundaries between categories.
         categories (list of str): Category labels. Must have exactly one more element than thresholds.
         name (str, optional): Name for the output category. If provided, returns a Category; if None, returns the If block (conditional logic) for further encapsulation.
         comment (str, optional): Optional comment for the calculation. Used only if name is provided.
+        ignore_functions (bool): If True, strings that appear to be function
+            calls (e.g., "max([Au], [Ag])") are not wrapped in brackets.
+            Defaults to True.
 
     Returns:
         Category or If: If name is provided, returns a pollywog Category with conditional logic for threshold-based classification. If name is None, returns the If block (conditional logic) for further use.
@@ -210,13 +264,15 @@ def CategoryFromThresholds(variable, thresholds, categories, name=None, comment=
     """
     if len(categories) != len(thresholds) + 1:
         raise ValueError("categories must have one more element than thresholds")
+    base_variable = variable
+    variable = ensure_brackets(variable, ignore_functions=ignore_functions)
     rows = []
     prev = None
     for i, threshold in enumerate(thresholds):
         if prev is None:
-            cond = f"[{variable}] <= {threshold}"
+            cond = f"{variable} <= {threshold}"
         else:
-            cond = f"([{variable}] > {prev}) and ([{variable}] <= {threshold})"
+            cond = f"({variable} > {prev}) and ({variable} <= {threshold})"
         rows.append(([cond], [categories[i]]))
         prev = threshold
     otherwise = [categories[-1]]
@@ -226,5 +282,5 @@ def CategoryFromThresholds(variable, thresholds, categories, name=None, comment=
     return Category(
         name,
         [if_block],
-        comment_equation=comment or f"Classify {variable} by thresholds {thresholds}",
+        comment_equation=comment or f"Classify {base_variable} by thresholds {thresholds}",
     )

@@ -1,3 +1,6 @@
+import re
+
+
 def ensure_list(x) -> list:
     """
     Ensure the input is a list. If not, wrap it in a list.
@@ -117,7 +120,31 @@ def is_number(v):
         return False
 
 
-def ensure_brackets(var):
+def has_function_call(v):
+    """
+    Check if a string contains a function call pattern (e.g., func()).
+
+    This function uses a regular expression to determine if the input string
+    contains a function call, defined as a word followed by parentheses.
+
+    Args:
+        v (str): Input string to check.
+
+    Returns:
+        bool: True if the string contains a function call, False otherwise.
+
+    Example:
+        >>> has_function_call("max([Au], [Ag])")
+        True
+        >>> has_function_call("[Au] + [Ag]")
+        False
+    """
+    if not isinstance(v, str):
+        return False
+    return re.search(r"\b\w+\s*\(.*\)", v) is not None
+
+
+def ensure_brackets(var, ignore_functions=False):
     """
     Ensure a variable name is wrapped in Leapfrog-style brackets [var].
 
@@ -126,6 +153,9 @@ def ensure_brackets(var):
 
     Args:
         var (str): Variable name, with or without brackets.
+        ignore_functions (bool): If True, strings that appear to be function
+            calls (e.g., "max([Au], [Ag])") are not wrapped in brackets.
+            Defaults to False.
 
     Returns:
         str: Variable name wrapped in brackets, e.g., "[Au]".
@@ -139,12 +169,14 @@ def ensure_brackets(var):
         '[grade]'
     """
     var = var.strip()
+    if ignore_functions and has_function_call(var):
+        return var
     if not (var.startswith("[") and var.endswith("]")):
         var = f"[{var}]"
     return var
 
 
-def ensure_variables(variables):
+def ensure_variables(variables, ignore_functions=False):
     """
     Format a list of values as Leapfrog variable references or constants.
 
@@ -157,6 +189,9 @@ def ensure_variables(variables):
 
     Args:
         variables (Any): A single variable or a list of variables to process.
+        ignore_functions (bool): If True, strings that appear to be function
+            calls (e.g., "max([Au], [Ag])") are not wrapped in brackets.
+            Defaults to False.
 
     Returns:
         list: A list of formatted strings, either bracketed variable references
@@ -170,5 +205,10 @@ def ensure_variables(variables):
     """
 
     return [
-        f"{v}" if is_number(v) else ensure_brackets(v) for v in ensure_list(variables)
+        (
+            f"{v}"
+            if is_number(v)
+            else ensure_brackets(v, ignore_functions=ignore_functions)
+        )
+        for v in ensure_list(variables)
     ]

@@ -316,6 +316,20 @@ class CalcSet:
         """
         return self.to_json(indent=2)
 
+    def _repr_html_(self) -> str:
+        """
+        Return HTML representation for Jupyter notebook rich display.
+
+        Returns:
+            str: HTML string for displaying the CalcSet.
+        """
+        try:
+            from pollywog.display import display_calcset
+            return display_calcset(self, display_output=False)
+        except ImportError:
+            # If display module isn't available, fall back to text representation
+            return f"<pre>{repr(self)}</pre>"
+
     def __add__(self, other: "CalcSet") -> "CalcSet":
         """
         Add two CalcSet objects together, combining their items.
@@ -422,11 +436,6 @@ class CalcSet:
             )
         return CalcSet(new_items)
 
-    def _repr_html_(self):
-        from .display import display_calcset
-
-        return display_calcset(self, display_output=False)
-
 
 class Item:
     """
@@ -438,7 +447,7 @@ class Item:
     The `expression` parameter can be either a string or a list:
     - Use a string for simple expressions: ``Number("result", "[x] * 2")``
     - Use a list when including If objects for conditional logic: ``Number("result", [If(...)])``
-    
+
     Strings are automatically converted to single-element lists internally, but If objects
     are separate structures that cannot be embedded in expression strings, which is why
     the parameter accepts lists.
@@ -618,6 +627,20 @@ class Item:
         if variables is not None:
             return rename(new, variables, regex=regex)  # type: ignore
         return new
+
+    def _repr_html_(self) -> str:
+        """
+        Return HTML representation for Jupyter notebook rich display.
+
+        Returns:
+            str: HTML string for displaying the item.
+        """
+        try:
+            from pollywog.display import display_item
+            return display_item(self, display_output=False)
+        except ImportError:
+            # If display module isn't available, fall back to text representation
+            return f"<pre>{repr(self)}</pre>"
 
 
 class IfRow:
@@ -975,7 +998,9 @@ def rename(
         Item or expression: The renamed item or expression.
     """
     if isinstance(item, Item):
-        new_expression = [rename(child, mapper, regex=regex) for child in item.expression]
+        new_expression = [
+            rename(child, mapper, regex=regex) for child in item.expression
+        ]
         return item.replace(expression=new_expression)
     elif isinstance(item, If):
         new_rows = [rename(row, mapper, regex=regex) for row in item.rows]

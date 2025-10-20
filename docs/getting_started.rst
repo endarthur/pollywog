@@ -337,13 +337,26 @@ Display calculation sets as interactive HTML in Jupyter notebooks:
 
 .. code-block:: python
 
-    from pollywog.display import display_calcset, set_theme
+    from pollywog.display import display_calcset, display_item, set_theme
     
     # Set theme (optional)
     set_theme("light")  # or "dark"
     
     # Display the calcset
     display_calcset(calcset)
+    
+    # Display individual items
+    display_item(my_number)
+    display_item(my_category)
+
+Items and CalcSets also have **automatic rich display** in Jupyter notebooks. Simply evaluating them in a cell will show their rich HTML representation:
+
+.. code-block:: python
+
+    # Automatic rich display (no display_* function needed)
+    calcset  # Shows interactive tree view
+    
+    my_number  # Shows formatted item with equation
 
 This creates an interactive tree view showing:
 
