@@ -296,6 +296,7 @@ filtered = calcset.query('len(expression) > 1 and "log" in name')
 📚 **Full documentation**: [https://pollywog.readthedocs.io](https://pollywog.readthedocs.io/en/latest/)
 
 - **[Getting Started](https://pollywog.readthedocs.io/en/latest/getting_started.html)** – Installation and first steps
+- **[Tutorial for Resource Geologists](https://pollywog.readthedocs.io/en/latest/geologist_tutorial.html)** – For non-programmers familiar with Leapfrog
 - **[Tutorials](https://pollywog.readthedocs.io/en/latest/tutorials.html)** – Complete workflow examples
 - **[Expression Syntax](https://pollywog.readthedocs.io/en/latest/expression_syntax.html)** – Leapfrog expression reference
 - **[Workflow Patterns](https://pollywog.readthedocs.io/en/latest/workflow_patterns.html)** – Common patterns and recipes

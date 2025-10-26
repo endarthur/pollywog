@@ -7,6 +7,7 @@ Welcome to pollywog's documentation!
    :caption: Getting Started
 
    getting_started
+   geologist_tutorial
    tutorials
 
 .. toctree::
