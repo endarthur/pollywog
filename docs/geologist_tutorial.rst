@@ -48,7 +48,36 @@ When you open JupyterLite, you'll see an interface similar to Jupyter Notebook. 
 - **File Browser (left side)**: Like Windows Explorer, shows your notebooks and files
 - **Notebook (center)**: Where you write and run Python code
 - **Code Cells**: Boxes where you type Python code
+- **Markdown Cells**: Boxes where you can write notes and documentation (more on this below)
 - **Run Button**: Click it to execute the code in a cell (or press Shift+Enter)
+
+Using Markdown Cells for Documentation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Notebooks have two types of cells: **Code** (for Python) and **Markdown** (for notes). Markdown cells let you document what your code does, which is especially helpful when you return to a project weeks later.
+
+To create a markdown cell:
+
+1. Click on a cell
+2. Change the dropdown at the top from "Code" to "Markdown"
+3. Type your notes (you can use bullet points, headings, bold text, etc.)
+4. Press Shift+Enter to render the formatted text
+
+**Example markdown:**
+
+.. code-block:: markdown
+
+   # My Gold Grade Calculations
+   
+   This notebook creates calculations for:
+   - Cleaning assay data
+   - Domain-weighted composites
+   - Recovery factors
+   
+   **Project:** Smith Mine 2024
+   **Author:** J. Geologist
+
+For more on Jupyter notebooks and markdown, see the `Jupyter documentation <https://jupyter-notebook.readthedocs.io/en/stable/>`_.
 
 Creating Your First Notebook
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -120,6 +149,27 @@ Functions do things. You've already used one: ``print()``. Pollywog provides man
    print(total)  # Shows: 15
 
 You'll mostly be *using* functions that Pollywog provides, not creating your own.
+
+Text Formatting with F-Strings
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+F-strings let you insert variable values into text. You'll use them when creating calculations programmatically:
+
+.. code-block:: python
+
+   metal = "Au"
+   domain = "oxide"
+   
+   # Create a variable name by combining text and variables
+   var_name = f"{metal}_{domain}"
+   print(var_name)  # Shows: Au_oxide
+   
+   # The f before the quotes makes it an "f-string"
+   # Anything in {curly braces} gets replaced with the variable value
+
+**Think of it as:** A template where you fill in the blanks with variable values.
+
+You'll see f-strings often when creating multiple similar calculations—they let Python do the repetitive work of combining names.
 
 Importing: Getting Tools
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -264,7 +314,26 @@ Example 1: Cleaning Assay Data
    # Export for Leapfrog
    cleaning.to_lfcalc("drillhole_cleaning.lfcalc")
 
-After running this code, click the download button that appears below the cell to save ``drillhole_cleaning.lfcalc`` to your computer. Then import it into Leapfrog!
+**Downloading the .lfcalc file:**
+
+You have two options to download your file:
+
+**Option 1: Enable the autodownload magic (recommended)**
+
+First, in a cell at the top of your notebook, run:
+
+.. code-block:: python
+
+   %load_ext pollywog.magics
+   %pollywog autodownload on
+
+Now when you run ``to_lfcalc()``, a download button will appear below the cell. Click it to save the file.
+
+**Option 2: Manual download**
+
+In JupyterLite's file browser (left side), right-click on ``drillhole_cleaning.lfcalc`` and select "Download" to save it to your computer.
+
+Then import it into Leapfrog!
 
 Example 2: Domain-Weighted Grades
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -373,6 +442,9 @@ You'd write nested if statements—messy and hard to read.
 - 1.0 ≤ Au < 3.0: medium_grade
 - Au ≥ 3.0: high_grade
 
+.. note::
+   You need **one more category than you have thresholds**. Here we have 3 thresholds ([0.3, 1.0, 3.0]) and 4 categories (["waste", "low_grade", "medium_grade", "high_grade"]). The thresholds create the boundaries, and the categories fill the ranges.
+
 Example 5: Recovery and Economic Calculations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -412,8 +484,8 @@ Step 1: Open JupyterLite
 2. Create a new Python notebook
 3. Name it something like "My_First_Pollywog_Project"
 
-Step 2: Import Pollywog
-~~~~~~~~~~~~~~~~~~~~~~~~
+Step 2: Import Pollywog and Enable Autodownload
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In the first cell, type:
 
@@ -423,6 +495,15 @@ In the first cell, type:
    from pollywog.helpers import WeightedAverage, CategoryFromThresholds
 
 Press Shift+Enter to run the cell. If no error appears, you're ready to go!
+
+**Optional but recommended:** In the next cell, enable the autodownload magic so you can easily download .lfcalc files:
+
+.. code-block:: python
+
+   %load_ext pollywog.magics
+   %pollywog autodownload on
+
+This makes a download button appear whenever you export a file with ``to_lfcalc()``.
 
 Step 3: Create Your Calculations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -473,7 +554,9 @@ In the next cell:
    # Export to .lfcalc file
    block_model.to_lfcalc("block_model_calculations.lfcalc")
 
-When you run this cell, a download button appears below it. Click the button to save the file to your computer.
+**If you enabled the autodownload magic:** A download button appears below the cell. Click it to save the file to your computer.
+
+**If you didn't enable the magic:** Right-click on ``block_model_calculations.lfcalc`` in the file browser (left side) and select "Download".
 
 Step 5: Import into Leapfrog
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -739,7 +822,7 @@ Now that you understand the basics:
 - Converting Excel formulas to Pollywog
 - Building calculation templates for your company
 - Integrating machine learning models (yes, really!)
-- Automating entire estimation workflows
+- Automating pre and post-processing workflows (the estimation itself still needs to be done in Leapfrog)
 
 Getting Help
 ------------
