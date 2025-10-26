@@ -552,6 +552,16 @@ class Item:
             set: Set of variable names that are dependencies.
         """
         return get_dependencies(self)
+    
+    @property
+    def constants(self) -> Set[str]:
+        """
+        Get the set of constant dependencies for this item.
+
+        Returns:
+            set: Set of constant names that are dependencies.
+        """
+        return get_constants(self)
 
     def copy(self) -> "Item":
         """
@@ -981,6 +991,39 @@ def get_dependencies(item: Any) -> Set[str]:
         deps.update(found_vars)
 
     return deps
+
+
+def get_constants(item: Any) -> Set[str]:
+    """
+    Recursively extract constant string dependencies from an Item or expression.
+
+    Args:
+        item (Item or expression): The item or expression to analyze.
+
+    Returns:
+        set: Set of constant names that are dependencies.
+    """
+    consts = set()
+
+    if isinstance(item, Item):
+        for child in item.expression:
+            consts.update(get_constants(child))
+    elif isinstance(item, If):
+        for row in item.rows:
+            consts.update(get_constants(row))
+        consts.update(get_constants(item.otherwise))
+    elif isinstance(item, IfRow):
+        consts.update(get_constants(item.condition))
+        consts.update(get_constants(item.value))
+    elif isinstance(item, list):
+        for elem in item:
+            consts.update(get_constants(elem))
+    elif isinstance(item, str):
+        # Find all occurrences of 'const_name' in the string, with either single or double quotes
+        found_consts = re.findall(r"\{(['\"]?)([^\{\}]+)\1\}", item)
+        consts.update(name for _, name in found_consts)
+
+    return consts
 
 
 def rename(
