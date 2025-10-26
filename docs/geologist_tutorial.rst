@@ -35,7 +35,7 @@ Getting Started with JupyterLite
 
 The easiest way to try Pollywog is through JupyterLite—it runs Python directly in your web browser, no installation required.
 
-**Try it now:** Visit https://endarthur.github.io/pollyweb
+**Try it now:** Visit `https://endarthur.github.io/pollyweb <https://endarthur.github.io/pollyweb>`_
 
 .. note::
    **Important:** JupyterLite saves your work in your browser's memory. If you clear your browser cache, you'll lose your work! Always download your notebooks and .lfcalc files when you're done.
