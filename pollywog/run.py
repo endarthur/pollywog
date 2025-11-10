@@ -1,8 +1,6 @@
-import copy
-from pollywog.core import CalcSet, If, IfRow
 import re
 
-
+from pollywog.core import If, IfRow
 from pollywog.leapfrog_env import LEAPFROG_ENV
 
 

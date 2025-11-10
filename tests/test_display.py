@@ -1,5 +1,6 @@
-import pollywog.display
 import pytest
+
+import pollywog.display
 
 
 # Dummy CalcSet and Item for testing

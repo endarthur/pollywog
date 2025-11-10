@@ -5,19 +5,19 @@ This guide provides recommendations for effectively using pollywog in production
 
 .. tip::
    **Quick Checklist**
-   
+
    ✅ Use version control (Git) for all scripts (or at least keep a copy of the notebook in Central)
-   
+
    ✅ Add comments and docstrings to your code
-   
+
    ✅ Test calculations on small datasets first
-   
+
    ✅ Use configuration files for parameters
-   
+
    ✅ Follow consistent naming conventions
-   
+
    ✅ Validate results against known values
-   
+
    ✅ Document assumptions and data sources
 
 Code Organization
@@ -62,40 +62,40 @@ Structure your scripts consistently:
     """
     Drillhole Preprocessing
     =======================
-    
+
     Purpose: Clean and transform drillhole assay data before estimation
     Author: Your Name
     Date: 2024-01-15
     Updated: 2024-03-20
-    
+
     Inputs:
     - Au, Ag, Cu: Raw assay grades
-    
+
     Outputs:
     - Au_clean, Ag_clean, Cu_clean: Cleaned grades
     - Au_log, Ag_log, Cu_log: Log-transformed grades for kriging
     """
-    
+
     from pollywog.core import CalcSet, Number
-    
+
     # Configuration
     OUTLIER_THRESHOLDS = {
         "Au": 100,  # g/t
         "Ag": 500,  # g/t
         "Cu": 5,    # %
     }
-    
+
     EPSILON = 1e-6  # For log transforms
-    
+
     # Main calculation set
     def create_preprocessing_calcset(metals=None, thresholds=None):
         """
         Create preprocessing calculations for drillhole data.
-        
+
         Args:
             metals: List of metal names (default: ["Au", "Ag", "Cu"])
             thresholds: Dict of outlier thresholds (default: OUTLIER_THRESHOLDS)
-        
+
         Returns:
             CalcSet ready to export
         """
@@ -103,9 +103,9 @@ Structure your scripts consistently:
             metals = ["Au", "Ag", "Cu"]
         if thresholds is None:
             thresholds = OUTLIER_THRESHOLDS
-        
+
         calcs = []
-        
+
         # Clean data
         for metal in metals:
             calcs.append(Number(
@@ -113,7 +113,7 @@ Structure your scripts consistently:
                 expression=[f"clamp([{metal}], 0, {thresholds[metal]})"],
                 comment_equation=f"Remove negatives and cap at {thresholds[metal]}"
             ))
-        
+
         # Log transforms
         for metal in metals:
             calcs.append(Number(
@@ -121,9 +121,9 @@ Structure your scripts consistently:
                 expression=[f"log([{metal}_clean] + {EPSILON})"],
                 comment_equation="Log transform for kriging"
             ))
-        
+
         return CalcSet(calcs)
-    
+
     if __name__ == "__main__":
         # Create and export
         calcset = create_preprocessing_calcset()
@@ -145,7 +145,7 @@ Use descriptive, consistent names:
     Cu_recovered_payable
     domain_geological
     nsr_breakeven_cutoff
-    
+
     # Bad
     au1
     x
@@ -173,7 +173,7 @@ Name your ``.lfcalc`` files clearly:
     block_postprocessing_domain_weighted.lfcalc
     geometallurgy_recovery_model.lfcalc
     economics_nsr_calculation.lfcalc
-    
+
     # Bad
     calcs.lfcalc
     output.lfcalc
@@ -217,18 +217,18 @@ Create flags for out-of-range values:
 .. code-block:: python
 
     from pollywog.core import CalcSet, Number, If
-    
+
     qa_checks = CalcSet([
         # Flag impossible values
         Number(name="flag_impossible", expression=[
             If("([Au] < 0) or ([Cu] < 0) or ([density] < 0)", "1", "0")
         ]),
-        
+
         # Flag extreme values for review
         Number(name="flag_extreme", expression=[
             If("([Au] > 100) or ([Cu] > 10)", "1", "0")
         ]),
-        
+
         # Flag missing critical data
         Number(name="flag_incomplete", expression=[
             If("([domain] = '') or (not is_normal([density]))", "1", "0")
@@ -247,15 +247,15 @@ Always protect against division by zero:
 
     # Bad
     Number(name="ratio", expression=["[numerator] / [denominator]"])
-    
+
     # Good - add small epsilon
     Number(name="ratio", expression=["[numerator] / ([denominator] + 1e-10)"])
-    
+
     # Good - use conditional
     Number(name="ratio", expression=[
         If("[denominator] != 0", "[numerator] / [denominator]", "0")
     ])
-    
+
     # Good - clamp denominator
     Number(name="ratio", expression=["[numerator] / clamp([denominator], 0.001)"])
 
@@ -268,10 +268,10 @@ Add epsilon before taking logarithms:
 
     # Bad
     Number(name="Au_log", expression=["log([Au])"])
-    
+
     # Good
     Number(name="Au_log", expression=["log([Au] + 1e-6)"])
-    
+
     # Good - clamp first
     Number(name="Au_log", expression=["log(clamp([Au], 1e-6))"])
 
@@ -286,7 +286,7 @@ Break complex expressions into steps:
     Number(name="value", expression=[
         "(([Au] * 1800 / 31.1035 * 0.88) + ([Cu] * 3.5 * 22.046 * 0.85)) * [tonnes] - ([mining_cost] + [processing_cost])"
     ])
-    
+
     # Good - break into logical steps
     CalcSet([
         Number(name="Au_value_per_t", expression=["[Au] * 1800 / 31.1035 * 0.88"]),
@@ -306,7 +306,7 @@ Use parentheses liberally for clarity:
 
     # Ambiguous
     Number(name="result", expression=["[a] + [b] * [c] / [d]"])
-    
+
     # Clear
     Number(name="result", expression=["[a] + (([b] * [c]) / [d])"])
 
@@ -321,7 +321,7 @@ Document your intent:
 .. code-block:: python
 
     from pollywog.core import CalcSet, Number
-    
+
     # Create domain-weighted grades
     # Assumption: prop_oxide + prop_sulfide + prop_transition may be < 1 (waste not estimated)
     # The weighted average automatically normalizes by sum of proportions
@@ -346,7 +346,7 @@ Use ``comment_equation`` for business rules:
         "[Au_diluted] * 0.88",
         comment_equation="88% recovery per metallurgical test work (Report XYZ-2023)"
     )
-    
+
     Number(
         "cutoff_grade",
         "0.3",
@@ -361,28 +361,28 @@ Create a README for your project:
 .. code-block:: markdown
 
     # Project Name - Resource Estimation Calculations
-    
+
     ## Overview
     Automated calculation sets for [Project Name] resource estimation.
-    
+
     ## Workflow
     1. Drillhole preprocessing: `01_drillhole_preprocessing.py`
     2. Block postprocessing: `02_block_postprocessing.py`
     3. Geometallurgy: `03_geometallurgy.py`
     4. Economics: `04_economics.py`
-    
+
     ## Key Assumptions
     - Gold price: $1800/oz
     - Copper price: $3.50/lb
     - Gold recovery: 88%
     - Copper recovery: 85%
     - Dilution: 5%
-    
+
     ## Dependencies
     - Python 3.8+
     - pollywog 0.1.2+
     - scikit-learn (for ML models)
-    
+
     ## Usage
     ```bash
     python scripts/01_drillhole_preprocessing.py
@@ -405,7 +405,7 @@ Use version control for all pollywog scripts:
     git init
     git add scripts/ config/ README.md
     git commit -m "Initial commit - resource estimation calculations"
-    
+
     # Create .gitignore
     echo "*.lfcalc" >> .gitignore  # Optional: exclude generated files
     echo "__pycache__/" >> .gitignore
@@ -422,7 +422,7 @@ Write clear commit messages:
     git commit -m "Update Au outlier threshold from 50 to 100 g/t"
     git commit -m "Add copper recovery model from metallurgical tests"
     git commit -m "Fix division by zero in NSR calculation"
-    
+
     # Bad
     git commit -m "Update"
     git commit -m "Fix bug"
@@ -444,25 +444,25 @@ Store parameters separately from code:
         "Ag": 24,    # $/oz
         "Cu": 3.50,  # $/lb
     }
-    
+
     RECOVERIES = {
         "Au": 0.88,
         "Ag": 0.75,
         "Cu": 0.85,
     }
-    
+
     OUTLIER_CAPS = {
         "Au": 100,  # g/t
         "Ag": 500,  # g/t
         "Cu": 5,    # %
     }
-    
+
     DILUTION_FACTOR = 0.95
-    
+
     # scripts/02_block_postprocessing.py
     from config.parameters import METAL_PRICES, RECOVERIES, DILUTION_FACTOR
     from pollywog.core import CalcSet, Number
-    
+
     calcset = CalcSet([
         Number(name="Au_diluted", expression=[f"[Au_est] * {DILUTION_FACTOR}"]),
         Number(name="Au_recovered", expression=[f"[Au_diluted] * {RECOVERIES['Au']}"]),
@@ -477,18 +477,18 @@ Support different environments (dev, prod):
 
     import os
     from pathlib import Path
-    
+
     # Determine environment
     ENV = os.getenv("LEAPFROG_ENV", "development")
-    
+
     # Set paths based on environment
     if ENV == "production":
         OUTPUT_DIR = Path("/shared/leapfrog/calculations")
     else:
         OUTPUT_DIR = Path("./outputs")
-    
+
     OUTPUT_DIR.mkdir(exist_ok=True)
-    
+
     # Export to appropriate location
     calcset.to_lfcalc(OUTPUT_DIR / "preprocessing.lfcalc")
 
@@ -506,7 +506,7 @@ Test your calculation logic:
     import pytest
     from pollywog.core import CalcSet, Number
     from pollywog.run import run_calcset
-    
+
     def test_nsr_calculation():
         """Test NSR calculation with known inputs."""
         calcset = CalcSet([
@@ -514,18 +514,18 @@ Test your calculation logic:
             Number(name="cost", expression=["35"]),
             Number(name="nsr", expression=["[revenue] - [cost]"]),
         ])
-        
+
         # Test with known values
         result = run_calcset(calcset, inputs={"grade": 2.0, "price": 50})
-        
+
         assert result["revenue"] == 100
         assert result["cost"] == 35
         assert result["nsr"] == 65
-    
+
     def test_domain_weighting():
         """Test weighted average calculation."""
         from pollywog.helpers import WeightedAverage
-        
+
         calcset = CalcSet([
             WeightedAverage(
                 variables=["Au_oxide", "Au_sulfide"],
@@ -533,14 +533,14 @@ Test your calculation logic:
                 name="Au_composite"
             )
         ])
-        
+
         result = run_calcset(calcset, inputs={
             "Au_oxide": 1.5,
             "Au_sulfide": 0.8,
             "prop_oxide": 0.3,
             "prop_sulfide": 0.7,
         })
-        
+
         expected = (1.5 * 0.3 + 0.8 * 0.7) / (0.3 + 0.7)
         assert abs(result["Au_composite"] - expected) < 0.001
 
@@ -556,9 +556,9 @@ Export small test cases and validate in Leapfrog:
         Number(name="test_sum", expression=["[a] + [b]"]),
         Number(name="test_product", expression=["[a] * [b]"]),
     ])
-    
+
     test_calcset.to_lfcalc("test_calculations.lfcalc")
-    
+
     # Import into Leapfrog with known values (a=2, b=3)
     # Verify test_sum = 5, test_product = 6
 
@@ -577,7 +577,7 @@ Avoid redundant calculations:
         Number(name="sum_scaled", expression=["([Au] + [Ag]) * 2"]),
         Number(name="sum_offset", expression=["([Au] + [Ag]) + 10"]),
     ])
-    
+
     # Good - calculate once, reuse
     CalcSet([
         Number(name="sum_Au_Ag", expression=["[Au] + [Ag]"]),
@@ -593,14 +593,14 @@ Ensure correct calculation order:
 .. code-block:: python
 
     from pollywog.core import CalcSet, Number
-    
+
     # Create calculations (order doesn't matter)
     calcset = CalcSet([
         Number(name="final", expression=["[intermediate] * 2"]),
         Number(name="intermediate", expression=["[Au] + [Ag]"]),
         Number(name="Au", expression=["clamp([raw_Au], 0)"]),
     ])
-    
+
     # Sort by dependencies before exporting
     sorted_calcset = calcset.topological_sort()
     sorted_calcset.to_lfcalc("properly_ordered.lfcalc")

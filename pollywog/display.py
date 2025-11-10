@@ -178,23 +178,21 @@ def render_item(item, palette):
     typ = d.get("type", "")
     eq = d.get("equation", None)
     comment = d.get("comment", "")
-    
-    html_block = f'<div style="margin-bottom:0.5em;">'
+
+    html_block = '<div style="margin-bottom:0.5em;">'
     html_block += f'<b style="color:{palette["variable"]};">{html.escape(name)}</b> '
-    
+
     # Show calculation_type for calculation items
     calc_type = d.get("calculation_type")
     label = typ
     if typ == "calculation" and calc_type:
         label = calc_type
     html_block += f'<span style="background:{palette["background"]};border-radius:4px;padding:2px 6px;color:{palette["label"]};">{html.escape(label)}</span>'
-    
+
     if eq:
         html_block += render_equation(eq, palette)
     if comment:
-        html_block += (
-            f'<div style="color:{palette["comment"]};margin-left:1em;">{html.escape(comment)}</div>'
-        )
+        html_block += f'<div style="color:{palette["comment"]};margin-left:1em;">{html.escape(comment)}</div>'
     html_block += "</div>"
     return html_block
 
@@ -225,7 +223,7 @@ def display_item(item, theme=None, colors=None, display_output=True):
         >>> n = Number(name="x2", children=["[x] * 2"])
         >>> display_item(n, theme="dark")
     """
-    from IPython.display import display, HTML
+    from IPython.display import HTML, display
 
     palette = get_color_palette(theme, colors)
     html_out = (
@@ -233,7 +231,7 @@ def display_item(item, theme=None, colors=None, display_output=True):
     )
     html_out += render_item(item, palette)
     html_out += "</div>"
-    
+
     if display_output:
         display(HTML(html_out))
     else:
@@ -267,7 +265,7 @@ def display_calcset(calcset, theme=None, colors=None, display_output=True):
         >>> cs = CalcSet([Number(name="x2", children=["[x] * 2"])])
         >>> display_calcset(cs, theme="dark")
     """
-    from IPython.display import display, HTML
+    from IPython.display import HTML, display
 
     palette = get_color_palette(theme, colors)
 
@@ -292,7 +290,7 @@ def display_calcset(calcset, theme=None, colors=None, display_output=True):
     html_out += section("Calculations", calculations)
     html_out += section("Filters", filters)
     html_out += "</div>"
-    
+
     if display_output:
         display(HTML(html_out))
     else:

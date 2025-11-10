@@ -1,13 +1,13 @@
+from pollywog.core import Number
 from pollywog.helpers import (
     Average,
-    Sum,
-    Product,
-    Normalize,
-    WeightedAverage,
-    Scale,
     CategoryFromThresholds,
+    Normalize,
+    Product,
+    Scale,
+    Sum,
+    WeightedAverage,
 )
-from pollywog.core import Number
 
 
 def test_average_helper():

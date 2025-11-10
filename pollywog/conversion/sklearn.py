@@ -1,4 +1,4 @@
-from ..core import If, IfRow, Variable, Number, Category
+from ..core import Category, If, IfRow, Number, Variable
 
 try:
     import sklearn
@@ -10,7 +10,7 @@ except ImportError:
 
 # Classification and Regression Trees
 
-from sklearn import tree, ensemble
+from sklearn import ensemble, tree
 
 
 def convert_tree(
@@ -203,7 +203,6 @@ def convert_forest(
 
 
 # Linear Models
-from sklearn import linear_model
 
 
 def convert_linear_model(lm_model, feature_names, target_name):

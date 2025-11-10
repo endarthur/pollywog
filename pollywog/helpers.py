@@ -1,5 +1,5 @@
-from .core import If, IfRow, Number, Category
-from .utils import ensure_variables, ensure_brackets
+from .core import Category, If, IfRow, Number
+from .utils import ensure_brackets, ensure_variables
 
 
 def Sum(variables, name=None, comment=None, ignore_functions=True):
@@ -103,7 +103,9 @@ def Product(variables, name=None, comment=None, ignore_functions=True):
     )
 
 
-def Normalize(variable, min_value, max_value, name=None, comment=None, ignore_functions=True):
+def Normalize(
+    variable, min_value, max_value, name=None, comment=None, ignore_functions=True
+):
     """
     Create a normalization expression or a Number that normalizes a variable to the range [0, 1].
 
@@ -237,7 +239,9 @@ def Scale(variable, factor, name=None, comment=None):
     )
 
 
-def CategoryFromThresholds(variable, thresholds, categories, name=None, comment=None, ignore_functions=True):
+def CategoryFromThresholds(
+    variable, thresholds, categories, name=None, comment=None, ignore_functions=True
+):
     """
     Create a conditional block or a Category that assigns labels based on value thresholds.
 
@@ -282,5 +286,6 @@ def CategoryFromThresholds(variable, thresholds, categories, name=None, comment=
     return Category(
         name,
         [if_block],
-        comment_equation=comment or f"Classify {base_variable} by thresholds {thresholds}",
+        comment_equation=comment
+        or f"Classify {base_variable} by thresholds {thresholds}",
     )

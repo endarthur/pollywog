@@ -1,13 +1,20 @@
 # Automating Leapfrog Workflows with Pollywog – An Independent Open-Source Tool
 
-[![DOI-badge]][DOI] [![docs-badge]][docs] [![lite-badge]][lite]
+[![PyPI version][pypi-badge]][pypi] [![Python][python-badge]][pypi] [![Tests][tests-badge]][tests] [![DOI][DOI-badge]][DOI] [![Docs][docs-badge]][docs] [![JupyterLite][lite-badge]][lite] [![License: MIT][license-badge]][license]
 
+[pypi-badge]: https://img.shields.io/pypi/v/lf-pollywog.svg
+[pypi]: https://pypi.org/project/lf-pollywog/
+[python-badge]: https://img.shields.io/pypi/pyversions/lf-pollywog.svg
+[tests-badge]: https://github.com/endarthur/pollywog/workflows/Tests/badge.svg
+[tests]: https://github.com/endarthur/pollywog/actions/workflows/test.yml
 [DOI-badge]: https://zenodo.org/badge/1071742254.svg
 [DOI]: https://doi.org/10.5281/zenodo.173138
 [docs-badge]: https://readthedocs.org/projects/pollywog/badge/?version=latest
-[docs]: https://pollywog.readthedocs.io/en/latest/?
+[docs]: https://pollywog.readthedocs.io/en/latest/
 [lite-badge]: https://jupyterlite.rtfd.io/en/latest/_static/badge.svg
 [lite]: https://endarthur.github.io/pollyweb
+[license-badge]: https://img.shields.io/badge/License-MIT-yellow.svg
+[license]: https://opensource.org/licenses/MIT
 
 > **Pollywog** is a Python library for building, manipulating, and automating Leapfrog calculation sets programmatically.
 
@@ -78,7 +85,7 @@ calcset = CalcSet([
     # Clean data
     Number("Au_clean", "clamp([Au], 0)",
            comment_equation="Remove negative values"),
-    
+
     # Domain-weighted grade
     WeightedAverage(
         variables=["Au_oxide", "Au_sulfide", "Au_transition"],
@@ -86,7 +93,7 @@ calcset = CalcSet([
         name="Au_composite",
         comment="Domain-weighted gold grade"
     ),
-    
+
     # Apply recovery
     Number("Au_recovered", "[Au_composite] * 0.88",
            comment_equation="88% metallurgical recovery"),
@@ -180,21 +187,21 @@ calcset = CalcSet([
         name="Au_composite",
         comment="Domain-weighted gold grade"
     ),
-    
+
     # Calculate gold equivalent (Ag and Cu converted to Au)
     Number("AuEq",
         "[Au_composite] + ([Ag_composite] * 0.011) + ([Cu_composite] * 1.5)",
         comment_equation="Gold equivalent grade (Ag/91, Cu*1.5 for price ratio)"
     ),
-    
+
     # Without name: Returns expression for composition
     # Calculate net smelter return (NSR) per tonne
     Number("NSR_per_tonne",
         f"{Product(['Au_composite', '1800', '0.88'])} + "  # Au: price $1800/oz, 88% recovery
-        f"{Product(['Ag_composite', '22', '0.75'])} + "    # Ag: price $22/oz, 75% recovery  
+        f"{Product(['Ag_composite', '22', '0.75'])} + "    # Ag: price $22/oz, 75% recovery
         f"{Product(['Cu_composite', '3.5', '0.85'])}"      # Cu: price $3.5/lb, 85% recovery
     ),
-    
+
     # Classify by gold equivalent grade
     CategoryFromThresholds(
         variable="AuEq",
@@ -227,8 +234,8 @@ model = DecisionTreeRegressor(max_depth=3, random_state=42)
 model.fit(X, y)
 
 recovery_calc = convert_tree(
-    model, 
-    ["Au_composite", "Cu_composite", "P80"], 
+    model,
+    ["Au_composite", "Cu_composite", "P80"],
     "Au_recovery_predicted"
 )
 
@@ -310,21 +317,21 @@ MIT License – See [LICENSE](LICENSE) file for details.
 
 ## Contributions
 
-Contributions are very welcome!
-If you'd like to collaborate on Pollywog, whether through bug fixes, feature enhancements, new use cases, or documentation, please follow these steps:
+Contributions are very welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
+Quick start:
 - Fork the repository
-- Create a feature branch (git checkout -b feature-name)
-- Make your changes and commit (git commit -m 'Add new feature')
+- Create a feature branch (`git checkout -b feature-name`)
+- Make your changes and commit (`git commit -m 'Add new feature'`)
 - Submit a pull request with a clear explanation of your changes
 
-Before contributing, please:
-- Ensure your changes align with the project’s goals
-- Maintain consistent code style
-- Test your modifications whenever possible
-- Though It's ok to use LLMs to help write code or documentation, please review and understand all contributions to ensure quality and accuracy.
+Before contributing:
+- Read [CONTRIBUTING.md](CONTRIBUTING.md) for full guidelines
+- Follow the [Code of Conduct](CODE_OF_CONDUCT.md)
+- Run tests and formatters (`pytest`, `black`, `ruff`)
+- It's ok to use LLMs to help write code, but review everything carefully
 
-Feel free to open an issue if you have questions or suggestions.
+Feel free to open an [issue](https://github.com/endarthur/pollywog/issues) if you have questions or suggestions.
 
 ## Acknowledgements
 

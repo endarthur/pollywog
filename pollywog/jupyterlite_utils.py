@@ -5,8 +5,6 @@ This module provides helper functions for working with pollywog in JupyterLite,
 a browser-based Jupyter environment that runs entirely in the client.
 """
 
-from IPython.display import display, HTML
-
 
 def download_file(content, filename, content_type="application/octet-stream"):
     """
@@ -25,7 +23,8 @@ def download_file(content, filename, content_type="application/octet-stream"):
         >>> download_file(b"Hello, world!", "test.txt", "text/plain")
     """
     import base64
-    from IPython.display import display, HTML
+
+    from IPython.display import HTML, display
 
     # Convert content to base64
     if isinstance(content, str):

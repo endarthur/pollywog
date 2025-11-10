@@ -28,10 +28,10 @@ Variables in Leapfrog expressions are referenced using square brackets. This all
 
     # Reference a single variable
     Number(name="Au_scaled", expression=["[Au] * 2.0"])
-    
+
     # Reference multiple variables in an expression
     Number(name="total_grade", expression=["[Au] + [Ag] + [Cu]"])
-    
+
     # Reference block model variables
     Number(name="density_calc", expression=["[block_density] * [block_volume]"])
 
@@ -51,13 +51,13 @@ Pollywog supports all standard mathematical operations used in Leapfrog:
 
     # Addition and subtraction
     Number(name="net_grade", expression=["[Au_est] - [Au_waste]"])
-    
+
     # Multiplication and division
     Number(name="metal_content", expression=["[grade] * [tonnage] / 1000"])
-    
+
     # Exponentiation (power)
     Number(name="Au_squared", expression=["[Au] ^ 2"])
-    
+
     # Parentheses for order of operations
     Number(name="weighted_avg", expression=["([Au] * [weight_Au] + [Ag] * [weight_Ag]) / ([weight_Au] + [weight_Ag])"])
 
@@ -75,10 +75,10 @@ Mathematical Functions
     Number(name="Au_log10", expression=["log([Au], 10)"])  # Base 10 logarithm
     Number(name="Au_ln", expression=["ln([Au])"])           # Natural logarithm
     Number(name="Au_exp", expression=["exp([Au])"])         # Exponential (e^x)
-    
+
     # Square root
     Number(name="Au_sqrt", expression=["sqrt([Au])"])
-    
+
     # Absolute value
     Number(name="Au_abs", expression=["abs([Au] - [Au_target])"])
 
@@ -91,7 +91,7 @@ Trigonometric Functions
     Number(name="sin_angle", expression=["sin([angle])"])
     Number(name="cos_angle", expression=["cos([angle])"])
     Number(name="tan_angle", expression=["tan([angle])"])
-    
+
     # Inverse trigonometry
     Number(name="asin_val", expression=["asin([ratio])"])
     Number(name="acos_val", expression=["acos([ratio])"])
@@ -105,18 +105,18 @@ Rounding and Clamping
     # Clamp values to a range
     Number(name="Au_clamped", expression=["clamp([Au], 0)"])           # Minimum of 0
     Number(name="Au_range", expression=["clamp([Au], 0, 10)"])         # Between 0 and 10
-    
+
     # Round to decimal places
     Number(name="Au_round", expression=["round([Au], 2)"])             # 2 decimal places
     Number(name="Au_round_int", expression=["round([Au])"])            # Round to integer
-    
+
     # Round to significant figures
     Number(name="Au_sf", expression=["roundsf([Au], 3)"])              # 3 significant figures
-    
+
     # Floor and ceiling
     Number(name="Au_floor", expression=["floor([Au])"])                # Round down
     Number(name="Au_ceiling", expression=["ceiling([Au])"])            # Round up
-    
+
     # Truncate (remove decimal part)
     Number(name="Au_trunc", expression=["truncate([Au])"])
 
@@ -128,7 +128,7 @@ Min and Max
     # Minimum and maximum of multiple values
     Number(name="max_grade", expression=["max([Au], [Ag], [Cu])"])
     Number(name="min_grade", expression=["min([Au], [Ag], [Cu])"])
-    
+
     # Useful for creating composite variables
     Number(name="best_estimate", expression=["max([est_kriging], [est_idw])"])
 
@@ -141,7 +141,7 @@ String functions are useful for working with categorical data and text fields:
 
     # Concatenate strings
     Category(name="full_code", expression=["concat([domain], '_', [zone])"])
-    
+
     # String tests (return true/false)
     # These are typically used in conditional expressions
     # startswith([text], 'prefix')
@@ -172,22 +172,22 @@ Leapfrog provides auxiliary functions to query the status of values:
     Number(name="has_valid_Au", expression=[
         If("is_normal([Au])", "1", "0")
     ])
-    
+
     # is_blank: Returns true if value is blank (similar to NaN/null)
     Number(name="is_missing", expression=[
         If("is_blank([density])", "1", "0")
     ])
-    
+
     # is_without_value: Returns true if estimation could not be performed
     Number(name="needs_reestimation", expression=[
         If("is_without_value([Au_kriged])", "1", "0")
     ])
-    
+
     # is_outside: Returns true if value is outside domain boundary
     Number(name="outside_domain", expression=[
         If("is_outside([Au_est])", "1", "0")
     ])
-    
+
     # Common pattern: Use not is_normal() to check for any special value
     Number(name="Au_validated", expression=[
         If("not is_normal([Au])", "0", "[Au]")
@@ -211,12 +211,12 @@ Basic If/Else
 .. code-block:: python
 
     from pollywog.core import If, Number
-    
+
     # Simple if/else using the shorthand syntax
     Number(name="Au_adjusted", expression=[
         If("[Au] > 5", "[Au] * 0.9", "[Au]")
     ])
-    
+
     # Multiple conditions
     Number(name="Au_category", expression=[
         If([
@@ -234,7 +234,7 @@ A common pattern in resource estimation is applying different formulas based on 
 .. code-block:: python
 
     from pollywog.core import If, IfRow, Number
-    
+
     # Apply different recovery factors by domain
     Number(name="Au_recovered", expression=[
         If([
@@ -243,7 +243,7 @@ A common pattern in resource estimation is applying different formulas based on 
             ("[domain] = 'sulfide'", "[Au_est] * 0.78"),
         ], otherwise=["[Au_est] * 0.75"])  # Default recovery
     ])
-    
+
     # Combine conditions
     Number(name="dilution_factor", expression=[
         If([
@@ -261,7 +261,7 @@ Use the ``Category`` class for text-based outputs:
 .. code-block:: python
 
     from pollywog.core import If, Category
-    
+
     Category(name="ore_type", expression=[
         If([
             ("[Au] > 2 and [domain] = 'oxide'", "'high_grade_oxide'"),
@@ -301,22 +301,22 @@ Leapfrog has specific value statuses (blank, without_value, outside) for differe
 
     # Provide default values for missing data
     Number(name="Au_clean", expression=["clamp([Au], 0)"])
-    
+
     # Use is_normal() to check for valid numeric values
     Number(name="Au_default", expression=[
         If("not is_normal([Au])", "0.001", "[Au]")  # Check for blank/special values
     ])
-    
+
     # Use is_blank() to specifically check for blank values
     Number(name="has_density", expression=[
         If("is_blank([density])", "0", "1")
     ])
-    
+
     # Handle estimation failures (without_value status)
     Number(name="Au_final", expression=[
         If("is_without_value([Au_kriged])", "[Au_idw]", "[Au_kriged]")  # Fallback to IDW
     ])
-    
+
     # Add small epsilon to avoid log(0) errors
     Number(name="Au_log_safe", expression=["log([Au] + 1e-6)"])
 
@@ -340,18 +340,18 @@ Here's a comprehensive example showing various expression types:
 
     from pollywog.core import CalcSet, Number, Category, If
     from pollywog.helpers import WeightedAverage, CategoryFromThresholds
-    
+
     calcset = CalcSet([
         # 1. Data cleaning
-        Number(name="Au_clean", expression=["clamp([Au], 0)"], 
+        Number(name="Au_clean", expression=["clamp([Au], 0)"],
                comment_equation="Remove negative values"),
         Number(name="density_clean", expression=["clamp([density], 1.5, 5.0)"],
                comment_equation="Clamp density to realistic range"),
-        
+
         # 2. Transformations
         Number(name="Au_log", expression=["log([Au_clean] + 1e-6)"],
                comment_equation="Log transform with epsilon for zeros"),
-        
+
         # 3. Domain-based adjustments
         Number(name="Au_adjusted", expression=[
             If([
@@ -359,7 +359,7 @@ Here's a comprehensive example showing various expression types:
                 ("[domain] = 'sulfide'", "[Au_clean] * 0.90"),
             ], otherwise=["[Au_clean]"])
         ], comment_equation="Apply domain-specific scaling"),
-        
+
         # 4. Weighted average from multiple estimates
         WeightedAverage(
             variables=["Au_kriging", "Au_idw", "Au_nn"],
@@ -367,13 +367,13 @@ Here's a comprehensive example showing various expression types:
             name="Au_composite",
             comment="Weighted combination of estimation methods"
         ),
-        
+
         # 5. Economic calculations
         Number(name="metal_tonnes", expression=["[Au_composite] * [tonnes] / 31.1035"],
                comment_equation="Convert grade to troy ounces"),
         Number(name="revenue", expression=["[metal_tonnes] * [Au_price] * [recovery]"],
                comment_equation="Estimated revenue per block"),
-        
+
         # 6. Classification
         CategoryFromThresholds(
             variable="Au_composite",
@@ -383,7 +383,7 @@ Here's a comprehensive example showing various expression types:
             comment="Classify blocks by gold grade"
         ),
     ])
-    
+
     # Export to Leapfrog
     calcset.to_lfcalc("comprehensive_example.lfcalc")
 

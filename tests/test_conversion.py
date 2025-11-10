@@ -1,9 +1,10 @@
-import pytest
-from pollywog.conversion.sklearn import convert_tree, convert_linear_model
-from pollywog.core import Number, Category
-from sklearn.tree import DecisionTreeRegressor, DecisionTreeClassifier
-from sklearn.linear_model import LinearRegression
 import numpy as np
+import pytest
+from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
+
+from pollywog.conversion.sklearn import convert_linear_model, convert_tree
+from pollywog.core import Category, Number
 
 
 def make_regressor():

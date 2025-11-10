@@ -1,11 +1,8 @@
-import pytest
-import io
 import sys
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock, patch
 
 
 class TestJupyterLiteUtils:
-
     def test_is_jupyterlite_true(self):
         """Test detection of JupyterLite environment when pyodide is present."""
         with patch.dict("sys.modules", {"pyodide": Mock()}):
@@ -177,6 +174,7 @@ class TestIntegration:
         with patch.dict("sys.modules", {"pyodide": Mock()}):
             # Reimport to get fresh module state
             import importlib
+
             import pollywog.jupyterlite_utils
 
             importlib.reload(pollywog.jupyterlite_utils)

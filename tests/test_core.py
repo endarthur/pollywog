@@ -1,5 +1,5 @@
 def test_query_with_external_variable():
-    from pollywog.core import CalcSet, Variable, Number
+    from pollywog.core import CalcSet, Number, Variable
 
     a = Variable(name="a", expression=["foo"])
     b = Number(name="b1", expression=["[a] + 1"])
@@ -13,7 +13,7 @@ def test_query_with_external_variable():
 
 
 def test_query_with_multiple_external_vars():
-    from pollywog.core import CalcSet, Variable, Number
+    from pollywog.core import CalcSet, Number, Variable
 
     a = Variable(name="a", expression=["foo"])
     b = Number(name="b1", expression=["[a] + 1"])
@@ -28,7 +28,7 @@ def test_query_with_multiple_external_vars():
 
 
 def test_topological_sort_simple():
-    from pollywog.core import Number, Variable, CalcSet
+    from pollywog.core import CalcSet, Number, Variable
 
     a = Variable(name="a", expression=["foo"])
     b = Number(name="b", expression=["[a] + 1"])
@@ -40,7 +40,7 @@ def test_topological_sort_simple():
 
 
 def test_topological_sort_external_dep():
-    from pollywog.core import Number, Variable, CalcSet
+    from pollywog.core import CalcSet, Number, Variable
 
     a = Variable(name="a", expression=["foo"])
     b = Number(name="b", expression=["[external] + 1"])
@@ -51,7 +51,7 @@ def test_topological_sort_external_dep():
 
 
 def test_topological_sort_cycle():
-    from pollywog.core import Number, CalcSet
+    from pollywog.core import CalcSet, Number
 
     a = Number(name="a", expression=["[b] + 1"])
     b = Number(name="b", expression=["[a] + 2"])
@@ -124,9 +124,8 @@ def test_rename_nested_if():
 
 
 import pytest
-from pollywog.core import CalcSet, Number
 
-from pollywog.core import Variable, Filter, If, IfRow, Category
+from pollywog.core import CalcSet, Category, Filter, If, IfRow, Number, Variable
 
 
 def test_number_to_dict_and_from_dict():

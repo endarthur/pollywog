@@ -1,6 +1,5 @@
 """Test that example notebooks execute without errors."""
 
-import os
 import subprocess
 import sys
 import tempfile

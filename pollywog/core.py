@@ -10,9 +10,7 @@ from typing import (
     Optional,
     Set,
     Type,
-    TypeVar,
     Union,
-    Sequence,
     overload,
 )
 
@@ -325,6 +323,7 @@ class CalcSet:
         """
         try:
             from pollywog.display import display_calcset
+
             return display_calcset(self, display_output=False)
         except ImportError:
             # If display module isn't available, fall back to text representation
@@ -637,6 +636,7 @@ class Item:
         """
         try:
             from pollywog.display import display_item
+
             return display_item(self, display_output=False)
         except ImportError:
             # If display module isn't available, fall back to text representation
@@ -745,9 +745,13 @@ class If:
     """
 
     @overload
-    def __init__(self, rows: List[Any], otherwise: List[Any]): ...
+    def __init__(self, rows: List[Any], otherwise: List[Any]):
+        ...
+
     @overload
-    def __init__(self, condition: str, then: str, otherwise: str): ...
+    def __init__(self, condition: str, then: str, otherwise: str):
+        ...
+
     def __init__(self, *args: Any, **kwargs: Any):
         """
         Initialize an If expression.

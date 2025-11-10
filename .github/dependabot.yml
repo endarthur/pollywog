@@ -1,0 +1,34 @@
+# Automated dependency updates
+# https://docs.github.com/en/code-security/dependabot
+
+version: 2
+updates:
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  # Python dependencies
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    labels:
+      - "dependencies"
+      - "python"
+    # Group minor/patch updates to reduce noise
+    groups:
+      development:
+        patterns:
+          - "pytest*"
+          - "ruff"
+          - "black"
+          - "pre-commit"
+      production:
+        patterns:
+          - "scikit-learn"
+          - "pandas"

@@ -1,5 +1,4 @@
-import pytest
-from pollywog.core import CalcSet, Variable, Number, If, IfRow
+from pollywog.core import CalcSet, If, IfRow, Number, Variable
 from pollywog.run import run_calcset
 
 

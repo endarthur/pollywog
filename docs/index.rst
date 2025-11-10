@@ -118,7 +118,7 @@ Here's a simple example showing pollywog's power – creating a complete resourc
 
     from pollywog.core import CalcSet, Number
     from pollywog.helpers import WeightedAverage, CategoryFromThresholds
-    
+
     # Build a complete calculation set
     calcset = CalcSet([
         # 1. Weighted average across geological domains
@@ -128,13 +128,13 @@ Here's a simple example showing pollywog's power – creating a complete resourc
             name="Au_composite",
             comment="Domain-weighted gold grade"
         ),
-        
+
         # 2. Apply dilution and recovery
         Number(name="Au_diluted", expression=["[Au_composite] * 0.95"],
                comment_equation="5% dilution factor"),
         Number(name="Au_recovered", expression=["[Au_diluted] * 0.88"],
                comment_equation="88% metallurgical recovery"),
-        
+
         # 3. Classify by grade
         CategoryFromThresholds(
             variable="Au_recovered",
@@ -144,7 +144,7 @@ Here's a simple example showing pollywog's power – creating a complete resourc
             comment="Material classification"
         ),
     ])
-    
+
     # Export to Leapfrog - done!
     calcset.to_lfcalc("resource_model.lfcalc")
 
@@ -206,4 +206,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-

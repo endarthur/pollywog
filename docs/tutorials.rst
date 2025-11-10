@@ -204,11 +204,11 @@ When working with multiple geological domains, you often need to combine estimat
 
     from pollywog.core import CalcSet
     from pollywog.helpers import WeightedAverage
-    
+
     # Define your metals and domains
     metals = ["Au", "Ag", "Cu", "Pb", "Zn"]
     domains = ["oxide", "transition", "sulfide"]
-    
+
     # Generate weighted averages for all metals
     # Assumes variables like Au_oxide, Au_transition, Au_sulfide exist
     # and prop_oxide, prop_transition, prop_sulfide
@@ -221,7 +221,7 @@ When working with multiple geological domains, you often need to combine estimat
         )
         for metal in metals
     ])
-    
+
     weighted_calcs.to_lfcalc("domain_weighted_grades.lfcalc")
 
 Creating Complex Workflows with Multiple Helpers
@@ -233,10 +233,10 @@ Combine multiple helpers to build sophisticated calculations:
 
     from pollywog.core import CalcSet
     from pollywog.helpers import (
-        WeightedAverage, Product, Sum, Scale, 
+        WeightedAverage, Product, Sum, Scale,
         CategoryFromThresholds, Normalize
     )
-    
+
     # Multi-commodity resource model with economics
     resource_model = CalcSet([
         # 1. Domain-weighted grades
@@ -250,32 +250,32 @@ Combine multiple helpers to build sophisticated calculations:
             weights=["prop_oxide", "prop_sulfide", "prop_transition"],
             name="Cu_composite"
         ),
-        
+
         # 2. Apply dilution
-        Scale("Au_composite", 0.95, name="Au_diluted", 
+        Scale("Au_composite", 0.95, name="Au_diluted",
               comment="5% dilution from minimum mining width"),
         Scale("Cu_composite", 0.95, "Cu_diluted",
               comment="5% dilution from minimum mining width"),
-        
+
         # 3. Apply recovery
         Scale("Au_diluted", 0.88, "Au_recovered",
               comment="88% metallurgical recovery"),
         Scale("Cu_diluted", 0.82, "Cu_recovered",
               comment="82% metallurgical recovery"),
-        
+
         # 4. Calculate payable metal (ounces)
         Product("Au_recovered", "tonnes", "Au_ounces_total",
                 comment="Total gold ounces in block"),
         Product("Cu_recovered", "tonnes", "Cu_pounds_total",
                 comment="Total copper pounds in block"),
-        
+
         # 5. Revenue per tonne (simplified)
         Product("Au_recovered", "1800", name="Au_revenue_raw"),  # $/oz price
         Product("Cu_recovered", "3.5", name="Cu_revenue_raw"),   # $/lb price
-        
+
         # 6. Total revenue
         Sum("Au_revenue_raw", "Cu_revenue_raw", name="total_revenue"),
-        
+
         # 7. Classify blocks
         CategoryFromThresholds(
             variable="total_revenue",
@@ -284,7 +284,7 @@ Combine multiple helpers to build sophisticated calculations:
             name="block_classification"
         ),
     ])
-    
+
     resource_model.to_lfcalc("comprehensive_resource_model.lfcalc")
 
 Tutorial 3: Machine Learning Integration
@@ -303,7 +303,7 @@ Train a decision tree to predict metallurgical recovery:
     from sklearn.tree import DecisionTreeRegressor
     from pollywog.conversion.sklearn import convert_tree
     from pollywog.core import CalcSet
-    
+
     # Training data from metallurgical test work
     # Features: Au grade, Cu grade, grind size (P80), sulfide content (%)
     X_train = np.array([
@@ -316,14 +316,14 @@ Train a decision tree to predict metallurgical recovery:
         [2.5, 0.6, 75, 85],
         [1.8, 0.3, 85, 70],
     ])
-    
+
     # Recovery values from test work
     y_recovery = np.array([0.88, 0.82, 0.91, 0.76, 0.85, 0.72, 0.93, 0.89])
-    
+
     # Train model
     model = DecisionTreeRegressor(max_depth=4, random_state=42)
     model.fit(X_train, y_recovery)
-    
+
     # Convert to pollywog calculation
     feature_names = ["Au_composite", "Cu_composite", "P80", "sulfide_pct"]
     recovery_calc = convert_tree(
@@ -332,11 +332,11 @@ Train a decision tree to predict metallurgical recovery:
         "Au_recovery_predicted",
         comment_equation="ML-predicted Au recovery from test work data"
     )
-    
+
     # Create calcset
     ml_calcset = CalcSet([recovery_calc])
     ml_calcset.to_lfcalc("ml_recovery_model.lfcalc")
-    
+
     print(f"Model exported with max depth: {model.get_depth()}")
     print(f"Feature importances: {dict(zip(feature_names, model.feature_importances_))}")
 
@@ -350,7 +350,7 @@ Use random forest ensemble for more robust predictions:
     from sklearn.ensemble import RandomForestRegressor
     from pollywog.conversion.sklearn import convert_forest
     from pollywog.core import CalcSet
-    
+
     # Prepare training data
     # Features: X, Y, Z coordinates and nearby sample grades
     X_train = np.array([
@@ -359,13 +359,13 @@ Use random forest ensemble for more robust predictions:
         [100, 250, 50, 0.9, 1.1],
         # ... more training data
     ])
-    
+
     y_train = np.array([1.0, 1.3, 1.0])  # Actual Au grades
-    
+
     # Train random forest
     rf = RandomForestRegressor(n_estimators=5, max_depth=3, random_state=42)
     rf.fit(X_train, y_train)
-    
+
     # Convert to calcset
     feature_names = ["X", "Y", "Z", "nearby_Au_1", "nearby_Au_2"]
     rf_calc = convert_forest(
@@ -374,7 +374,7 @@ Use random forest ensemble for more robust predictions:
         "Au_rf_estimate",
         comment_equation="Random Forest grade estimate"
     )
-    
+
     # Export
     CalcSet([rf_calc]).to_lfcalc("rf_estimation.lfcalc")
 
@@ -388,7 +388,7 @@ Use decision trees to classify geological domains:
     from sklearn.tree import DecisionTreeClassifier
     from pollywog.conversion.sklearn import convert_tree
     from pollywog.core import CalcSet
-    
+
     # Training data - geochemical signatures
     X_train = np.array([
         [0.2, 0.1, 5, 3],    # Low Au, Low Cu -> oxide
@@ -398,13 +398,13 @@ Use decision trees to classify geological domains:
         [2.0, 1.0, 25, 6],   # High values -> sulfide
         # ... more training data
     ])
-    
+
     y_train = ["oxide", "sulfide", "transition", "oxide", "sulfide"]
-    
+
     # Train classifier
     clf = DecisionTreeClassifier(max_depth=5, random_state=42)
     clf.fit(X_train, y_train)
-    
+
     # Convert to pollywog (Category output)
     feature_names = ["Au_composite", "Cu_composite", "Ag_composite", "Fe_pct"]
     domain_calc = convert_tree(
@@ -413,7 +413,7 @@ Use decision trees to classify geological domains:
         "predicted_domain",
         comment_equation="ML-predicted geological domain from geochemistry"
     )
-    
+
     # Export
     CalcSet([domain_calc]).to_lfcalc("ml_domain_prediction.lfcalc")
 
@@ -430,7 +430,7 @@ Filter calculations by name or attributes:
 .. code-block:: python
 
     from pollywog.core import CalcSet, Number
-    
+
     # Create a large calcset
     all_calcs = CalcSet([
         Number(name="Au_clean", expression=["clamp([Au], 0)"]),
@@ -440,12 +440,12 @@ Filter calculations by name or attributes:
         Number(name="Cu_clean", expression=["clamp([Cu], 0)"]),
         Number(name="Cu_log", expression=["log([Cu_clean] + 1e-6)"]),
     ])
-    
+
     # Get only gold calculations
     au_calcs = all_calcs.query('name.startswith("Au")')
     print(f"Gold calculations: {[item.name for item in au_calcs.items]}")
     # Output: ['Au_clean', 'Au_log']
-    
+
     # Get all log transforms
     log_calcs = all_calcs.query('"log" in name')
     print(f"Log transforms: {[item.name for item in log_calcs.items]}")
@@ -468,12 +468,12 @@ Use external variables in queries:
 
     # Define metals of interest
     metals_of_interest = ["Au", "Ag"]
-    
+
     # Query using external variable
     selected = all_calcs.query('any(name.startswith(metal) for metal in @metals_of_interest)')
-    
+
     # Or pass as keyword argument
-    selected = all_calcs.query('any(name.startswith(metal) for metal in metals)', 
+    selected = all_calcs.query('any(name.startswith(metal) for metal in metals)',
                                 metals=metals_of_interest)
 
 Using Regular Expressions
@@ -484,7 +484,7 @@ Filter using regex patterns:
 .. code-block:: python
 
     import re
-    
+
     # Find all calculations ending with _clean or _log
     pattern = r'_(clean|log)$'
     filtered = all_calcs.query('re.match(@pattern, name)', pattern=pattern)
@@ -498,10 +498,10 @@ Build new calcsets from filtered results:
 
     # Get preprocessing steps
     preprocessing = all_calcs.query('"clean" in name')
-    
+
     # Get transformation steps
     transformations = all_calcs.query('"log" in name')
-    
+
     # Combine into separate exports
     preprocessing.to_lfcalc("01_preprocessing.lfcalc")
     transformations.to_lfcalc("02_transformations.lfcalc")
@@ -517,7 +517,7 @@ Simple Conditionals
 .. code-block:: python
 
     from pollywog.core import CalcSet, Number, If
-    
+
     # Simple threshold
     calcset = CalcSet([
         Number(name="mineable", expression=[
@@ -531,7 +531,7 @@ Multi-Condition Logic
 .. code-block:: python
 
     from pollywog.core import CalcSet, Number, If, IfRow
-    
+
     # Multiple conditions with different outcomes
     calcset = CalcSet([
         Number(name="recovery_factor", expression=[
@@ -550,7 +550,7 @@ Nested Conditionals
 .. code-block:: python
 
     from pollywog.core import CalcSet, Category, If
-    
+
     # Complex classification
     calcset = CalcSet([
         Category(name="material_type", expression=[

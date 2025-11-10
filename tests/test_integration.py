@@ -1,11 +1,11 @@
 """Integration tests for pollywog - testing complete workflows."""
 
-import pytest
-from pollywog.core import CalcSet, Number, Variable, Category, Filter, If, IfRow
-from pollywog.run import run_calcset
-from pollywog.helpers import Sum, Average, WeightedAverage, CategoryFromThresholds
 import tempfile
 from pathlib import Path
+
+from pollywog.core import CalcSet, Filter, If, IfRow, Number, Variable
+from pollywog.helpers import Average, Sum, WeightedAverage
+from pollywog.run import run_calcset
 
 
 def test_complete_mining_workflow():

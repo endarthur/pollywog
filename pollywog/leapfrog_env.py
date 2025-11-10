@@ -5,7 +5,6 @@ This module provides all the functions and constants used in LEAPFROG_ENV.
 
 import math
 import re
-import numpy as np
 
 # Math functions
 
@@ -83,8 +82,8 @@ def round_(n, dp=None):
 def roundsf(n, sf):
     if n == 0:
         return 0
-    from math import log10, floor
     import builtins
+    from math import floor, log10
 
     return builtins.round(n, -int(floor(log10(abs_(n)))) + (sf - 1))
 

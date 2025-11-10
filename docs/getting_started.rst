@@ -85,7 +85,7 @@ A ``CalcSet`` is a collection of calculation items that can be exported to a ``.
 .. code-block:: python
 
     from pollywog.core import CalcSet, Number
-    
+
     calcset = CalcSet([
         Number("Au_clean", "clamp([Au], 0)"),
         Number("Au_log", "log([Au_clean] + 1e-6)"),
@@ -99,10 +99,10 @@ Number
 .. code-block:: python
 
     from pollywog.core import Number
-    
+
     # Simple calculation
     grade_calc = Number("Au_final", "[Au] * 0.95")
-    
+
     # With comment
     grade_calc = Number(
         "Au_final",
@@ -118,7 +118,7 @@ Category
 .. code-block:: python
 
     from pollywog.core import Category, If
-    
+
     # Categorical output
     ore_type = Category(name="material_class", expression=[
         If("[Au] >= 0.5", "'ore'", "'waste'")
@@ -276,7 +276,7 @@ Step 2: Create Calculations
         "clamp([Au], 0)",
         comment_equation="Remove negative values"
     )
-    
+
     au_scaled = Number(
         "Au_scaled",
         "[Au_clean] * 0.95",
@@ -298,7 +298,7 @@ Step 4: Export to Leapfrog
 
     # Export to .lfcalc file
     calcset.to_lfcalc("my_calculations.lfcalc")
-    
+
     print(f"Exported {len(calcset.items)} calculations")
 
 .. note::
@@ -333,19 +333,19 @@ Clean and transform drillhole assay data:
 .. code-block:: python
 
     from pollywog.core import CalcSet, Number
-    
+
     preprocessing = CalcSet([
         # Remove outliers
         Number("Au_capped", "clamp([Au], 0, 100)",
                comment_equation="Cap gold at 100 g/t"),
         Number("Cu_capped", "clamp([Cu], 0, 5)",
                comment_equation="Cap copper at 5%"),
-        
+
         # Log transforms for kriging
         Number("Au_log", "log([Au_capped] + 0.01)"),
         Number("Cu_log", "log([Cu_capped] + 0.01)"),
     ])
-    
+
     preprocessing.to_lfcalc("drillhole_preprocessing.lfcalc")
 
 Block Model Postprocessing
@@ -357,18 +357,18 @@ Process estimated grades in a block model:
 
     from pollywog.core import CalcSet, Number
     from pollywog.helpers import WeightedAverage
-    
+
     postprocessing = CalcSet([
         # Back-transform from log space
         Number("Au_est", "exp([Au_log_kriged]) - 0.01"),
-        
+
         # Apply dilution
         Number("Au_diluted", "[Au_est] * 0.95"),
-        
+
         # Apply recovery
         Number("Au_recovered", "[Au_diluted] * 0.88"),
     ])
-    
+
     postprocessing.to_lfcalc("block_postprocessing.lfcalc")
 
 Domain Weighting
@@ -380,7 +380,7 @@ Combine estimates from multiple domains:
 
     from pollywog.helpers import WeightedAverage
     from pollywog.core import CalcSet
-    
+
     domain_weighted = CalcSet([
         WeightedAverage(
             variables=["Au_oxide", "Au_sulfide", "Au_transition"],
@@ -388,7 +388,7 @@ Combine estimates from multiple domains:
             name="Au_composite"
         )
     ])
-    
+
     domain_weighted.to_lfcalc("domain_weighted.lfcalc")
 
 Working with Helpers
@@ -400,17 +400,17 @@ Pollywog provides helper functions to simplify common patterns:
 
     from pollywog.helpers import Sum, Product, Scale, CategoryFromThresholds
     from pollywog.core import CalcSet
-    
+
     helpers_example = CalcSet([
         # Sum multiple Au assays from different labs/methods
         Sum(["Au_fire_assay", "Au_screen_assay", "Au_leach"], name="Au_total"),
-        
+
         # Calculate tonnage: volume × density
         Product(["block_volume", "density"], name="tonnage"),
-        
+
         # Apply dilution factor
         Scale("Au", 0.95, name="Au_diluted"),
-        
+
         # Categorize by grade thresholds
         CategoryFromThresholds(
             variable="Au",
@@ -419,7 +419,7 @@ Pollywog provides helper functions to simplify common patterns:
             name="ore_class"
         ),
     ])
-    
+
     helpers_example.to_lfcalc("helpers_example.lfcalc")
 
 Visualization in Jupyter
@@ -430,13 +430,13 @@ Display calculation sets as interactive HTML in Jupyter notebooks:
 .. code-block:: python
 
     from pollywog.display import display_calcset, display_item, set_theme
-    
+
     # Set theme (optional)
     set_theme("light")  # or "dark"
-    
+
     # Display the calcset
     display_calcset(calcset)
-    
+
     # Display individual items
     display_item(my_number)
     display_item(my_category)
@@ -447,7 +447,7 @@ Items and CalcSets also have **automatic rich display** in Jupyter notebooks. Si
 
     # Automatic rich display (no display_* function needed)
     calcset  # Shows interactive tree view
-    
+
     my_number  # Shows formatted item with equation
 
 This creates an interactive tree view showing:
@@ -473,21 +473,21 @@ Load and modify existing .lfcalc files:
 .. code-block:: python
 
     from pollywog.core import CalcSet
-    
+
     # Read existing file
     existing = CalcSet.read_lfcalc("existing_calculations.lfcalc")
-    
+
     # View contents
     print(f"Loaded {len(existing.items)} calculations")
     for item in existing.items:
         print(f"  - {item.name}")
-    
+
     # Modify
     from pollywog.core import Number
     existing.items.append(
         Number("new_calc", "[existing_var] * 2")
     )
-    
+
     # Save modified version
     existing.to_lfcalc("modified_calculations.lfcalc")
 
@@ -512,7 +512,7 @@ Common Pitfalls
 
     # Wrong - Au is treated as undefined variable
     Number("result", "Au * 2")
-    
+
     # Correct - Au is a reference to existing variable
     Number("result", "[Au] * 2")
 
@@ -522,7 +522,7 @@ Common Pitfalls
 
     # Risky
     Number("ratio", "[a] / [b]")
-    
+
     # Safe
     Number("ratio", "[a] / ([b] + 1e-10)")
     Number("ratio", "[a] / clamp([b], 0.001)")
@@ -533,7 +533,7 @@ Common Pitfalls
 
     # Risky
     Number("Au_log", "log([Au])")
-    
+
     # Safe
     Number("Au_log", "log([Au] + 1e-6)")
 
@@ -543,7 +543,7 @@ Common Pitfalls
 
     # Ambiguous - may not compute as intended
     Number("result", "[a] + [b] * [c]")
-    
+
     # Clear
     Number("result", "[a] + ([b] * [c])")
 

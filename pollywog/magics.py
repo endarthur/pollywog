@@ -1,9 +1,7 @@
-from IPython.core.magic import Magics, line_magic, magics_class
-from IPython.core.magic_arguments import argument, magic_arguments, parse_argstring
-from IPython.core.events import EventManager
 import io
-import ast
-import inspect
+
+from IPython.core.magic import Magics, line_magic, magics_class
+from IPython.core.magic_arguments import argument, magic_arguments
 
 
 @magics_class
@@ -79,7 +77,7 @@ class PollywogMagics(Magics):
         if not self.autodownload_enabled:
             try:
                 from pollywog.core import CalcSet
-                from pollywog.jupyterlite_utils import is_jupyterlite, download_file
+                from pollywog.jupyterlite_utils import download_file, is_jupyterlite
 
                 if is_jupyterlite():
                     # Monkey patch CalcSet.to_lfcalc in JupyterLite
