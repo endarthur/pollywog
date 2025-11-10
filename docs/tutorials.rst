@@ -5,7 +5,7 @@ Tutorials
 This section provides step-by-step tutorials demonstrating complete workflows using pollywog. Each tutorial builds on the previous one, progressing from basic concepts to advanced techniques.
 
 .. note::
-    Many of these tutorials are also available as Jupyter notebooks in the `examples/ <https://github.com/endarthur/pollywog/tree/main/examples>`_ folder. Try them interactively in your browser at `JupyterLite <https://endarthur.github.io/pollyweb>`_!
+    Many of these tutorials are also available as Jupyter notebooks. See :doc:`examples` for a complete catalog of all available notebooks, or try them interactively in your browser at `JupyterLite <https://endarthur.github.io/pollyweb>`_!
 
 Tutorial Overview
 -----------------
@@ -73,6 +73,14 @@ Calculate the final grade as a weighted sum of domain grades, normalized by the 
 
 Step 4: Geometallurgical Recovery with Regression Trees
 --------------------------------------------------------
+
+.. note::
+   **Machine learning conversion requires scikit-learn:**
+
+   Install with: ``pip install lf_pollywog[conversion]``
+
+   This includes scikit-learn for model conversion features.
+
 Create example data for metal recovery, fit a regression tree, and add the tree-based recovery calculation to the block model calcset.
 
 .. code-block:: python
@@ -133,7 +141,11 @@ You can visualize any CalcSet in Jupyter for inspection.
 ..
 .. |
 
-For more advanced notebooks and real data examples, see the ``examples/`` folder in the repository.
+For more advanced topics and real data examples, see:
+
+- :doc:`examples` - Complete catalog of all example notebooks
+- `examples/ folder on GitHub <https://github.com/endarthur/pollywog/tree/main/examples>`_ - Direct access to notebook files
+- `JupyterLite <https://endarthur.github.io/pollyweb>`_ - Run examples in your browser
 
 Step 6: More Helper Function Examples
 --------------------------------------

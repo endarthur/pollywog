@@ -25,14 +25,17 @@ jobs:
           rm -rf pollyweb/content/examples
           cp -r pollywog/examples pollyweb/content/examples
 
-      - name: Copy pollywog package to pollyweb
-        run: |
-          rm -rf pollyweb/content/pollywog
-          cp -r pollywog/pollywog pollyweb/content/pollywog
-
-      - name: Copy and rename quickstart notebook to pollyweb root
+      - name: Copy quickstart notebook to pollyweb root
         run: |
           cp pollywog/examples/jupyterlite_quickstart.ipynb pollyweb/content/quickstart.ipynb
+
+      - name: Update pollyweb requirements.txt with released version
+        run: |
+          cd pollyweb
+          # Update lf_pollywog version in requirements.txt
+          sed -i 's/^# *lf_pollywog.*/lf_pollywog==${{ github.event.release.tag_name }}/' requirements.txt
+          # If not found, add it after scikit-learn
+          grep -q "^lf_pollywog" requirements.txt || sed -i '/scikit-learn/a lf_pollywog==${{ github.event.release.tag_name }}' requirements.txt
 
       - name: Set up git
         run: |
@@ -43,13 +46,18 @@ jobs:
       - name: Create branch, commit, and push
         run: |
           cd pollyweb
-          git checkout -b update-examples-${{ github.event.release.tag_name }}
+          git checkout -b update-from-pollywog-${{ github.event.release.tag_name }}
           git add content/examples
-          git add content/pollywog
           git add content/quickstart.ipynb
+          git add requirements.txt
           git status
-          git commit -m "Update examples from pollywog ${{ github.event.release.tag_name }}"
-          git push origin update-examples-${{ github.event.release.tag_name }}
+          git diff --staged
+          git commit -m "Update from pollywog ${{ github.event.release.tag_name }}
+
+          - Updated example notebooks
+          - Using lf_pollywog==${{ github.event.release.tag_name }} from PyPI
+          - No longer copying pollywog folder"
+          git push origin update-from-pollywog-${{ github.event.release.tag_name }}
 
       - name: Install GitHub CLI
         run: |
@@ -59,9 +67,19 @@ jobs:
       - name: Create Pull Request
         run: |
           cd pollyweb
-          gh pr create --title "Update examples from pollywog ${{ github.event.release.tag_name }}" \
-            --body "Automated sync of examples from pollywog release ${{ github.event.release.tag_name }}" \
+          gh pr create --title "Update from pollywog ${{ github.event.release.tag_name }}" \
+            --body "$(cat <<'EOF'
+          Automated sync from pollywog release ${{ github.event.release.tag_name }}
+
+          ## Changes
+          - ✅ Updated example notebooks
+          - ✅ Using lf_pollywog==${{ github.event.release.tag_name }} from PyPI
+          - ❌ No longer copying pollywog folder directly
+
+          The examples now assume pollywog is properly installed and available via import.
+          EOF
+          )" \
             --base main \
-            --head update-examples-${{ github.event.release.tag_name }}
+            --head update-from-pollywog-${{ github.event.release.tag_name }}
         env:
           GH_TOKEN: ${{ secrets.POLLYWEB_PUSH_TOKEN }}

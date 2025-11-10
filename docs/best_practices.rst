@@ -196,18 +196,18 @@ Always validate and clean input data:
 
 .. code-block:: python
 
-    from pollywog.core import CalcSet, Number
-    
+    from pollywog.core import CalcSet, Number, If
+
     # Remove negative values
-    Number(name="Au_positive", expression=["clamp([Au], 0)"])
-    
+    Number(name="Au_positive", expression="clamp([Au], 0)")
+
     # Cap extreme outliers
-    Number(name="Au_capped", expression=["clamp([Au], 0, 100)"])
-    
+    Number(name="Au_capped", expression="clamp([Au], 0, 100)")
+
     # Handle missing/blank values using Leapfrog's is_normal function
     Number(name="Au_default", expression=[
-        "if(not is_normal([Au]), 0.001, [Au])"  # If blank/special value, use 0.001
-    ])
+        If("not is_normal([Au])", "0.001", "[Au]")
+    ], comment_equation="Use 0.001 for blank/special values")
 
 Range Checking
 ~~~~~~~~~~~~~~

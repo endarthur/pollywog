@@ -10,6 +10,13 @@ Welcome to pollywog's documentation!
    geologist_tutorial
    tutorials
 
+.. note::
+   **Choose your learning path:**
+
+   - **Python users**: Start with :doc:`getting_started` for a quick overview
+   - **Geologists new to Python**: Start with :doc:`geologist_tutorial` for step-by-step guidance
+   - **Advanced workflows**: See :doc:`tutorials` for complete project examples
+
 .. toctree::
    :maxdepth: 2
    :caption: User Guide
@@ -18,6 +25,7 @@ Welcome to pollywog's documentation!
    workflow_patterns
    helpers_guide
    best_practices
+   examples
 
 .. toctree::
    :maxdepth: 2
@@ -30,21 +38,28 @@ Introduction
 
 **pollywog** is a Python library designed to make it easy to build, manipulate, and visually inspect Leapfrog-style calculation sets—especially when those sets are large, complex, or involve repetitive logic.
 
-.. TODO: Add workflow diagram here
-.. .. image:: _static/workflow_diagram.png
-..    :alt: Pollywog Workflow
-..    :align: center
-..    :width: 100%
-..
-.. |
+When to Use Pollywog
+~~~~~~~~~~~~~~~~~~~~
 
-.. TODO: Add use cases/value proposition diagram here
-.. .. image:: _static/use_cases_diagram.png
-..    :alt: When to Use Pollywog
-..    :align: center
-..    :width: 100%
-..
-.. |
+.. mermaid::
+
+   flowchart TD
+      A{How many calculations?} -->|1-5| B[Use Leapfrog UI]
+      A -->|10+| C{Repetitive pattern?}
+      C -->|Yes| D[✓ Use pollywog]
+      C -->|No| E{Complex logic?}
+      E -->|Yes| D
+      E -->|No| B
+
+      F{Need version control?} -->|Yes| D
+      F -->|No| G{Reuse across projects?}
+      G -->|Yes| D
+      G -->|No| B
+
+      H{ML model integration?} --> D
+
+      style D fill:#7cb342,stroke:#333,stroke-width:2px,color:#fff
+      style B fill:#999,stroke:#333,stroke-width:2px,color:#fff
 
 What is Leapfrog?
 ~~~~~~~~~~~~~~~~~

@@ -3,6 +3,10 @@ Getting Started
 
 Welcome to pollywog! This guide will help you install the library, understand the basics, run your first calculation, and explore further resources.
 
+.. note::
+   **New to Python?** If you're a geologist or mining engineer with limited programming experience,
+   see :doc:`geologist_tutorial` for a comprehensive step-by-step introduction designed specifically for you.
+
 What You Need to Know
 ----------------------
 
@@ -120,18 +124,93 @@ Category
         If("[Au] >= 0.5", "'ore'", "'waste'")
     ])
 
-Variable References
-~~~~~~~~~~~~~~~~~~~
+Variable
+~~~~~~~~
 
-Variables are referenced using square brackets: ``[variable_name]``
+``Variable`` represents intermediate calculations that are visible in Leapfrog's calculator UI but **NOT available outside the calculator** (can't visualize in 3D, can't export, can't use in other Leapfrog tools).
+
+Use Variables for intermediate steps you need for calculations but won't visualize or export:
 
 .. code-block:: python
 
-    # Reference drillhole assays
+    from pollywog.core import CalcSet, Variable, Number
+
+    calcset = CalcSet([
+        # Intermediate cleaning steps (calculator only)
+        Variable("Au_clean", "clamp([Au], 0)"),
+        Variable("Au_capped", "clamp([Au_clean], 0, 100)"),
+
+        # Final result (available everywhere in Leapfrog)
+        Number("Au_final", "[Au_capped] * 0.95",
+               comment_equation="Prepared for kriging")
+    ])
+
+**Why use Variables?**
+
+Variables keep your Leapfrog interface clean by hiding intermediate calculations that users don't need to see or export. They're visible in the calculator (so you can reference them and verify logic), but they won't clutter your block model variable list or visualization options.
+
+**When to use Variable vs Number vs Category:**
+
+- **Variable**: Intermediate steps, won't visualize/export
+- **Number**: Final numeric outputs you'll visualize or export
+- **Category**: Final categorical outputs you'll visualize or export
+
+.. mermaid::
+
+   flowchart TD
+      Q1{What's the output?}
+      Q1 -->|Numeric| Q2{Will you visualize it?}
+      Q1 -->|Text/Category| Q3{Will you visualize it?}
+      Q1 -->|Boolean/Filter| F[Filter]
+
+      Q2 -->|Yes| N[Number]
+      Q2 -->|No - just intermediate| V1[Variable]
+
+      Q3 -->|Yes| C[Category]
+      Q3 -->|No - just intermediate| V2[Variable]
+
+      style N fill:#4a90e2,stroke:#333,stroke-width:2px,color:#fff
+      style C fill:#f4a261,stroke:#333,stroke-width:2px,color:#fff
+      style V1 fill:#999,stroke:#333,stroke-width:2px,color:#fff
+      style V2 fill:#999,stroke:#333,stroke-width:2px,color:#fff
+      style F fill:#9b59b6,stroke:#333,stroke-width:2px,color:#fff
+
+Filter
+~~~~~~
+
+``Filter`` represents boolean conditions that restrict which data is included in calculations. Filters evaluate to true/false and are used to exclude data from processing.
+
+.. code-block:: python
+
+    from pollywog.core import CalcSet, Filter, Number
+
+    calcset = CalcSet([
+        # Only include high-grade samples
+        Filter("is_ore", "[Au] > 0.5"),
+
+        # Only include complete data
+        Filter("has_density", "is_normal([density])"),
+
+        # Calculations on filtered data
+        Number("ore_tonnage", "[volume] * [density]")
+    ])
+
+Filters are less commonly used in block models (where you typically calculate everything and classify later), but are useful for drillhole data processing and conditional workflows.
+
+Expressions and Syntax
+~~~~~~~~~~~~~~~~~~~~~~~
+
+In pollywog, expressions use the same syntax as Leapfrog's calculator. Variables are referenced with square brackets ``[variable_name]``, and you can use mathematical operations and functions.
+
+Quick example:
+
+.. code-block:: python
+
     Number("precious_metals", "[Au] + [Ag]")
-    
-    # Reference block model variables
     Number("density_calc", "[block_density] * [block_volume]")
+
+.. seealso::
+   For complete expression syntax, functions, and operators, see :doc:`expression_syntax`
 
 Understanding the Expression Parameter
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -160,6 +239,19 @@ these ``If`` objects alongside string expressions. That's why the parameter acce
 For convenience, single strings are automatically wrapped in a list internally, so you don't
 need to write ``expression=["[x] * 2"]`` - just use ``expression="[x] * 2"`` or the even
 simpler positional form: ``Number("doubled", "[x] * 2")``.
+
+**If vs IfRow:**
+
+``If`` accepts condition-value pairs as tuples (recommended for most users):
+
+.. code-block:: python
+
+    If([
+        ("[Au] > 1", "[Au] * 1.1"),
+        ("[Au] <= 1", "[Au] * 0.9")
+    ], otherwise=["[Au]"])
+
+``IfRow`` is a lower-level class representing a single condition-value pair, used internally by ``If``. Most users won't need to use ``IfRow`` directly - stick with tuple notation in ``If`` for clarity.
 
 Your First Calculation
 -----------------------
@@ -460,6 +552,7 @@ Next Steps
 
 Now that you understand the basics, explore:
 
+- :doc:`examples` - Complete collection of example notebooks
 - :doc:`tutorials` - Step-by-step workflow examples
 - :doc:`expression_syntax` - Complete expression syntax reference
 - :doc:`helpers_guide` - Detailed helper function documentation
@@ -471,8 +564,8 @@ Additional Resources
 --------------------
 
 - **GitHub Repository**: https://github.com/endarthur/pollywog
-- **JupyterLite Demo**: https://endarthur.github.io/pollyweb
-- **Example Notebooks**: Check the ``examples/`` folder in the repository
+- **JupyterLite Demo**: https://endarthur.github.io/pollyweb (try pollywog in your browser!)
+- **Example Notebooks**: See :doc:`examples` for all available notebooks
 - **Issue Tracker**: Report bugs or request features on GitHub
 
 Getting Help
