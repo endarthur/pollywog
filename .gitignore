@@ -209,3 +209,6 @@ __marimo__/
 # lfcalc files
 *.lfcalc
 private*.lfcalc
+
+# Claude Code settings (local user preferences)
+.claude/
