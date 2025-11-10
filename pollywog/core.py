@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 import re
 import zlib
@@ -5,11 +7,7 @@ from pathlib import Path
 from typing import (
     Any,
     Callable,
-    Dict,
-    List,
     Optional,
-    Set,
-    Type,
     Union,
     overload,
 )
@@ -44,7 +42,7 @@ class CalcSet:
         ... ])
     """
 
-    def __init__(self, items: list["Item"]):
+    def __init__(self, items: list[Item]):
         """
         Initialize a CalcSet with a list of items.
 
@@ -53,7 +51,7 @@ class CalcSet:
         """
         self.items = ensure_list(items)
 
-    def copy(self) -> "CalcSet":
+    def copy(self) -> CalcSet:
         """
         Return a deep copy of the CalcSet and its items.
 
@@ -62,7 +60,7 @@ class CalcSet:
         """
         return CalcSet([item.copy() for item in self.items])
 
-    def query(self, expr: str, **external_vars) -> "CalcSet":
+    def query(self, expr: str, **external_vars) -> CalcSet:
         """
         Filter items in the CalcSet using a query expression.
 
@@ -128,7 +126,7 @@ class CalcSet:
                 pass
         return CalcSet(filtered)
 
-    def topological_sort(self) -> "CalcSet":
+    def topological_sort(self) -> CalcSet:
         """
         Return a new CalcSet with items sorted topologically by dependencies.
 
@@ -179,7 +177,7 @@ class CalcSet:
 
         return CalcSet(sorted_items)
 
-    def to_dict(self, sort_items: bool = True) -> Dict[str, Any]:
+    def to_dict(self, sort_items: bool = True) -> dict[str, Any]:
         """
         Convert the CalcSet to a dictionary representation.
 
@@ -195,7 +193,7 @@ class CalcSet:
         return {"type": "calculation-set", "items": items}
 
     @classmethod
-    def from_dict(cls: Type["CalcSet"], data: Dict[str, Any]) -> "CalcSet":
+    def from_dict(cls: type[CalcSet], data: dict[str, Any]) -> CalcSet:
         """
         Create a CalcSet from a dictionary.
 
@@ -272,7 +270,7 @@ class CalcSet:
         file.write(compressed_data)
 
     @staticmethod
-    def read_lfcalc(filepath_or_buffer: Union[str, Path, Any]) -> "CalcSet":
+    def read_lfcalc(filepath_or_buffer: Union[str, Path, Any]) -> CalcSet:
         """
         Read a Leapfrog .lfcalc file and return a CalcSet.
 
@@ -289,7 +287,7 @@ class CalcSet:
             return CalcSet._read_from_file(filepath_or_buffer)
 
     @staticmethod
-    def _read_from_file(file: Any) -> "CalcSet":
+    def _read_from_file(file: Any) -> CalcSet:
         """
         Read a CalcSet from a Leapfrog binary file object.
 
@@ -329,7 +327,7 @@ class CalcSet:
             # If display module isn't available, fall back to text representation
             return f"<pre>{repr(self)}</pre>"
 
-    def __add__(self, other: "CalcSet") -> "CalcSet":
+    def __add__(self, other: CalcSet) -> CalcSet:
         """
         Add two CalcSet objects together, combining their items.
         Args:
@@ -343,7 +341,7 @@ class CalcSet:
         items2 = list(other.items) if other.items else []
         return CalcSet(items1 + items2)
 
-    def __getitem__(self, name: str) -> "Item":
+    def __getitem__(self, name: str) -> Item:
         """
         Get an item by name.
 
@@ -361,7 +359,7 @@ class CalcSet:
                 return item
         raise KeyError(f"Item with name '{name}' not found.")
 
-    def __setitem__(self, name: str, value: "Item") -> None:
+    def __setitem__(self, name: str, value: Item) -> None:
         """
         Set or replace an item by name.
 
@@ -379,12 +377,12 @@ class CalcSet:
 
     def rename(
         self,
-        items: Optional[Union[Dict[str, str], Callable[[str], Optional[str]]]] = None,
+        items: Optional[Union[dict[str, str], Callable[[str], Optional[str]]]] = None,
         variables: Optional[
-            Union[Dict[str, str], Callable[[str], Optional[str]]]
+            Union[dict[str, str], Callable[[str], Optional[str]]]
         ] = None,
         regex: bool = False,
-    ) -> "CalcSet":
+    ) -> CalcSet:
         """
         Return a copy of the CalcSet with specified items renamed and/or variables in expression renamed.
 
@@ -464,7 +462,7 @@ class Item:
     def __init__(
         self,
         name: str = "",
-        expression: Optional[List[Any]] = None,
+        expression: Optional[list[Any]] = None,
         comment_item: str = "",
         comment_equation: str = "",
     ):
@@ -490,7 +488,7 @@ class Item:
         self.comment_item = comment_item
         self.comment_equation = comment_equation
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """
         Convert the Item to a dictionary representation.
 
@@ -518,7 +516,7 @@ class Item:
         return item
 
     @classmethod
-    def from_dict(cls: Type["Item"], data: Dict[str, Any]) -> "Item":
+    def from_dict(cls: type[Item], data: dict[str, Any]) -> Item:
         """
         Create an Item from a dictionary.
 
@@ -543,7 +541,7 @@ class Item:
         )
 
     @property
-    def dependencies(self) -> Set[str]:
+    def dependencies(self) -> set[str]:
         """
         Get the set of variable dependencies for this item.
 
@@ -552,7 +550,7 @@ class Item:
         """
         return get_dependencies(self)
 
-    def copy(self) -> "Item":
+    def copy(self) -> Item:
         """
         Return a deep copy of the Item.
 
@@ -566,7 +564,7 @@ class Item:
             comment_equation=self.comment_equation,
         )
 
-    def replace(self, **changes: Any) -> "Item":
+    def replace(self, **changes: Any) -> Item:
         """
         Return a copy of the Item with specified attributes replaced.
 
@@ -589,10 +587,10 @@ class Item:
         self,
         name: Optional[str] = None,
         variables: Optional[
-            Union[Dict[str, str], Callable[[str], Optional[str]]]
+            Union[dict[str, str], Callable[[str], Optional[str]]]
         ] = None,
         regex: bool = False,
-    ) -> "Item":
+    ) -> Item:
         """
         Return a copy of the Item with a new name and/or renamed variables in expression.
 
@@ -652,7 +650,7 @@ class IfRow:
         value (list): Value expressions if condition is met.
     """
 
-    def __init__(self, condition: List[Any], value: List[Any]):
+    def __init__(self, condition: list[Any], value: list[Any]):
         """
         Initialize an IfRow (a single row in an If block).
 
@@ -663,7 +661,7 @@ class IfRow:
         self.condition = condition
         self.value = value
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """
         Convert the IfRow to a dictionary representation.
 
@@ -680,7 +678,7 @@ class IfRow:
         }
 
     @classmethod
-    def from_dict(cls: Type["IfRow"], data: Dict[str, Any]) -> "IfRow":
+    def from_dict(cls: type[IfRow], data: dict[str, Any]) -> IfRow:
         """
         Create an IfRow from a dictionary.
 
@@ -704,7 +702,7 @@ class IfRow:
             value.append(dispatch_expression(val))
         return cls(condition=condition, value=value)
 
-    def copy(self) -> "IfRow":
+    def copy(self) -> IfRow:
         """
         Return a deep copy of the IfRow.
 
@@ -745,7 +743,7 @@ class If:
     """
 
     @overload
-    def __init__(self, rows: List[Any], otherwise: List[Any]):
+    def __init__(self, rows: list[Any], otherwise: list[Any]):
         ...
 
     @overload
@@ -800,7 +798,7 @@ class If:
         self.rows = ifrows
         self.otherwise = otherwise
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         """
         Convert the If expression to a dictionary representation.
 
@@ -818,7 +816,7 @@ class If:
         }
 
     @classmethod
-    def from_dict(cls: Type["If"], data: Dict[str, Any]) -> "If":
+    def from_dict(cls: type[If], data: dict[str, Any]) -> If:
         """
         Create an If expression from a dictionary.
 
@@ -839,7 +837,7 @@ class If:
             otherwise.append(dispatch_expression(val))
         return cls(rows=rows, otherwise=otherwise)
 
-    def copy(self) -> "If":
+    def copy(self) -> If:
         """
         Return a deep copy of the If expression.
 
@@ -954,7 +952,7 @@ def dispatch_expression(data: Any) -> Any:
     return data
 
 
-def get_dependencies(item: Any) -> Set[str]:
+def get_dependencies(item: Any) -> set[str]:
     """
     Recursively extract variable dependencies from an Item or expression.
 
@@ -988,7 +986,7 @@ def get_dependencies(item: Any) -> Set[str]:
 
 
 def rename(
-    item: Any, mapper: Union[Dict[str, str], Callable[[str], str]], regex: bool = False
+    item: Any, mapper: Union[dict[str, str], Callable[[str], str]], regex: bool = False
 ) -> Any:
     """
     Recursively rename variables in an Item or expression based on a mapping dictionary.
