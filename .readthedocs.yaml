@@ -17,8 +17,5 @@ python:
 
 sphinx:
   configuration: docs/conf.py
-
-# Optionally, add environment variables or custom build steps below
-# env:
-#   - name: EXAMPLE_VAR
-#     value: "value"
+  # ReadTheDocs will automatically pass -D language=pt_BR
+  # when the project's language is set to Portuguese in Admin settings
