@@ -9,12 +9,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout pollywog
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: pollywog
 
       - name: Checkout pollyweb
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: endarthur/pollyweb
           token: ${{ secrets.POLLYWEB_PUSH_TOKEN }}
