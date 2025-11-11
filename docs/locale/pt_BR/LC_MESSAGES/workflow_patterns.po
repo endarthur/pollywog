@@ -1,0 +1,280 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Arthur Endlein
+# This file is distributed under the same license as the pollywog package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: pollywog \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-11 13:16-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: pt_BR\n"
+"Language-Team: pt_BR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../workflow_patterns.rst:2
+msgid "Common Workflow Patterns"
+msgstr ""
+
+#: ../../workflow_patterns.rst:4
+msgid ""
+"This guide presents common workflow patterns in geological modeling and "
+"resource estimation, demonstrating how to implement them using pollywog."
+msgstr ""
+
+#: ../../workflow_patterns.rst:7
+msgid "Grade Estimation Workflows"
+msgstr ""
+
+#: ../../workflow_patterns.rst:10
+msgid "Pattern 1: Preprocessing → Estimation → Postprocessing"
+msgstr ""
+
+#: ../../workflow_patterns.rst:12
+msgid "This is the most common workflow in resource estimation:"
+msgstr ""
+
+#: ../../workflow_patterns.rst:65
+msgid "Pattern 2: Multi-Domain Estimation with Proportions"
+msgstr ""
+
+#: ../../workflow_patterns.rst:67
+msgid "When estimating across geological domains with varying proportions:"
+msgstr ""
+
+#: ../../workflow_patterns.rst:96
+msgid "Pattern 3: Conditional Estimation by Rock Type"
+msgstr ""
+
+#: ../../workflow_patterns.rst:98
+msgid "Apply different estimation approaches based on rock type:"
+msgstr ""
+
+#: ../../workflow_patterns.rst:118
+msgid "Geometallurgy Workflows"
+msgstr ""
+
+#: ../../workflow_patterns.rst:121
+msgid "Pattern 4: Recovery Models from Test Work"
+msgstr ""
+
+#: ../../workflow_patterns.rst:123
+msgid "Integrate metallurgical test data to predict recovery:"
+msgstr ""
+
+#: ../../workflow_patterns.rst:160
+msgid "Pattern 5: Process Plant Feed Blending"
+msgstr ""
+
+#: ../../workflow_patterns.rst:162
+msgid "Model mill throughput and blending constraints:"
+msgstr ""
+
+#: ../../workflow_patterns.rst:188
+msgid "Economic Evaluation Workflows"
+msgstr ""
+
+#: ../../workflow_patterns.rst:191
+msgid "Pattern 6: Net Smelter Return (NSR)"
+msgstr ""
+
+#: ../../workflow_patterns.rst:193
+msgid "Calculate the value of ore based on multiple commodities:"
+msgstr ""
+
+#: ../../workflow_patterns.rst:236
+msgid "Pattern 7: Cut-off Grade Classification"
+msgstr ""
+
+#: ../../workflow_patterns.rst:238
+msgid "Classify blocks as ore or waste based on economic cut-off:"
+msgstr ""
+
+#: ../../workflow_patterns.rst:272
+msgid "Quality Control Workflows"
+msgstr ""
+
+#: ../../workflow_patterns.rst:275
+msgid "Pattern 8: Data Validation and Flagging"
+msgstr ""
+
+#: ../../workflow_patterns.rst:277
+msgid "Create flags to identify data quality issues:"
+msgstr ""
+
+#: ../../workflow_patterns.rst:312
+msgid "Pattern 9: Grade Control and Reconciliation"
+msgstr ""
+
+#: ../../workflow_patterns.rst:314
+msgid "Compare estimated vs. actual grades for reconciliation:"
+msgstr ""
+
+#: ../../workflow_patterns.rst:350
+msgid "Machine Learning Integration"
+msgstr ""
+
+#: ../../workflow_patterns.rst:353
+msgid "Pattern 10: Scikit-learn Model Deployment"
+msgstr ""
+
+#: ../../workflow_patterns.rst:355
+msgid "Integrate trained ML models into Leapfrog calculations:"
+msgstr ""
+
+#: ../../workflow_patterns.rst:392
+msgid "Pattern 11: Classification Models for Domains"
+msgstr ""
+
+#: ../../workflow_patterns.rst:394
+msgid "Use ML to predict geological domains:"
+msgstr ""
+
+#: ../../workflow_patterns.rst:429
+msgid "Advanced Patterns"
+msgstr ""
+
+#: ../../workflow_patterns.rst:432
+msgid "Pattern 12: Combining Multiple CalcSets"
+msgstr ""
+
+#: ../../workflow_patterns.rst:434
+msgid "Build complex workflows by combining calculation sets:"
+msgstr ""
+
+#: ../../workflow_patterns.rst:456
+msgid "Pattern 13: Modular Workflow with Reusable Components"
+msgstr ""
+
+#: ../../workflow_patterns.rst:458
+msgid "Create reusable calculation components:"
+msgstr ""
+
+#: ../../workflow_patterns.rst:495
+msgid "Pattern 14: Topological Sorting for Dependencies"
+msgstr ""
+
+#: ../../workflow_patterns.rst:497
+msgid "Ensure calculations are ordered correctly:"
+msgstr ""
+
+#: ../../workflow_patterns.rst:516
+msgid "Tips for Building Effective Workflows"
+msgstr ""
+
+#: ../../workflow_patterns.rst:518
+msgid ""
+"**Start Simple**: Begin with basic calculations and add complexity "
+"incrementally"
+msgstr ""
+
+#: ../../workflow_patterns.rst:519
+msgid "**Use Descriptive Names**: Make variable names self-documenting"
+msgstr ""
+
+#: ../../workflow_patterns.rst:520
+msgid ""
+"**Add Comments**: Use ``comment_equation`` parameter to explain business "
+"logic"
+msgstr ""
+
+#: ../../workflow_patterns.rst:521
+msgid "**Test in Stages**: Export and test each stage of the workflow in Leapfrog"
+msgstr ""
+
+#: ../../workflow_patterns.rst:522
+msgid "**Validate Results**: Use QA/QC calculations to verify outputs"
+msgstr ""
+
+#: ../../workflow_patterns.rst:523
+msgid "**Version Control**: Keep your Python scripts in version control (Git)"
+msgstr ""
+
+#: ../../workflow_patterns.rst:524
+msgid ""
+"**Document Assumptions**: Record cut-off grades, prices, recoveries in "
+"your code"
+msgstr ""
+
+#: ../../workflow_patterns.rst:525
+msgid "**Modularize**: Break complex workflows into reusable functions"
+msgstr ""
+
+#: ../../workflow_patterns.rst:526
+msgid ""
+"**Handle Edge Cases**: Use clamp, conditional logic to handle invalid "
+"inputs"
+msgstr ""
+
+#: ../../workflow_patterns.rst:527
+msgid ""
+"**Review Dependencies**: Use ``topological_sort()`` to ensure proper "
+"calculation order"
+msgstr ""
+
+#: ../../workflow_patterns.rst:530
+msgid "Common Pitfalls to Avoid"
+msgstr ""
+
+#: ../../workflow_patterns.rst:532
+msgid "**Missing Parentheses**: Always use parentheses in complex expressions"
+msgstr ""
+
+#: ../../workflow_patterns.rst:533
+msgid "**Division by Zero**: Clamp denominators away from zero"
+msgstr ""
+
+#: ../../workflow_patterns.rst:534
+msgid "**Log of Zero/Negative**: Add small epsilon before taking logarithms"
+msgstr ""
+
+#: ../../workflow_patterns.rst:535
+msgid ""
+"**Incorrect Order**: Ensure dependent calculations come after their "
+"dependencies"
+msgstr ""
+
+#: ../../workflow_patterns.rst:536
+msgid "**Type Mismatches**: Use Number for numeric outputs, Category for text"
+msgstr ""
+
+#: ../../workflow_patterns.rst:537
+msgid "**Hardcoded Values**: Use variables for parameters that might change"
+msgstr ""
+
+#: ../../workflow_patterns.rst:538
+msgid ""
+"**Missing Back-transforms**: Remember to back-transform after log-domain "
+"estimation"
+msgstr ""
+
+#: ../../workflow_patterns.rst:539
+msgid "**Ignoring Units**: Keep track of units (%, ppm, g/t, oz/t, etc.)"
+msgstr ""
+
+#: ../../workflow_patterns.rst:542
+msgid "See Also"
+msgstr ""
+
+#: ../../workflow_patterns.rst:544
+msgid ":doc:`expression_syntax` - Detailed syntax reference"
+msgstr ""
+
+#: ../../workflow_patterns.rst:545
+msgid ":doc:`tutorials` - Step-by-step tutorials"
+msgstr ""
+
+#: ../../workflow_patterns.rst:546
+msgid ":doc:`api_reference` - Complete API documentation"
+msgstr ""
+
+#: ../../workflow_patterns.rst:547
+msgid ":doc:`helpers_guide` - Helper function reference"
+msgstr ""

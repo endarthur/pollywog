@@ -32,6 +32,12 @@ autodoc_member_order = "bysource"
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
+# -- Internationalization options --------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-language
+
+locale_dirs = ["locale/"]  # path is relative to documentation root
+gettext_compact = False  # optional: create separate .po files for each source file
+
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

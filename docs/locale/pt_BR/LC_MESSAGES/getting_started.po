@@ -1,0 +1,579 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Arthur Endlein
+# This file is distributed under the same license as the pollywog package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: pollywog \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-11 13:16-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: pt_BR\n"
+"Language-Team: pt_BR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../getting_started.rst:2
+msgid "Getting Started"
+msgstr ""
+
+#: ../../getting_started.rst:4
+msgid ""
+"Welcome to pollywog! This guide will help you install the library, "
+"understand the basics, run your first calculation, and explore further "
+"resources."
+msgstr ""
+
+#: ../../getting_started.rst:7
+msgid ""
+"**New to Python?** If you're a geologist or mining engineer with limited "
+"programming experience, see :doc:`geologist_tutorial` for a comprehensive"
+" step-by-step introduction designed specifically for you."
+msgstr ""
+
+#: ../../getting_started.rst:11
+msgid "What You Need to Know"
+msgstr ""
+
+#: ../../getting_started.rst:13
+msgid "Before using pollywog, it's helpful to understand:"
+msgstr ""
+
+#: ../../getting_started.rst:15
+msgid "**Python basics**: Functions, lists, dictionaries, and imports"
+msgstr ""
+
+#: ../../getting_started.rst:16
+msgid "**Leapfrog concepts**: Block models, drillholes, calculations"
+msgstr ""
+
+#: ../../getting_started.rst:17
+msgid "**.lfcalc files**: Leapfrog calculation set files"
+msgstr ""
+
+#: ../../getting_started.rst:19
+msgid ""
+"You don't need to be a Python expert—pollywog is designed to be "
+"accessible to geologists and mining engineers with basic programming "
+"knowledge."
+msgstr ""
+
+#: ../../getting_started.rst:22
+msgid "Installation"
+msgstr ""
+
+#: ../../getting_started.rst:25
+msgid "Install from PyPI"
+msgstr ""
+
+#: ../../getting_started.rst:27
+msgid "The easiest way to install pollywog:"
+msgstr ""
+
+#: ../../getting_started.rst:34
+msgid "Install with Optional Dependencies"
+msgstr ""
+
+#: ../../getting_started.rst:36
+msgid "For machine learning model conversion (scikit-learn):"
+msgstr ""
+
+#: ../../getting_started.rst:42
+msgid "For development (includes testing tools):"
+msgstr ""
+
+#: ../../getting_started.rst:49
+msgid "Install from GitHub"
+msgstr ""
+
+#: ../../getting_started.rst:51
+msgid "To get the latest development version:"
+msgstr ""
+
+#: ../../getting_started.rst:58
+msgid "Verify Installation"
+msgstr ""
+
+#: ../../getting_started.rst:60
+msgid "Check that pollywog is installed correctly:"
+msgstr ""
+
+#: ../../getting_started.rst:68
+msgid "Try in Your Browser"
+msgstr ""
+
+#: ../../getting_started.rst:70
+msgid "Don't want to install yet? Try pollywog in your browser using JupyterLite:"
+msgstr ""
+
+#: ../../getting_started.rst:72
+msgid "https://endarthur.github.io/pollyweb"
+msgstr ""
+
+#: ../../getting_started.rst:75
+msgid ""
+"JupyterLite saves files in browser memory—download your work regularly to"
+" avoid losing it!"
+msgstr ""
+
+#: ../../getting_started.rst:78
+msgid "Basic Concepts"
+msgstr ""
+
+#: ../../getting_started.rst:81
+msgid "CalcSet"
+msgstr ""
+
+#: ../../getting_started.rst:83
+msgid ""
+"A ``CalcSet`` is a collection of calculation items that can be exported "
+"to a ``.lfcalc`` file:"
+msgstr ""
+
+#: ../../getting_started.rst:95
+msgid "Number"
+msgstr ""
+
+#: ../../getting_started.rst:97
+msgid "``Number`` represents a numeric calculation (integers or floats):"
+msgstr ""
+
+#: ../../getting_started.rst:114
+msgid "Category"
+msgstr ""
+
+#: ../../getting_started.rst:116
+msgid "``Category`` represents a categorical/text calculation:"
+msgstr ""
+
+#: ../../getting_started.rst:128
+msgid "Variable"
+msgstr ""
+
+#: ../../getting_started.rst:130
+msgid ""
+"``Variable`` represents intermediate calculations that are visible in "
+"Leapfrog's calculator UI but **NOT available outside the calculator** "
+"(can't visualize in 3D, can't export, can't use in other Leapfrog tools)."
+msgstr ""
+
+#: ../../getting_started.rst:132
+msgid ""
+"Use Variables for intermediate steps you need for calculations but won't "
+"visualize or export:"
+msgstr ""
+
+#: ../../getting_started.rst:148
+msgid "**Why use Variables?**"
+msgstr ""
+
+#: ../../getting_started.rst:150
+msgid ""
+"Variables keep your Leapfrog interface clean by hiding intermediate "
+"calculations that users don't need to see or export. They're visible in "
+"the calculator (so you can reference them and verify logic), but they "
+"won't clutter your block model variable list or visualization options."
+msgstr ""
+
+#: ../../getting_started.rst:152
+msgid "**When to use Variable vs Number vs Category:**"
+msgstr ""
+
+#: ../../getting_started.rst:154
+msgid "**Variable**: Intermediate steps, won't visualize/export"
+msgstr ""
+
+#: ../../getting_started.rst:155
+msgid "**Number**: Final numeric outputs you'll visualize or export"
+msgstr ""
+
+#: ../../getting_started.rst:156
+msgid "**Category**: Final categorical outputs you'll visualize or export"
+msgstr ""
+
+#: ../../getting_started.rst:179
+msgid "Filter"
+msgstr ""
+
+#: ../../getting_started.rst:181
+msgid ""
+"``Filter`` represents boolean conditions that restrict which data is "
+"included in calculations. Filters evaluate to true/false and are used to "
+"exclude data from processing."
+msgstr ""
+
+#: ../../getting_started.rst:198
+msgid ""
+"Filters are less commonly used in block models (where you typically "
+"calculate everything and classify later), but are useful for drillhole "
+"data processing and conditional workflows."
+msgstr ""
+
+#: ../../getting_started.rst:201
+msgid "Expressions and Syntax"
+msgstr ""
+
+#: ../../getting_started.rst:203
+msgid ""
+"In pollywog, expressions use the same syntax as Leapfrog's calculator. "
+"Variables are referenced with square brackets ``[variable_name]``, and "
+"you can use mathematical operations and functions."
+msgstr ""
+
+#: ../../getting_started.rst:205
+msgid "Quick example:"
+msgstr ""
+
+#: ../../getting_started.rst:213
+msgid ""
+"For complete expression syntax, functions, and operators, see "
+":doc:`expression_syntax`"
+msgstr ""
+
+#: ../../getting_started.rst:216
+msgid "Understanding the Expression Parameter"
+msgstr ""
+
+#: ../../getting_started.rst:218
+msgid "The ``expression`` parameter accepts either a **string** or a **list**:"
+msgstr ""
+
+#: ../../getting_started.rst:220
+msgid "**Use a string** for simple expressions (recommended for most cases):"
+msgstr ""
+
+#: ../../getting_started.rst:227
+msgid "**Use a list** when including ``If`` objects for conditional logic:"
+msgstr ""
+
+#: ../../getting_started.rst:233
+msgid "**Why can expression be a list?**"
+msgstr ""
+
+#: ../../getting_started.rst:235
+msgid ""
+"``If`` statements are separate Python objects that cannot be embedded in "
+"expression strings. Since the Leapfrog calculation format supports "
+"conditional logic, pollywog needs to handle these ``If`` objects "
+"alongside string expressions. That's why the parameter accepts lists."
+msgstr ""
+
+#: ../../getting_started.rst:239
+msgid ""
+"For convenience, single strings are automatically wrapped in a list "
+"internally, so you don't need to write ``expression=[\"[x] * 2\"]`` - "
+"just use ``expression=\"[x] * 2\"`` or the even simpler positional form: "
+"``Number(\"doubled\", \"[x] * 2\")``."
+msgstr ""
+
+#: ../../getting_started.rst:243
+msgid "**If vs IfRow:**"
+msgstr ""
+
+#: ../../getting_started.rst:245
+msgid ""
+"``If`` accepts condition-value pairs as tuples (recommended for most "
+"users):"
+msgstr ""
+
+#: ../../getting_started.rst:254
+msgid ""
+"``IfRow`` is a lower-level class representing a single condition-value "
+"pair, used internally by ``If``. Most users won't need to use ``IfRow`` "
+"directly - stick with tuple notation in ``If`` for clarity."
+msgstr ""
+
+#: ../../getting_started.rst:257
+msgid "Your First Calculation"
+msgstr ""
+
+#: ../../getting_started.rst:259
+msgid "Let's create a simple calculation set step by step:"
+msgstr ""
+
+#: ../../getting_started.rst:262
+msgid "Step 1: Import pollywog"
+msgstr ""
+
+#: ../../getting_started.rst:269
+msgid "Step 2: Create Calculations"
+msgstr ""
+
+#: ../../getting_started.rst:287
+msgid "Step 3: Build a CalcSet"
+msgstr ""
+
+#: ../../getting_started.rst:295
+msgid "Step 4: Export to Leapfrog"
+msgstr ""
+
+#: ../../getting_started.rst:305
+#, python-format
+msgid ""
+"In JupyterLite and Jupyter Notebooks, Pollywog provides an extension that"
+" makes a download button appear below the cell when you export with "
+"``to_lfcalc``. To enable this feature, first run ``%load_ext "
+"pollywog.magics`` in a cell, then ``%pollywog autodownload on``. When you"
+" export, simply click the button to save the file to your computer."
+msgstr ""
+
+#: ../../getting_started.rst:308
+msgid "Step 5: Use in Leapfrog"
+msgstr ""
+
+#: ../../getting_started.rst:310
+msgid "Open Leapfrog"
+msgstr ""
+
+#: ../../getting_started.rst:311
+msgid "Navigate to your block model, drillhole, or mesh"
+msgstr ""
+
+#: ../../getting_started.rst:312
+msgid "Right-click on \"Evaluations\" or \"Numeric\" section"
+msgstr ""
+
+#: ../../getting_started.rst:313
+msgid "Select \"Import\" → \"From File\""
+msgstr ""
+
+#: ../../getting_started.rst:314
+msgid "Choose your ``my_calculations.lfcalc`` file"
+msgstr ""
+
+#: ../../getting_started.rst:315
+msgid "The calculations will appear in your evaluation tree"
+msgstr ""
+
+#: ../../getting_started.rst:326
+msgid "Common Workflows"
+msgstr ""
+
+#: ../../getting_started.rst:329
+msgid "Drillhole Preprocessing"
+msgstr ""
+
+#: ../../getting_started.rst:331
+msgid "Clean and transform drillhole assay data:"
+msgstr ""
+
+#: ../../getting_started.rst:352
+msgid "Block Model Postprocessing"
+msgstr ""
+
+#: ../../getting_started.rst:354
+msgid "Process estimated grades in a block model:"
+msgstr ""
+
+#: ../../getting_started.rst:375
+msgid "Domain Weighting"
+msgstr ""
+
+#: ../../getting_started.rst:377
+msgid "Combine estimates from multiple domains:"
+msgstr ""
+
+#: ../../getting_started.rst:395
+msgid "Working with Helpers"
+msgstr ""
+
+#: ../../getting_started.rst:397
+msgid "Pollywog provides helper functions to simplify common patterns:"
+msgstr ""
+
+#: ../../getting_started.rst:426
+msgid "Visualization in Jupyter"
+msgstr ""
+
+#: ../../getting_started.rst:428
+msgid "Display calculation sets as interactive HTML in Jupyter notebooks:"
+msgstr ""
+
+#: ../../getting_started.rst:444
+msgid ""
+"Items and CalcSets also have **automatic rich display** in Jupyter "
+"notebooks. Simply evaluating them in a cell will show their rich HTML "
+"representation:"
+msgstr ""
+
+#: ../../getting_started.rst:453
+msgid "This creates an interactive tree view showing:"
+msgstr ""
+
+#: ../../getting_started.rst:455
+msgid "Calculation names"
+msgstr ""
+
+#: ../../getting_started.rst:456
+msgid "Expressions"
+msgstr ""
+
+#: ../../getting_started.rst:457
+msgid "Dependencies between calculations"
+msgstr ""
+
+#: ../../getting_started.rst:458
+msgid "Comments and metadata"
+msgstr ""
+
+#: ../../getting_started.rst:469
+msgid "Reading Existing Files"
+msgstr ""
+
+#: ../../getting_started.rst:471
+msgid "Load and modify existing .lfcalc files:"
+msgstr ""
+
+#: ../../getting_started.rst:495
+msgid "Tips for Success"
+msgstr ""
+
+#: ../../getting_started.rst:497
+msgid ""
+"**Start Simple**: Begin with basic calculations and add complexity "
+"incrementally"
+msgstr ""
+
+#: ../../getting_started.rst:498
+msgid "**Use Comments**: Document your logic with ``comment_equation`` parameter"
+msgstr ""
+
+#: ../../getting_started.rst:499
+msgid ""
+"**Test Small**: Export small test files and verify in Leapfrog before "
+"scaling up"
+msgstr ""
+
+#: ../../getting_started.rst:500
+msgid ""
+"**Check Dependencies**: Use ``item.dependencies`` to see what variables "
+"are referenced"
+msgstr ""
+
+#: ../../getting_started.rst:501
+msgid "**Organize Code**: Keep related calculations together in the same CalcSet"
+msgstr ""
+
+#: ../../getting_started.rst:502
+msgid "**Version Control**: Store your Python scripts in Git for traceability"
+msgstr ""
+
+#: ../../getting_started.rst:503
+msgid ""
+"**Validate Data**: Use ``clamp()`` to handle invalid inputs (negatives, "
+"outliers)"
+msgstr ""
+
+#: ../../getting_started.rst:504
+msgid ""
+"**Break It Down**: Split complex expressions into multiple simple "
+"calculations"
+msgstr ""
+
+#: ../../getting_started.rst:507
+msgid "Common Pitfalls"
+msgstr ""
+
+#: ../../getting_started.rst:509
+msgid "**Forgetting Square Brackets**"
+msgstr ""
+
+#: ../../getting_started.rst:519
+msgid "**Division by Zero**"
+msgstr ""
+
+#: ../../getting_started.rst:530
+msgid "**Log of Zero**"
+msgstr ""
+
+#: ../../getting_started.rst:540
+msgid "**Missing Parentheses**"
+msgstr ""
+
+#: ../../getting_started.rst:551
+msgid "Next Steps"
+msgstr ""
+
+#: ../../getting_started.rst:553
+msgid "Now that you understand the basics, explore:"
+msgstr ""
+
+#: ../../getting_started.rst:555
+msgid ":doc:`examples` - Complete collection of example notebooks"
+msgstr ""
+
+#: ../../getting_started.rst:556
+msgid ":doc:`tutorials` - Step-by-step workflow examples"
+msgstr ""
+
+#: ../../getting_started.rst:557
+msgid ":doc:`expression_syntax` - Complete expression syntax reference"
+msgstr ""
+
+#: ../../getting_started.rst:558
+msgid ":doc:`helpers_guide` - Detailed helper function documentation"
+msgstr ""
+
+#: ../../getting_started.rst:559
+msgid ":doc:`workflow_patterns` - Common patterns and best practices"
+msgstr ""
+
+#: ../../getting_started.rst:560
+msgid ":doc:`best_practices` - Production workflow recommendations"
+msgstr ""
+
+#: ../../getting_started.rst:561
+msgid ":doc:`api_reference` - Full API documentation"
+msgstr ""
+
+#: ../../getting_started.rst:564
+msgid "Additional Resources"
+msgstr ""
+
+#: ../../getting_started.rst:566
+msgid "**GitHub Repository**: https://github.com/endarthur/pollywog"
+msgstr ""
+
+#: ../../getting_started.rst:567
+msgid ""
+"**JupyterLite Demo**: https://endarthur.github.io/pollyweb (try pollywog "
+"in your browser!)"
+msgstr ""
+
+#: ../../getting_started.rst:568
+msgid "**Example Notebooks**: See :doc:`examples` for all available notebooks"
+msgstr ""
+
+#: ../../getting_started.rst:569
+msgid "**Issue Tracker**: Report bugs or request features on GitHub"
+msgstr ""
+
+#: ../../getting_started.rst:572
+msgid "Getting Help"
+msgstr ""
+
+#: ../../getting_started.rst:574
+msgid "If you encounter issues:"
+msgstr ""
+
+#: ../../getting_started.rst:576
+msgid "Check the documentation for similar examples"
+msgstr ""
+
+#: ../../getting_started.rst:577
+msgid "Review the example notebooks in the repository"
+msgstr ""
+
+#: ../../getting_started.rst:578
+msgid "Search existing GitHub issues"
+msgstr ""
+
+#: ../../getting_started.rst:579
+msgid "Open a new issue with a minimal reproducible example"
+msgstr ""

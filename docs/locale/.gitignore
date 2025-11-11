@@ -1,0 +1,3 @@
+# Ignore compiled translation files (.mo)
+# Only commit source translation files (.po)
+*.mo

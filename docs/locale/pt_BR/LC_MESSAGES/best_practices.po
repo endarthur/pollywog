@@ -1,0 +1,435 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Arthur Endlein
+# This file is distributed under the same license as the pollywog package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: pollywog \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-11 13:16-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: pt_BR\n"
+"Language-Team: pt_BR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../best_practices.rst:2
+msgid "Best Practices"
+msgstr ""
+
+#: ../../best_practices.rst:4
+msgid ""
+"This guide provides recommendations for effectively using pollywog in "
+"production geological modeling and resource estimation workflows."
+msgstr ""
+
+#: ../../best_practices.rst:7
+msgid "**Quick Checklist**"
+msgstr ""
+
+#: ../../best_practices.rst:9
+msgid ""
+"✅ Use version control (Git) for all scripts (or at least keep a copy of "
+"the notebook in Central)"
+msgstr ""
+
+#: ../../best_practices.rst:11
+msgid "✅ Add comments and docstrings to your code"
+msgstr ""
+
+#: ../../best_practices.rst:13
+msgid "✅ Test calculations on small datasets first"
+msgstr ""
+
+#: ../../best_practices.rst:15
+msgid "✅ Use configuration files for parameters"
+msgstr ""
+
+#: ../../best_practices.rst:17
+msgid "✅ Follow consistent naming conventions"
+msgstr ""
+
+#: ../../best_practices.rst:19
+msgid "✅ Validate results against known values"
+msgstr ""
+
+#: ../../best_practices.rst:21
+msgid "✅ Document assumptions and data sources"
+msgstr ""
+
+#: ../../best_practices.rst:24
+msgid "Code Organization"
+msgstr ""
+
+#: ../../best_practices.rst:27
+msgid "Project Structure"
+msgstr ""
+
+#: ../../best_practices.rst:29
+msgid "Organize your pollywog scripts in a consistent directory structure:"
+msgstr ""
+
+#: ../../best_practices.rst:50
+msgid ""
+"You could also create an orchestration script (e.g., ``run_all.py``) to "
+"execute all steps in sequence, or if using jupyter notebooks instead of "
+"scripts, use `Papermill`_ to parameterize and run them."
+msgstr ""
+
+#: ../../best_practices.rst:56
+msgid "Script Organization"
+msgstr ""
+
+#: ../../best_practices.rst:58
+msgid "Structure your scripts consistently:"
+msgstr ""
+
+#: ../../best_practices.rst:134
+msgid "Naming Conventions"
+msgstr ""
+
+#: ../../best_practices.rst:137
+msgid "Variables"
+msgstr ""
+
+#: ../../best_practices.rst:139
+msgid "Use descriptive, consistent names:"
+msgstr ""
+
+#: ../../best_practices.rst:155
+msgid "Follow these patterns:"
+msgstr ""
+
+#: ../../best_practices.rst:157
+msgid "**Metal grades**: ``Au_est``, ``Cu_final``, ``Ag_recovered``"
+msgstr ""
+
+#: ../../best_practices.rst:158
+msgid "**Transformed grades**: ``Au_log``, ``Cu_sqrt``, ``Au_normalized``"
+msgstr ""
+
+#: ../../best_practices.rst:159
+msgid "**Domain/category**: ``domain_geo``, ``rocktype``, ``alteration_zone``"
+msgstr ""
+
+#: ../../best_practices.rst:160
+msgid "**Economic**: ``nsr``, ``revenue_per_tonne``, ``cutoff_grade``"
+msgstr ""
+
+#: ../../best_practices.rst:161
+msgid "**QA/QC**: ``flag_negative``, ``flag_outlier``, ``qa_status``"
+msgstr ""
+
+#: ../../best_practices.rst:162
+msgid "**Intermediate**: ``Au_step1``, ``temp_calculation`` (minimize these)"
+msgstr ""
+
+#: ../../best_practices.rst:165
+msgid "Calculation Sets"
+msgstr ""
+
+#: ../../best_practices.rst:167
+msgid "Name your ``.lfcalc`` files clearly:"
+msgstr ""
+
+#: ../../best_practices.rst:182
+msgid "Include context in the filename:"
+msgstr ""
+
+#: ../../best_practices.rst:184
+msgid "Stage: drillhole, block, mesh"
+msgstr ""
+
+#: ../../best_practices.rst:185
+msgid "Purpose: preprocessing, postprocessing, qa_qc"
+msgstr ""
+
+#: ../../best_practices.rst:186
+msgid "Method: domain_weighted, ml_predicted"
+msgstr ""
+
+#: ../../best_practices.rst:187
+msgid "Version: Optional date or version number"
+msgstr ""
+
+#: ../../best_practices.rst:190
+msgid "Data Quality and Validation"
+msgstr ""
+
+#: ../../best_practices.rst:193
+msgid "Input Validation"
+msgstr ""
+
+#: ../../best_practices.rst:195
+msgid "Always validate and clean input data:"
+msgstr ""
+
+#: ../../best_practices.rst:213
+msgid "Range Checking"
+msgstr ""
+
+#: ../../best_practices.rst:215
+msgid "Create flags for out-of-range values:"
+msgstr ""
+
+#: ../../best_practices.rst:239
+msgid "Avoiding Common Errors"
+msgstr ""
+
+#: ../../best_practices.rst:242
+msgid "Division by Zero"
+msgstr ""
+
+#: ../../best_practices.rst:244
+msgid "Always protect against division by zero:"
+msgstr ""
+
+#: ../../best_practices.rst:263
+msgid "Logarithms of Zero/Negative"
+msgstr ""
+
+#: ../../best_practices.rst:265
+msgid "Add epsilon before taking logarithms:"
+msgstr ""
+
+#: ../../best_practices.rst:279
+msgid "Expression Complexity"
+msgstr ""
+
+#: ../../best_practices.rst:281
+msgid "Break complex expressions into steps:"
+msgstr ""
+
+#: ../../best_practices.rst:301
+msgid "Parentheses"
+msgstr ""
+
+#: ../../best_practices.rst:303
+msgid "Use parentheses liberally for clarity:"
+msgstr ""
+
+#: ../../best_practices.rst:314
+msgid "Documentation and Comments"
+msgstr ""
+
+#: ../../best_practices.rst:317
+msgid "Code Comments"
+msgstr ""
+
+#: ../../best_practices.rst:319
+msgid "Document your intent:"
+msgstr ""
+
+#: ../../best_practices.rst:338
+msgid "Calculation Comments"
+msgstr ""
+
+#: ../../best_practices.rst:340
+msgid "Use ``comment_equation`` for business rules:"
+msgstr ""
+
+#: ../../best_practices.rst:357
+msgid "README Documentation"
+msgstr ""
+
+#: ../../best_practices.rst:359
+msgid "Create a README for your project:"
+msgstr ""
+
+#: ../../best_practices.rst:395
+msgid "Version Control"
+msgstr ""
+
+#: ../../best_practices.rst:398
+msgid "Git Best Practices"
+msgstr ""
+
+#: ../../best_practices.rst:400
+msgid "Use version control for all pollywog scripts:"
+msgstr ""
+
+#: ../../best_practices.rst:415
+msgid "Commit Messages"
+msgstr ""
+
+#: ../../best_practices.rst:417
+msgid "Write clear commit messages:"
+msgstr ""
+
+#: ../../best_practices.rst:432
+msgid "Configuration Management"
+msgstr ""
+
+#: ../../best_practices.rst:435
+msgid "External Configuration"
+msgstr ""
+
+#: ../../best_practices.rst:437
+msgid "Store parameters separately from code:"
+msgstr ""
+
+#: ../../best_practices.rst:472
+msgid "Environment-Specific Settings"
+msgstr ""
+
+#: ../../best_practices.rst:474
+msgid "Support different environments (dev, prod):"
+msgstr ""
+
+#: ../../best_practices.rst:496
+msgid "Testing and Validation"
+msgstr ""
+
+#: ../../best_practices.rst:499
+msgid "Unit Testing Calculations"
+msgstr ""
+
+#: ../../best_practices.rst:501
+msgid "Test your calculation logic:"
+msgstr ""
+
+#: ../../best_practices.rst:548
+msgid "Validation Against Leapfrog"
+msgstr ""
+
+#: ../../best_practices.rst:550
+msgid "Export small test cases and validate in Leapfrog:"
+msgstr ""
+
+#: ../../best_practices.rst:566
+msgid "Performance Considerations"
+msgstr ""
+
+#: ../../best_practices.rst:569
+msgid "Minimize Calculations"
+msgstr ""
+
+#: ../../best_practices.rst:571
+msgid "Avoid redundant calculations:"
+msgstr ""
+
+#: ../../best_practices.rst:589
+msgid "Topological Sorting"
+msgstr ""
+
+#: ../../best_practices.rst:591
+msgid "Ensure correct calculation order:"
+msgstr ""
+
+#: ../../best_practices.rst:609
+msgid "Common Pitfalls to Avoid"
+msgstr ""
+
+#: ../../best_practices.rst:611
+msgid ""
+"**Hardcoding Values**: Use configuration files for parameters that may "
+"change"
+msgstr ""
+
+#: ../../best_practices.rst:612
+msgid ""
+"**Missing Back-transforms**: Remember to back-transform after log/sqrt "
+"estimation"
+msgstr ""
+
+#: ../../best_practices.rst:613
+msgid "**Ignoring Units**: Keep track of units (g/t, %, oz/t, etc.) in comments"
+msgstr ""
+
+#: ../../best_practices.rst:614
+msgid "**No Version Control**: Always use Git for calculation scripts"
+msgstr ""
+
+#: ../../best_practices.rst:615
+msgid ""
+"**Insufficient Testing**: Test edge cases (zero, negative, very large "
+"values)"
+msgstr ""
+
+#: ../../best_practices.rst:616
+msgid ""
+"**Poor Documentation**: Future you will thank present you for good "
+"comments"
+msgstr ""
+
+#: ../../best_practices.rst:617
+msgid "**Complex Single Scripts**: Break large workflows into logical modules"
+msgstr ""
+
+#: ../../best_practices.rst:618
+msgid "**No Validation**: Always validate against manual calculations or Leapfrog"
+msgstr ""
+
+#: ../../best_practices.rst:621
+msgid "Workflow Checklist"
+msgstr ""
+
+#: ../../best_practices.rst:623
+msgid "Before deploying calculations to production:"
+msgstr ""
+
+#: ../../best_practices.rst:625
+msgid "☐ Code is organized and well-structured"
+msgstr ""
+
+#: ../../best_practices.rst:626
+msgid "☐ Variable names are descriptive and consistent"
+msgstr ""
+
+#: ../../best_practices.rst:627
+msgid "☐ All hardcoded values are moved to configuration"
+msgstr ""
+
+#: ../../best_practices.rst:628
+msgid "☐ Edge cases are handled (div by zero, log of zero, etc.)"
+msgstr ""
+
+#: ../../best_practices.rst:629
+msgid "☐ Comments explain business logic and assumptions"
+msgstr ""
+
+#: ../../best_practices.rst:630
+msgid "☐ Unit tests validate calculation logic"
+msgstr ""
+
+#: ../../best_practices.rst:631
+msgid "☐ Results validated against manual calculations"
+msgstr ""
+
+#: ../../best_practices.rst:632
+msgid "☐ Code is in version control with clear commit history"
+msgstr ""
+
+#: ../../best_practices.rst:633
+msgid "☐ README documents workflow and assumptions"
+msgstr ""
+
+#: ../../best_practices.rst:634
+msgid "☐ Dependencies are documented (Python version, packages)"
+msgstr ""
+
+#: ../../best_practices.rst:637
+msgid "See Also"
+msgstr ""
+
+#: ../../best_practices.rst:639
+msgid ":doc:`workflow_patterns` - Common workflow examples"
+msgstr ""
+
+#: ../../best_practices.rst:640
+msgid ":doc:`expression_syntax` - Expression syntax reference"
+msgstr ""
+
+#: ../../best_practices.rst:641
+msgid ":doc:`tutorials` - Step-by-step tutorials"
+msgstr ""
+
+#: ../../best_practices.rst:642
+msgid ":doc:`api_reference` - Complete API documentation"
+msgstr ""

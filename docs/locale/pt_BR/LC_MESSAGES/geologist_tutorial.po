@@ -1,0 +1,1761 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Arthur Endlein
+# This file is distributed under the same license as the pollywog package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: pollywog \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-11 13:16-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: pt_BR\n"
+"Language-Team: pt_BR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../geologist_tutorial.rst:2
+msgid "Tutorial for Resource Geologists"
+msgstr "Tutorial para Geólogos de Recursos"
+
+#: ../../geologist_tutorial.rst:4
+msgid ""
+"Welcome! This tutorial is specifically designed for resource geologists "
+"who are comfortable with Leapfrog and its calculator but are new to "
+"programming with Python. If you've built calculations in Leapfrog using "
+"the calculator interface, you already have the conceptual foundation to "
+"use Pollywog—we'll just show you how to express those same ideas in "
+"Python code."
+msgstr ""
+"Bem-vindo! Este tutorial foi especificamente desenvolvido para geólogos de recursos "
+"que estão familiarizados com o Leapfrog e sua calculadora, mas são novos em "
+"programação com Python. Se você já construiu cálculos no Leapfrog usando "
+"a interface da calculadora, você já tem a base conceitual para "
+"usar o Pollywog—vamos apenas mostrar como expressar essas mesmas ideias em "
+"código Python."
+
+#: ../../geologist_tutorial.rst:7
+msgid ""
+"This tutorial assumes you already know how to use Leapfrog and its "
+"calculator. If you can create formulas in Leapfrog's calculator dialog "
+"(like ``[Au] * 2`` or ``if([Au] > 0.5, \"ore\", \"waste\")``), you're "
+"ready to learn Pollywog!"
+msgstr ""
+"Este tutorial assume que você já sabe usar o Leapfrog e sua "
+"calculadora. Se você consegue criar fórmulas na caixa de diálogo da calculadora do Leapfrog "
+"(como ``[Au] * 2`` ou ``if([Au] > 0.5, \"ore\", \"waste\")``), você está "
+"pronto para aprender Pollywog!"
+
+#: ../../geologist_tutorial.rst:10
+msgid "Why Learn Pollywog?"
+msgstr "Por Que Aprender Pollywog?"
+
+#: ../../geologist_tutorial.rst:12
+msgid ""
+"You might be wondering: \"I can already create calculations in "
+"Leapfrog—why learn Python?\""
+msgstr ""
+"Você pode estar se perguntando: \"Eu já consigo criar cálculos no "
+"Leapfrog—por que aprender Python?\""
+
+#: ../../geologist_tutorial.rst:14
+msgid "Here's why Pollywog is worth your time:"
+msgstr "Aqui está por que o Pollywog vale o seu tempo:"
+
+#: ../../geologist_tutorial.rst:16
+msgid "**Time Savings**"
+msgstr "**Economia de Tempo**"
+
+#: ../../geologist_tutorial.rst:17
+msgid "Creating 100 calculations manually in Leapfrog: **2-3 hours**"
+msgstr "Criar 100 cálculos manualmente no Leapfrog: **2-3 horas**"
+
+#: ../../geologist_tutorial.rst:18
+msgid "Creating the same 100 calculations with Pollywog: **5 minutes**"
+msgstr "Criar os mesmos 100 cálculos com Pollywog: **5 minutos**"
+
+#: ../../geologist_tutorial.rst:19
+msgid "Once you learn the basics, you'll save hours on every project"
+msgstr "Uma vez que você aprende o básico, você economizará horas em cada projeto"
+
+#: ../../geologist_tutorial.rst:21
+msgid "**Consistency**"
+msgstr "**Consistência**"
+
+#: ../../geologist_tutorial.rst:22
+msgid "Manual work: Easy to make typos or miss a domain"
+msgstr "Trabalho manual: Fácil cometer erros de digitação ou esquecer um domínio"
+
+#: ../../geologist_tutorial.rst:23
+msgid "Pollywog: If one calculation is right, all 100 are right"
+msgstr "Pollywog: Se um cálculo está correto, todos os 100 estão corretos"
+
+#: ../../geologist_tutorial.rst:25
+msgid "**Reusability**"
+msgstr "**Reutilização**"
+
+#: ../../geologist_tutorial.rst:26
+msgid "Manual work: Start from scratch for each project"
+msgstr "Trabalho manual: Começar do zero em cada projeto"
+
+#: ../../geologist_tutorial.rst:27
+msgid "Pollywog: Reuse your scripts across multiple projects"
+msgstr "Pollywog: Reutilize seus scripts em múltiplos projetos"
+
+#: ../../geologist_tutorial.rst:29
+msgid "**Documentation**"
+msgstr "**Documentação**"
+
+#: ../../geologist_tutorial.rst:30
+msgid "Manual work: Hard to explain what you did"
+msgstr "Trabalho manual: Difícil explicar o que você fez"
+
+#: ../../geologist_tutorial.rst:31
+msgid "Pollywog: Your Python code is the documentation"
+msgstr "Pollywog: Seu código Python é a documentação"
+
+#: ../../geologist_tutorial.rst:34
+msgid "Quick Start: Your First Calculation in 5 Minutes"
+msgstr "Início Rápido: Seu Primeiro Cálculo em 5 Minutos"
+
+#: ../../geologist_tutorial.rst:36
+msgid ""
+"Let's get you winning immediately. We'll create a simple calculation, "
+"export it, and import it into Leapfrog. You can understand the details "
+"later—right now, let's just see it work!"
+msgstr ""
+"Vamos fazer você ter sucesso imediatamente. Vamos criar um cálculo simples, "
+"exportá-lo e importá-lo no Leapfrog. Você pode entender os detalhes "
+"mais tarde—agora, vamos apenas ver funcionando!"
+
+#: ../../geologist_tutorial.rst:39
+msgid "Step 1: Open JupyterLite"
+msgstr "Passo 1: Abrir JupyterLite"
+
+#: ../../geologist_tutorial.rst:41
+msgid ""
+"Visit `https://endarthur.github.io/pollyweb "
+"<https://endarthur.github.io/pollyweb>`_"
+msgstr ""
+"Visite `https://endarthur.github.io/pollyweb "
+"<https://endarthur.github.io/pollyweb>`_"
+
+#: ../../geologist_tutorial.rst:43
+msgid ""
+"Click the **+** button and select **Python (Pyodide)** under "
+"\"Notebook\". You now have a blank notebook."
+msgstr ""
+"Clique no botão **+** e selecione **Python (Pyodide)** em "
+"\"Notebook\". Você agora tem um notebook em branco."
+
+#: ../../geologist_tutorial.rst:46
+msgid "Step 2: Copy and Run This Code"
+msgstr "Passo 2: Copiar e Executar Este Código"
+
+#: ../../geologist_tutorial.rst:48
+msgid "In the first cell, copy this exactly:"
+msgstr "Na primeira célula, copie exatamente isto:"
+
+#: ../../geologist_tutorial.rst:60
+msgid "Press **Shift+Enter** to run it."
+msgstr "Pressione **Shift+Enter** para executá-lo."
+
+#: ../../geologist_tutorial.rst:63
+msgid "Step 3: Download the File"
+msgstr "Passo 3: Baixar o Arquivo"
+
+#: ../../geologist_tutorial.rst:65
+msgid ""
+"In the file browser on the left, you should see "
+"``my_first_pollywog.lfcalc``. Right-click it and select **Download**."
+msgstr ""
+"No navegador de arquivos à esquerda, você deve ver "
+"``my_first_pollywog.lfcalc``. Clique com o botão direito e selecione **Download**."
+
+#: ../../geologist_tutorial.rst:68
+msgid "Step 4: Import into Leapfrog"
+msgstr "Passo 4: Importar no Leapfrog"
+
+#: ../../geologist_tutorial.rst:70
+msgid "Open your Leapfrog project"
+msgstr "Abra seu projeto Leapfrog"
+
+#: ../../geologist_tutorial.rst:71
+msgid "Navigate to your block model or drillhole data"
+msgstr "Navegue até seu modelo de blocos ou dados de furo de sondagem"
+
+#: ../../geologist_tutorial.rst:72
+msgid "Right-click on the \"Evaluations\" or \"Numeric\" section"
+msgstr "Clique com o botão direito na seção \"Evaluations\" ou \"Numeric\""
+
+#: ../../geologist_tutorial.rst:73
+msgid "Select \"Import\" → \"From File\""
+msgstr "Selecione \"Import\" → \"From File\""
+
+#: ../../geologist_tutorial.rst:74
+msgid "Choose your ``my_first_pollywog.lfcalc`` file"
+msgstr "Escolha seu arquivo ``my_first_pollywog.lfcalc``"
+
+#: ../../geologist_tutorial.rst:76
+msgid ""
+"You should now see a calculation called ``Au_capped`` in Leapfrog that "
+"caps gold values between 0 and 50!"
+msgstr ""
+"Você deve agora ver um cálculo chamado ``Au_capped`` no Leapfrog que "
+"limita valores de ouro entre 0 e 50!"
+
+#: ../../geologist_tutorial.rst:78
+msgid ""
+"🎉 **Congratulations!** You just automated your first Leapfrog calculation"
+" with code."
+msgstr ""
+"**Parabéns!** Você acabou de automatizar seu primeiro cálculo do Leapfrog"
+" com código."
+
+#: ../../geologist_tutorial.rst:80
+msgid "Now let's understand what you just did..."
+msgstr "Agora vamos entender o que você acabou de fazer..."
+
+#: ../../geologist_tutorial.rst:83
+msgid "Getting Started with JupyterLite"
+msgstr "Começando com JupyterLite"
+
+#: ../../geologist_tutorial.rst:85
+msgid ""
+"JupyterLite runs Python directly in your web browser—no installation "
+"required."
+msgstr ""
+"JupyterLite executa Python diretamente no seu navegador—sem necessidade de instalação."
+
+#: ../../geologist_tutorial.rst:88
+msgid ""
+"**Important:** JupyterLite saves your work in your browser's memory. If "
+"you clear your browser cache, you'll lose your work! Always download your"
+" notebooks and .lfcalc files when you're done."
+msgstr ""
+"**Importante:** JupyterLite salva seu trabalho na memória do navegador. Se "
+"você limpar o cache do navegador, você perderá seu trabalho! Sempre baixe seus"
+" notebooks e arquivos .lfcalc quando terminar."
+
+#: ../../geologist_tutorial.rst:91
+msgid "The JupyterLite Interface"
+msgstr "A Interface do JupyterLite"
+
+#: ../../geologist_tutorial.rst:93
+msgid "When you open JupyterLite, you'll see:"
+msgstr "Quando você abre o JupyterLite, você verá:"
+
+#: ../../geologist_tutorial.rst:95
+msgid ""
+"**File Browser (left side)**: Like Windows Explorer, shows your notebooks"
+" and files"
+msgstr ""
+"**Navegador de Arquivos (lado esquerdo)**: Como o Windows Explorer, mostra seus notebooks"
+" e arquivos"
+
+#: ../../geologist_tutorial.rst:96
+msgid "**Notebook (center)**: Where you write and run Python code"
+msgstr "**Notebook (centro)**: Onde você escreve e executa código Python"
+
+#: ../../geologist_tutorial.rst:97
+msgid "**Code Cells**: Boxes where you type Python code"
+msgstr "**Células de Código**: Caixas onde você digita código Python"
+
+#: ../../geologist_tutorial.rst:98
+msgid ""
+"**Run Button**: Click it to execute the code in a cell (or press "
+"Shift+Enter)"
+msgstr ""
+"**Botão Executar**: Clique nele para executar o código em uma célula (ou pressione "
+"Shift+Enter)"
+
+#: ../../geologist_tutorial.rst:101
+msgid "Creating Cells"
+msgstr "Criando Células"
+
+#: ../../geologist_tutorial.rst:103
+msgid "Notebooks have two types of cells:"
+msgstr "Notebooks têm dois tipos de células:"
+
+#: ../../geologist_tutorial.rst:105
+msgid "**Code Cells** (for Python)"
+msgstr "**Células de Código** (para Python)"
+
+#: ../../geologist_tutorial.rst:106
+msgid "Type Python code here and run it with Shift+Enter"
+msgstr "Digite código Python aqui e execute com Shift+Enter"
+
+#: ../../geologist_tutorial.rst:108
+msgid "**Markdown Cells** (for notes)"
+msgstr "**Células Markdown** (para anotações)"
+
+#: ../../geologist_tutorial.rst:109
+msgid "Document what your code does. To create one:"
+msgstr "Documente o que seu código faz. Para criar uma:"
+
+#: ../../geologist_tutorial.rst:111
+msgid "Click on a cell"
+msgstr "Clique em uma célula"
+
+#: ../../geologist_tutorial.rst:112
+msgid "Change the dropdown from \"Code\" to \"Markdown\""
+msgstr "Mude o menu dropdown de \"Code\" para \"Markdown\""
+
+#: ../../geologist_tutorial.rst:113
+msgid "Type your notes (you can use headings, bullet points, bold text)"
+msgstr "Digite suas anotações (você pode usar títulos, marcadores, texto em negrito)"
+
+#: ../../geologist_tutorial.rst:114
+msgid "Press Shift+Enter to render it"
+msgstr "Pressione Shift+Enter para renderizá-la"
+
+#: ../../geologist_tutorial.rst:116
+msgid "**Example markdown:**"
+msgstr "**Exemplo de markdown:**"
+
+#: ../../geologist_tutorial.rst:129
+msgid ""
+"For more on Jupyter and markdown, see the `Jupyter documentation <https"
+"://jupyter-notebook.readthedocs.io/en/stable/>`_."
+msgstr ""
+"Para mais sobre Jupyter e markdown, veja a `documentação do Jupyter <https"
+"://jupyter-notebook.readthedocs.io/en/stable/>`_."
+
+#: ../../geologist_tutorial.rst:132
+msgid "Python Essentials for Geologists"
+msgstr "Fundamentos de Python para Geólogos"
+
+#: ../../geologist_tutorial.rst:134
+msgid ""
+"Good news: You don't need to become a Python expert! You need about 5 "
+"core concepts, and the rest you can Google when needed (just like you do "
+"with Excel formulas)."
+msgstr ""
+"Boa notícia: Você não precisa se tornar um especialista em Python! Você precisa de cerca de 5 "
+"conceitos centrais, e o resto você pode pesquisar no Google quando necessário (assim como você faz "
+"com fórmulas do Excel)."
+
+#: ../../geologist_tutorial.rst:136
+msgid "Let's learn just enough Python to be productive."
+msgstr "Vamos aprender apenas o suficiente de Python para ser produtivo."
+
+#: ../../geologist_tutorial.rst:139
+msgid "Importing: Getting Your Tools"
+msgstr "Importando: Obtendo Suas Ferramentas"
+
+#: ../../geologist_tutorial.rst:141
+msgid ""
+"Before you can use Pollywog, you need to import it (like opening a "
+"toolbox)."
+msgstr ""
+"Antes de usar o Pollywog, você precisa importá-lo (como abrir uma "
+"caixa de ferramentas)."
+
+#: ../../geologist_tutorial.rst:143
+msgid "**Try this in a code cell:**"
+msgstr "**Tente isto em uma célula de código:**"
+
+#: ../../geologist_tutorial.rst:150
+msgid "Press Shift+Enter. If no error appears, you're ready!"
+msgstr "Pressione Shift+Enter. Se nenhum erro aparecer, você está pronto!"
+
+#: ../../geologist_tutorial.rst:153
+msgid ""
+"Always put your imports at the top of your notebook. That way all your "
+"tools are loaded before you use them."
+msgstr ""
+"Sempre coloque suas importações no topo do seu notebook. Dessa forma todas as suas "
+"ferramentas são carregadas antes de você usá-las."
+
+#: ../../geologist_tutorial.rst:156
+msgid "Strings: Text in Quotes"
+msgstr "Strings: Texto Entre Aspas"
+
+#: ../../geologist_tutorial.rst:158
+msgid ""
+"In Python, text goes in quotes. You'll use this for calculation names and"
+" expressions."
+msgstr ""
+"Em Python, texto vai entre aspas. Você usará isso para nomes de cálculos e"
+" expressões."
+
+#: ../../geologist_tutorial.rst:160 ../../geologist_tutorial.rst:195
+#: ../../geologist_tutorial.rst:224 ../../geologist_tutorial.rst:254
+#: ../../geologist_tutorial.rst:281
+msgid "**Try this:**"
+msgstr "**Tente isto:**"
+
+#: ../../geologist_tutorial.rst:169 ../../geologist_tutorial.rst:207
+#: ../../geologist_tutorial.rst:239 ../../geologist_tutorial.rst:267
+msgid "**You should see:**"
+msgstr "**Você deve ver:**"
+
+#: ../../geologist_tutorial.rst:176
+msgid ""
+"**Important:** Leapfrog expressions (like ``\"clamp([Au], 0)\"``) are "
+"just text strings to Python. The square brackets ``[Au]`` are part of the"
+" text, not Python syntax."
+msgstr ""
+"**Importante:** Expressões do Leapfrog (como ``\"clamp([Au], 0)\"``) são "
+"apenas strings de texto para Python. Os colchetes ``[Au]`` são parte do"
+" texto, não sintaxe Python."
+
+#: ../../geologist_tutorial.rst:178
+msgid "**Quote types:**"
+msgstr "**Tipos de aspas:**"
+
+#: ../../geologist_tutorial.rst:191
+msgid "Variables: Storing Values"
+msgstr "Variáveis: Armazenando Valores"
+
+#: ../../geologist_tutorial.rst:193
+msgid ""
+"In Python, you store values in variables (different from Leapfrog's "
+"``[Au]`` variables!)."
+msgstr ""
+"Em Python, você armazena valores em variáveis (diferente das "
+"variáveis ``[Au]`` do Leapfrog!)."
+
+#: ../../geologist_tutorial.rst:213
+msgid "**Key points:**"
+msgstr "**Pontos-chave:**"
+
+#: ../../geologist_tutorial.rst:215
+msgid "Variable names don't use square brackets (that's Leapfrog syntax)"
+msgstr "Nomes de variáveis não usam colchetes (isso é sintaxe do Leapfrog)"
+
+#: ../../geologist_tutorial.rst:216
+msgid "Use ``=`` to assign a value"
+msgstr "Use ``=`` para atribuir um valor"
+
+#: ../../geologist_tutorial.rst:217
+msgid "Lines starting with ``#`` are comments (notes to yourself)"
+msgstr "Linhas começando com ``#`` são comentários (anotações para você mesmo)"
+
+#: ../../geologist_tutorial.rst:220
+msgid "Lists: Multiple Items"
+msgstr "Listas: Múltiplos Itens"
+
+#: ../../geologist_tutorial.rst:222
+msgid "Sometimes you need multiple items. Use square brackets to make a list."
+msgstr "Às vezes você precisa de múltiplos itens. Use colchetes para fazer uma lista."
+
+#: ../../geologist_tutorial.rst:247
+msgid "**Think of it like:** A column in Excel—multiple values in one container."
+msgstr "**Pense nisso como:** Uma coluna no Excel—múltiplos valores em um container."
+
+#: ../../geologist_tutorial.rst:250
+msgid "Functions: Doing Things"
+msgstr "Funções: Fazendo Coisas"
+
+#: ../../geologist_tutorial.rst:252
+msgid "Functions perform actions. You call them with parentheses ``()``."
+msgstr "Funções executam ações. Você as chama com parênteses ``()``."
+
+#: ../../geologist_tutorial.rst:274
+msgid ""
+"You'll mostly be *using* functions that Pollywog provides, not creating "
+"your own."
+msgstr ""
+"Você estará principalmente *usando* funções que o Pollywog fornece, não criando "
+"as suas próprias."
+
+#: ../../geologist_tutorial.rst:277
+msgid "Comments: Documenting Your Work"
+msgstr "Comentários: Documentando Seu Trabalho"
+
+#: ../../geologist_tutorial.rst:279
+msgid ""
+"Lines starting with ``#`` are comments—Python ignores them. Use them to "
+"explain your thinking."
+msgstr ""
+"Linhas começando com ``#`` são comentários—Python os ignora. Use-os para "
+"explicar seu raciocínio."
+
+#: ../../geologist_tutorial.rst:292
+msgid "From Leapfrog Calculator to Pollywog"
+msgstr "Da Calculadora do Leapfrog para Pollywog"
+
+#: ../../geologist_tutorial.rst:294
+msgid ""
+"Let's translate what you know from Leapfrog's calculator into Pollywog "
+"code."
+msgstr ""
+"Vamos traduzir o que você sabe da calculadora do Leapfrog em código "
+"Pollywog."
+
+#: ../../geologist_tutorial.rst:297
+msgid "Simple Calculation"
+msgstr "Cálculo Simples"
+
+#: ../../geologist_tutorial.rst:299 ../../geologist_tutorial.rst:330
+#: ../../geologist_tutorial.rst:424
+msgid "**In Leapfrog Calculator:**"
+msgstr "**Na Calculadora do Leapfrog:**"
+
+#: ../../geologist_tutorial.rst:301
+msgid "Name: ``Au_clean``"
+msgstr "Nome: ``Au_clean``"
+
+#: ../../geologist_tutorial.rst:302
+msgid "Expression: ``clamp([Au], 0)``"
+msgstr "Expressão: ``clamp([Au], 0)``"
+
+#: ../../geologist_tutorial.rst:303
+msgid "Comment: \"Remove negative values\""
+msgstr "Comentário: \"Remove negative values\""
+
+#: ../../geologist_tutorial.rst:305 ../../geologist_tutorial.rst:338
+#: ../../geologist_tutorial.rst:430 ../../geologist_tutorial.rst:981
+msgid "**In Pollywog:**"
+msgstr "**No Pollywog:**"
+
+#: ../../geologist_tutorial.rst:317
+msgid "**What's happening:**"
+msgstr "**O que está acontecendo:**"
+
+#: ../../geologist_tutorial.rst:319
+msgid "``Number(...)`` creates a numeric calculation"
+msgstr "``Number(...)`` cria um cálculo numérico"
+
+#: ../../geologist_tutorial.rst:320
+msgid "First parameter: the name (``\"Au_clean\"``)"
+msgstr "Primeiro parâmetro: o nome (``\"Au_clean\"``)"
+
+#: ../../geologist_tutorial.rst:321
+msgid "Second parameter: the expression (``\"clamp([Au], 0)\"``)"
+msgstr "Segundo parâmetro: a expressão (``\"clamp([Au], 0)\"``)"
+
+#: ../../geologist_tutorial.rst:322
+msgid "``comment_equation=`` adds a comment (optional but recommended)"
+msgstr "``comment_equation=`` adiciona um comentário (opcional mas recomendado)"
+
+#: ../../geologist_tutorial.rst:325
+msgid ""
+"Notice that expressions in Pollywog use the **exact same syntax** as "
+"Leapfrog's calculator! If you know how to write ``[Au] * 2`` in Leapfrog,"
+" you can use it in Pollywog."
+msgstr ""
+"Note que expressões no Pollywog usam **exatamente a mesma sintaxe** da "
+"calculadora do Leapfrog! Se você sabe escrever ``[Au] * 2`` no Leapfrog,"
+" você pode usá-lo no Pollywog."
+
+#: ../../geologist_tutorial.rst:328
+msgid "Multiple Calculations: The CalcSet"
+msgstr "Múltiplos Cálculos: O CalcSet"
+
+#: ../../geologist_tutorial.rst:332
+msgid "You'd create each calculation one by one:"
+msgstr "Você criaria cada cálculo um por um:"
+
+#: ../../geologist_tutorial.rst:334
+msgid "Au_clean: ``clamp([Au], 0)``"
+msgstr "Au_clean: ``clamp([Au], 0)``"
+
+#: ../../geologist_tutorial.rst:335
+msgid "Au_log: ``log([Au_clean] + 1e-6)``"
+msgstr "Au_log: ``log([Au_clean] + 1e-6)``"
+
+#: ../../geologist_tutorial.rst:336
+msgid "Au_scaled: ``[Au_log] * 0.95``"
+msgstr "Au_scaled: ``[Au_log] * 0.95``"
+
+#: ../../geologist_tutorial.rst:357
+msgid ""
+"**Key concept:** ``CalcSet([...])`` is a container holding multiple "
+"calculations. The square brackets ``[...]`` create a list of "
+"calculations."
+msgstr ""
+"**Conceito-chave:** ``CalcSet([...])`` é um container que mantém múltiplos "
+"cálculos. Os colchetes ``[...]`` criam uma lista de "
+"cálculos."
+
+#: ../../geologist_tutorial.rst:360
+msgid "Understanding Variable vs Number vs Category"
+msgstr "Entendendo Variable vs Number vs Category"
+
+#: ../../geologist_tutorial.rst:362
+msgid ""
+"Pollywog has three types of calculation items. Understanding when to use "
+"each is important."
+msgstr ""
+"Pollywog tem três tipos de itens de cálculo. Entender quando usar "
+"cada um é importante."
+
+#: ../../geologist_tutorial.rst:364
+msgid "**Variable**"
+msgstr "**Variable**"
+
+#: ../../geologist_tutorial.rst:365 ../../geologist_tutorial.rst:371
+#: ../../geologist_tutorial.rst:377
+msgid "Visible in Leapfrog's calculator UI"
+msgstr "Visível na interface da calculadora do Leapfrog"
+
+#: ../../geologist_tutorial.rst:366
+msgid ""
+"**NOT available** outside the calculator (can't visualize in 3D, can't "
+"use in other Leapfrog tools)"
+msgstr ""
+"**NÃO disponível** fora da calculadora (não pode visualizar em 3D, não pode "
+"usar em outras ferramentas do Leapfrog)"
+
+#: ../../geologist_tutorial.rst:367
+msgid ""
+"Use for **intermediate steps** you need for calculations but won't "
+"visualize or export"
+msgstr ""
+"Use para **etapas intermediárias** que você precisa para cálculos mas não vai "
+"visualizar ou exportar"
+
+#: ../../geologist_tutorial.rst:368
+msgid "Can hold numeric or categorical values"
+msgstr "Pode conter valores numéricos ou categóricos"
+
+#: ../../geologist_tutorial.rst:370
+msgid "**Number**"
+msgstr "**Number**"
+
+#: ../../geologist_tutorial.rst:372 ../../geologist_tutorial.rst:378
+msgid "**Available everywhere** (can visualize, export, use in other tools)"
+msgstr "**Disponível em todos os lugares** (pode visualizar, exportar, usar em outras ferramentas)"
+
+#: ../../geologist_tutorial.rst:373
+msgid "Use for **final numeric outputs** you want to work with"
+msgstr "Use para **saídas numéricas finais** com as quais você quer trabalhar"
+
+#: ../../geologist_tutorial.rst:374
+msgid "Examples: composite grades, recoveries, NSR values"
+msgstr "Exemplos: teores compostos, recuperações, valores NSR"
+
+#: ../../geologist_tutorial.rst:376
+msgid "**Category**"
+msgstr "**Category**"
+
+#: ../../geologist_tutorial.rst:379
+msgid "Use for **final categorical outputs** like classifications"
+msgstr "Use para **saídas categóricas finais** como classificações"
+
+#: ../../geologist_tutorial.rst:380
+msgid "Examples: ore/waste, domain names, rock types"
+msgstr "Exemplos: minério/estéril, nomes de domínios, tipos de rocha"
+
+#: ../../geologist_tutorial.rst:382
+msgid "**Quick decision guide:**"
+msgstr "**Guia rápido de decisão:**"
+
+#: ../../geologist_tutorial.rst:391
+msgid "**Example showing the difference:**"
+msgstr "**Exemplo mostrando a diferença:**"
+
+#: ../../geologist_tutorial.rst:408
+msgid ""
+"In Leapfrog's calculator, you'll see all 4 items. But only ``Au_kriged`` "
+"is available for 3D visualization, exporting to CSV, or using in other "
+"Leapfrog tools. The Variables exist only within the calculator context."
+msgstr ""
+"Na calculadora do Leapfrog, você verá todos os 4 itens. Mas apenas ``Au_kriged`` "
+"está disponível para visualização 3D, exportação para CSV ou uso em outras "
+"ferramentas do Leapfrog. As Variables existem apenas dentro do contexto da calculadora."
+
+#: ../../geologist_tutorial.rst:410
+msgid "**Why use Variables?**"
+msgstr "**Por que usar Variables?**"
+
+#: ../../geologist_tutorial.rst:422
+msgid "Conditional Calculations"
+msgstr "Cálculos Condicionais"
+
+#: ../../geologist_tutorial.rst:426
+msgid "Name: ``ore_class``"
+msgstr "Nome: ``ore_class``"
+
+#: ../../geologist_tutorial.rst:427
+msgid "Expression: ``if([Au] >= 0.5, \"ore\", \"waste\")``"
+msgstr "Expressão: ``if([Au] >= 0.5, \"ore\", \"waste\")``"
+
+#: ../../geologist_tutorial.rst:428
+msgid "Type: Category"
+msgstr "Tipo: Category"
+
+#: ../../geologist_tutorial.rst:443
+msgid "**Important notes:**"
+msgstr "**Notas importantes:**"
+
+#: ../../geologist_tutorial.rst:445
+msgid "Use ``Category`` for text outputs (like \"ore\" or \"waste\")"
+msgstr "Use ``Category`` para saídas de texto (como \"ore\" ou \"waste\")"
+
+#: ../../geologist_tutorial.rst:446
+msgid "Use ``Number`` for numeric outputs (like ``1.5`` or ``0.88``)"
+msgstr "Use ``Number`` para saídas numéricas (como ``1.5`` ou ``0.88``)"
+
+#: ../../geologist_tutorial.rst:447
+msgid "The expression must be in square brackets: ``expression=[If(...)]``"
+msgstr "A expressão deve estar entre colchetes: ``expression=[If(...)]``"
+
+#: ../../geologist_tutorial.rst:448
+msgid ""
+"Text values need quotes inside quotes: ``\"'ore'\"`` (outer for Python, "
+"inner for Leapfrog)"
+msgstr ""
+"Valores de texto precisam de aspas dentro de aspas: ``\"'ore'\"`` (externa para Python, "
+"interna para Leapfrog)"
+
+#: ../../geologist_tutorial.rst:451
+msgid "Graduated Examples: Learning by Doing"
+msgstr "Exemplos Graduados: Aprendendo Fazendo"
+
+#: ../../geologist_tutorial.rst:453
+msgid ""
+"Let's work through real-world examples, starting simple and building up. "
+"Each example builds on skills from the previous ones."
+msgstr ""
+"Vamos trabalhar exemplos do mundo real, começando simples e evoluindo. "
+"Cada exemplo se baseia em habilidades dos anteriores."
+
+#: ../../geologist_tutorial.rst:456
+msgid "Level 1: Single Simple Calculation"
+msgstr "Nível 1: Cálculo Simples Único"
+
+#: ../../geologist_tutorial.rst:458
+msgid "**Goal:** Remove negative gold values."
+msgstr "**Objetivo:** Remover valores negativos de ouro."
+
+#: ../../geologist_tutorial.rst:471
+msgid "✓ Download the file and import into Leapfrog to verify it works!"
+msgstr "✓ Baixe o arquivo e importe no Leapfrog para verificar que funciona!"
+
+#: ../../geologist_tutorial.rst:474
+msgid "Level 2: Chain of Calculations"
+msgstr "Nível 2: Cadeia de Cálculos"
+
+#: ../../geologist_tutorial.rst:476
+msgid "**Goal:** Clean data through multiple steps."
+msgstr "**Objetivo:** Limpar dados através de múltiplas etapas."
+
+#: ../../geologist_tutorial.rst:493
+msgid ""
+"**Notice:** ``Au_capped`` references ``[Au_clean]``, and ``Au_log`` "
+"references ``[Au_capped]``. Pollywog handles the dependency order "
+"automatically."
+msgstr ""
+"**Note:** ``Au_capped`` referencia ``[Au_clean]``, e ``Au_log`` "
+"referencia ``[Au_capped]``. Pollywog trata a ordem de dependências "
+"automaticamente."
+
+#: ../../geologist_tutorial.rst:496
+msgid "Level 3: Using Variables for Intermediate Steps"
+msgstr "Nível 3: Usando Variables para Etapas Intermediárias"
+
+#: ../../geologist_tutorial.rst:498
+msgid "**Goal:** Same as Level 2, but keep Leapfrog interface clean."
+msgstr "**Objetivo:** Mesmo que o Nível 2, mas manter a interface do Leapfrog limpa."
+
+#: ../../geologist_tutorial.rst:516
+msgid ""
+"**Compare:** When you import this, you'll only see ``Au_kriged`` "
+"available for visualization. The cleaning steps exist in the calculator "
+"but don't clutter your block model interface."
+msgstr ""
+"**Compare:** Quando você importa isso, você verá apenas ``Au_kriged`` "
+"disponível para visualização. As etapas de limpeza existem na calculadora "
+"mas não poluem a interface do seu modelo de blocos."
+
+#: ../../geologist_tutorial.rst:519
+msgid "Level 4: Weighted Average (One Metal)"
+msgstr "Nível 4: Média Ponderada (Um Metal)"
+
+#: ../../geologist_tutorial.rst:521
+msgid "**Goal:** Calculate domain-weighted gold grade."
+msgstr "**Objetivo:** Calcular teor de ouro ponderado por domínio."
+
+#: ../../geologist_tutorial.rst:539
+msgid ""
+"**What ``WeightedAverage`` does:** It creates the formula ``([Au_oxide] *"
+" [prop_oxide] + [Au_transition] * [prop_transition] + [Au_sulfide] * "
+"[prop_sulfide]) / ([prop_oxide] + [prop_transition] + [prop_sulfide])`` "
+"for you. Much easier than typing that out!"
+msgstr ""
+"**O que ``WeightedAverage`` faz:** Cria a fórmula ``([Au_oxide] *"
+" [prop_oxide] + [Au_transition] * [prop_transition] + [Au_sulfide] * "
+"[prop_sulfide]) / ([prop_oxide] + [prop_transition] + [prop_sulfide])`` "
+"para você. Muito mais fácil do que digitar isso tudo!"
+
+#: ../../geologist_tutorial.rst:542
+msgid "Level 5: Multiple Weighted Averages"
+msgstr "Nível 5: Múltiplas Médias Ponderadas"
+
+#: ../../geologist_tutorial.rst:544
+msgid "**Goal:** Create weighted composites for Au, Ag, and Cu."
+msgstr "**Objetivo:** Criar compostos ponderados para Au, Ag e Cu."
+
+#: ../../geologist_tutorial.rst:546
+msgid "**Version A: Write them all out** (recommended while learning)"
+msgstr "**Versão A: Escrever todos** (recomendado enquanto aprende)"
+
+#: ../../geologist_tutorial.rst:576
+msgid ""
+"This is clear and explicit. If you have 3-5 metals, this approach works "
+"great!"
+msgstr ""
+"Isso é claro e explícito. Se você tem 3-5 metais, essa abordagem funciona "
+"muito bem!"
+
+#: ../../geologist_tutorial.rst:578
+msgid ""
+"**Version B: Let Python do the repetition** (for when you have many "
+"metals)"
+msgstr ""
+"**Versão B: Deixar o Python fazer a repetição** (para quando você tem muitos "
+"metais)"
+
+#: ../../geologist_tutorial.rst:580
+msgid ""
+"If you have 10 metals, writing them all out gets tedious. Here's where "
+"Python shines:"
+msgstr ""
+"Se você tem 10 metais, escrever todos fica tedioso. Aqui é onde "
+"Python brilha:"
+
+#: ../../geologist_tutorial.rst:604
+msgid ""
+"Both versions create the same .lfcalc file! Use Version A until you're "
+"comfortable, then learn Version B when you're ready to scale up. We'll "
+"explain how the automation works in the \"Common Patterns\" section "
+"later."
+msgstr ""
+"Ambas as versões criam o mesmo arquivo .lfcalc! Use a Versão A até você estar "
+"confortável, depois aprenda a Versão B quando estiver pronto para escalar. Vamos "
+"explicar como a automação funciona na seção \"Padrões Comuns\" "
+"mais tarde."
+
+#: ../../geologist_tutorial.rst:607
+msgid "Level 6: Classification with Thresholds"
+msgstr "Nível 6: Classificação com Limites"
+
+#: ../../geologist_tutorial.rst:609
+msgid ""
+"**Goal:** Classify blocks by gold grade into waste, low grade, and high "
+"grade."
+msgstr ""
+"**Objetivo:** Classificar blocos por teor de ouro em estéril, baixo teor e alto "
+"teor."
+
+#: ../../geologist_tutorial.rst:628
+msgid "**How it works:**"
+msgstr "**Como funciona:**"
+
+#: ../../geologist_tutorial.rst:630
+msgid "Au < 0.3: waste"
+msgstr "Au < 0.3: estéril"
+
+#: ../../geologist_tutorial.rst:631
+msgid "0.3 ≤ Au < 1.0: low_grade"
+msgstr "0.3 ≤ Au < 1.0: baixo_teor"
+
+#: ../../geologist_tutorial.rst:632
+msgid "Au ≥ 1.0: high_grade"
+msgstr "Au ≥ 1.0: alto_teor"
+
+#: ../../geologist_tutorial.rst:635
+msgid ""
+"You need **one more category than thresholds**. Here: 2 thresholds → 3 "
+"categories."
+msgstr ""
+"Você precisa de **uma categoria a mais do que limites**. Aqui: 2 limites → 3 "
+"categorias."
+
+#: ../../geologist_tutorial.rst:638
+msgid "Level 7: Conditional Logic with If"
+msgstr "Nível 7: Lógica Condicional com If"
+
+#: ../../geologist_tutorial.rst:640
+msgid "**Goal:** Apply different recovery rates depending on domain."
+msgstr "**Objetivo:** Aplicar diferentes taxas de recuperação dependendo do domínio."
+
+#: ../../geologist_tutorial.rst:658
+msgid ""
+"**Notice:** The expression is wrapped in ``[If(...)]`` (a list containing"
+" one If structure)."
+msgstr ""
+"**Note:** A expressão está envolvida em ``[If(...)]`` (uma lista contendo"
+" uma estrutura If)."
+
+#: ../../geologist_tutorial.rst:661
+msgid "Level 8: Complete Workflow"
+msgstr "Nível 8: Fluxo de Trabalho Completo"
+
+#: ../../geologist_tutorial.rst:663
+msgid ""
+"**Goal:** Realistic workflow with composites, recovery, economics, and "
+"classification."
+msgstr ""
+"**Objetivo:** Fluxo de trabalho realista com compostos, recuperação, economia e "
+"classificação."
+
+#: ../../geologist_tutorial.rst:728
+msgid ""
+"🎉 **Milestone!** If you've made it this far and successfully created this"
+" workflow, you're already more productive than doing it manually in "
+"Leapfrog. Everything from here is building on these foundations."
+msgstr ""
+"**Marco importante!** Se você chegou até aqui e criou com sucesso este"
+" fluxo de trabalho, você já é mais produtivo do que fazendo manualmente no "
+"Leapfrog. Tudo a partir daqui é construir sobre essas fundações."
+
+#: ../../geologist_tutorial.rst:731
+msgid "Reading and Modifying Existing Files"
+msgstr "Lendo e Modificando Arquivos Existentes"
+
+#: ../../geologist_tutorial.rst:733
+msgid ""
+"In real projects, you'll often need to read existing .lfcalc files, "
+"inspect them, modify them, or add new calculations."
+msgstr ""
+"Em projetos reais, você frequentemente precisará ler arquivos .lfcalc existentes, "
+"inspecioná-los, modificá-los ou adicionar novos cálculos."
+
+#: ../../geologist_tutorial.rst:736
+msgid "Reading a .lfcalc File"
+msgstr "Lendo um Arquivo .lfcalc"
+
+#: ../../geologist_tutorial.rst:753
+msgid "Inspecting Calculations"
+msgstr "Inspecionando Cálculos"
+
+#: ../../geologist_tutorial.rst:771
+msgid "Modifying Existing Calculations"
+msgstr "Modificando Cálculos Existentes"
+
+#: ../../geologist_tutorial.rst:791
+msgid "Adding New Calculations"
+msgstr "Adicionando Novos Cálculos"
+
+#: ../../geologist_tutorial.rst:815
+msgid "Debugging and Testing Your Calculations"
+msgstr "Depurando e Testando Seus Cálculos"
+
+#: ../../geologist_tutorial.rst:817
+msgid "When things don't work as expected, here's how to find and fix issues."
+msgstr "Quando as coisas não funcionam como esperado, veja como encontrar e corrigir problemas."
+
+#: ../../geologist_tutorial.rst:820
+msgid "Common Python Errors"
+msgstr "Erros Comuns de Python"
+
+#: ../../geologist_tutorial.rst:822
+msgid "**\"SyntaxError: invalid syntax\"**"
+msgstr "**\"SyntaxError: invalid syntax\"**"
+
+#: ../../geologist_tutorial.rst:824
+msgid "You have a typo or missing punctuation."
+msgstr "Você tem um erro de digitação ou pontuação faltando."
+
+#: ../../geologist_tutorial.rst:826
+msgid "Common causes:"
+msgstr "Causas comuns:"
+
+#: ../../geologist_tutorial.rst:828
+msgid "Missing comma between items in a list"
+msgstr "Vírgula faltando entre itens em uma lista"
+
+#: ../../geologist_tutorial.rst:829
+msgid "Missing closing parenthesis or bracket"
+msgstr "Parêntese ou colchete de fechamento faltando"
+
+#: ../../geologist_tutorial.rst:830
+msgid "Missing quote mark"
+msgstr "Aspas faltando"
+
+#: ../../geologist_tutorial.rst:832
+msgid ""
+"**Fix:** Look at the line number in the error. Check for missing commas, "
+"brackets, or quotes."
+msgstr ""
+"**Correção:** Olhe o número da linha no erro. Verifique por vírgulas, "
+"colchetes ou aspas faltando."
+
+#: ../../geologist_tutorial.rst:834
+msgid "Example:"
+msgstr "Exemplo:"
+
+#: ../../geologist_tutorial.rst:850
+msgid "**\"NameError: name 'CalcSet' is not defined\"**"
+msgstr "**\"NameError: name 'CalcSet' is not defined\"**"
+
+#: ../../geologist_tutorial.rst:852
+msgid "You forgot to import."
+msgstr "Você esqueceu de importar."
+
+#: ../../geologist_tutorial.rst:854
+msgid "**Fix:** Add at the top of your notebook:"
+msgstr "**Correção:** Adicione no topo do seu notebook:"
+
+#: ../../geologist_tutorial.rst:860
+msgid "**\"ValueError: ...\"**"
+msgstr "**\"ValueError: ...\"**"
+
+#: ../../geologist_tutorial.rst:862
+msgid "You passed the wrong type or number of values to a function."
+msgstr "Você passou o tipo ou número errado de valores para uma função."
+
+#: ../../geologist_tutorial.rst:864
+msgid ""
+"**Fix:** Check the error message carefully—it usually tells you what's "
+"wrong. Common issues:"
+msgstr ""
+"**Correção:** Verifique a mensagem de erro cuidadosamente—ela geralmente diz o que está "
+"errado. Problemas comuns:"
+
+#: ../../geologist_tutorial.rst:866
+msgid ""
+"Wrong number of categories vs thresholds (need N+1 categories for N "
+"thresholds)"
+msgstr ""
+"Número errado de categorias vs limites (precisa de N+1 categorias para N "
+"limites)"
+
+#: ../../geologist_tutorial.rst:867
+msgid "Empty lists where values are expected"
+msgstr "Listas vazias onde valores são esperados"
+
+#: ../../geologist_tutorial.rst:868
+msgid "Mixing up parameter order"
+msgstr "Confundindo a ordem dos parâmetros"
+
+#: ../../geologist_tutorial.rst:871
+msgid "Common Leapfrog Issues"
+msgstr "Problemas Comuns do Leapfrog"
+
+#: ../../geologist_tutorial.rst:873
+msgid "**Your calculation imports but gives wrong results:**"
+msgstr "**Seu cálculo importa mas dá resultados errados:**"
+
+#: ../../geologist_tutorial.rst:875
+msgid "**Checklist:**"
+msgstr "**Lista de verificação:**"
+
+#: ../../geologist_tutorial.rst:877
+msgid "**Variable names match exactly** (case-sensitive!): ``[Au]`` ≠ ``[au]``"
+msgstr "**Nomes de variáveis coincidem exatamente** (sensível a maiúsculas!): ``[Au]`` ≠ ``[au]``"
+
+#: ../../geologist_tutorial.rst:878
+msgid "**Square brackets around variables**: ``[Au] * 2`` not ``Au * 2``"
+msgstr "**Colchetes ao redor de variáveis**: ``[Au] * 2`` não ``Au * 2``"
+
+#: ../../geologist_tutorial.rst:879
+msgid "**Quotes for category values**: ``\"'ore'\"`` not ``\"ore\"``"
+msgstr "**Aspas para valores de categoria**: ``\"'ore'\"`` não ``\"ore\"``"
+
+#: ../../geologist_tutorial.rst:880
+msgid "**Units are consistent**: g/t vs %, oz/ton vs g/t, $/oz vs $/lb"
+msgstr "**Unidades são consistentes**: g/t vs %, oz/ton vs g/t, $/oz vs $/lb"
+
+#: ../../geologist_tutorial.rst:881
+msgid "**Null/missing data handled**: Use ``coalesce([Au], 0)`` to replace nulls"
+msgstr "**Dados nulos/faltantes tratados**: Use ``coalesce([Au], 0)`` para substituir nulos"
+
+#: ../../geologist_tutorial.rst:883
+msgid "**Your calculation doesn't appear where expected:**"
+msgstr "**Seu cálculo não aparece onde esperado:**"
+
+#: ../../geologist_tutorial.rst:885
+msgid ""
+"Check if you used ``Variable`` (calculator only) vs "
+"``Number``/``Category`` (available everywhere)"
+msgstr ""
+"Verifique se você usou ``Variable`` (apenas calculadora) vs "
+"``Number``/``Category`` (disponível em todos os lugares)"
+
+#: ../../geologist_tutorial.rst:886
+msgid "Variables won't show up for 3D visualization or export"
+msgstr "Variables não aparecem para visualização 3D ou exportação"
+
+#: ../../geologist_tutorial.rst:889
+msgid "Testing Strategies"
+msgstr "Estratégias de Teste"
+
+#: ../../geologist_tutorial.rst:891
+msgid "**Create a simple test case:**"
+msgstr "**Crie um caso de teste simples:**"
+
+#: ../../geologist_tutorial.rst:905
+msgid ""
+"Import to Leapfrog and verify ``test_result`` equals 1.32. If not, your "
+"formula has an issue."
+msgstr ""
+"Importe no Leapfrog e verifique que ``test_result`` é igual a 1.32. Se não, sua "
+"fórmula tem um problema."
+
+#: ../../geologist_tutorial.rst:907
+msgid "**Test with edge cases:**"
+msgstr "**Teste com casos extremos:**"
+
+#: ../../geologist_tutorial.rst:919
+msgid "**Verification workflow:**"
+msgstr "**Fluxo de verificação:**"
+
+#: ../../geologist_tutorial.rst:921
+msgid "Create calculation with Pollywog"
+msgstr "Criar cálculo com Pollywog"
+
+#: ../../geologist_tutorial.rst:922
+msgid "Export to .lfcalc"
+msgstr "Exportar para .lfcalc"
+
+#: ../../geologist_tutorial.rst:923
+msgid "Import to Leapfrog"
+msgstr "Importar no Leapfrog"
+
+#: ../../geologist_tutorial.rst:924
+msgid "Check a few blocks with known values"
+msgstr "Verificar alguns blocos com valores conhecidos"
+
+#: ../../geologist_tutorial.rst:925
+msgid "Export results to CSV"
+msgstr "Exportar resultados para CSV"
+
+#: ../../geologist_tutorial.rst:926
+msgid "Spot-check in Excel"
+msgstr "Verificação pontual no Excel"
+
+#: ../../geologist_tutorial.rst:927
+msgid "Compare against previous model (if updating)"
+msgstr "Comparar com modelo anterior (se atualizando)"
+
+#: ../../geologist_tutorial.rst:930
+msgid "Common Patterns Explained"
+msgstr "Padrões Comuns Explicados"
+
+#: ../../geologist_tutorial.rst:932
+msgid ""
+"As you use Pollywog, you'll see some patterns repeat. Here are the most "
+"common ones."
+msgstr ""
+"Conforme você usa o Pollywog, você verá alguns padrões se repetirem. Aqui estão os mais "
+"comuns."
+
+#: ../../geologist_tutorial.rst:935
+msgid "F-Strings: Text Templates"
+msgstr "F-Strings: Templates de Texto"
+
+#: ../../geologist_tutorial.rst:937
+msgid ""
+"F-strings let you insert variable values into text. Very useful for "
+"creating many similar names."
+msgstr ""
+"F-strings permitem você inserir valores de variáveis em texto. Muito útil para "
+"criar muitos nomes similares."
+
+#: ../../geologist_tutorial.rst:951
+msgid "**Practical use:**"
+msgstr "**Uso prático:**"
+
+#: ../../geologist_tutorial.rst:964
+msgid "List Comprehensions: Automation"
+msgstr "List Comprehensions: Automação"
+
+#: ../../geologist_tutorial.rst:966
+msgid ""
+"List comprehensions create lists by repeating a pattern. This is Python's"
+" way of doing \"for each item, do this.\""
+msgstr ""
+"List comprehensions criam listas repetindo um padrão. Esta é a forma do Python"
+" de fazer \"para cada item, faça isso.\""
+
+#: ../../geologist_tutorial.rst:968
+msgid "**Basic pattern:**"
+msgstr "**Padrão básico:**"
+
+#: ../../geologist_tutorial.rst:979
+msgid ""
+"**Think of it as:** \"For each metal in my list, create a name using this"
+" pattern.\""
+msgstr ""
+"**Pense nisso como:** \"Para cada metal na minha lista, crie um nome usando este"
+" padrão.\""
+
+#: ../../geologist_tutorial.rst:1002
+msgid "This creates 5 weighted averages (one for each metal) automatically!"
+msgstr "Isso cria 5 médias ponderadas (uma para cada metal) automaticamente!"
+
+#: ../../geologist_tutorial.rst:1005
+msgid "The Unpacking Operator (*)"
+msgstr "O Operador de Desempacotamento (*)"
+
+#: ../../geologist_tutorial.rst:1007
+msgid "The ``*`` unpacks a list, putting each item directly where you use it."
+msgstr "O ``*`` desempacota uma lista, colocando cada item diretamente onde você o usa."
+
+#: ../../geologist_tutorial.rst:1009
+msgid "**Why you need it:**"
+msgstr "**Por que você precisa dele:**"
+
+#: ../../geologist_tutorial.rst:1024
+msgid "**Think of it as:** \"Unpack this list and put each item directly here.\""
+msgstr "**Pense nisso como:** \"Desempacote esta lista e coloque cada item diretamente aqui.\""
+
+#: ../../geologist_tutorial.rst:1027
+msgid "Named Parameters"
+msgstr "Parâmetros Nomeados"
+
+#: ../../geologist_tutorial.rst:1029
+msgid "Functions in Pollywog often use named parameters for clarity."
+msgstr "Funções no Pollywog frequentemente usam parâmetros nomeados para clareza."
+
+#: ../../geologist_tutorial.rst:1045
+msgid "**Benefits of named parameters:**"
+msgstr "**Benefícios de parâmetros nomeados:**"
+
+#: ../../geologist_tutorial.rst:1047
+msgid "Makes code more readable"
+msgstr "Torna o código mais legível"
+
+#: ../../geologist_tutorial.rst:1048
+msgid "Can put parameters in any order"
+msgstr "Pode colocar parâmetros em qualquer ordem"
+
+#: ../../geologist_tutorial.rst:1049
+msgid "Can skip optional parameters"
+msgstr "Pode pular parâmetros opcionais"
+
+#: ../../geologist_tutorial.rst:1050
+msgid "Easy to see what each value means"
+msgstr "Fácil ver o que cada valor significa"
+
+#: ../../geologist_tutorial.rst:1053
+msgid "Common Mistakes and How to Fix Them"
+msgstr "Erros Comuns e Como Corrigi-los"
+
+#: ../../geologist_tutorial.rst:1055
+msgid "Everyone makes mistakes when learning. Here are the most common ones."
+msgstr "Todo mundo comete erros ao aprender. Aqui estão os mais comuns."
+
+#: ../../geologist_tutorial.rst:1058
+msgid "Mistake 1: Forgetting Square Brackets"
+msgstr "Erro 1: Esquecer Colchetes"
+
+#: ../../geologist_tutorial.rst:1060 ../../geologist_tutorial.rst:1077
+#: ../../geologist_tutorial.rst:1096 ../../geologist_tutorial.rst:1116
+#: ../../geologist_tutorial.rst:1139 ../../geologist_tutorial.rst:1158
+#: ../../geologist_tutorial.rst:1183
+msgid "**Error:**"
+msgstr "**Erro:**"
+
+#: ../../geologist_tutorial.rst:1066
+msgid ""
+"**Problem:** In Leapfrog expressions, variable references need square "
+"brackets."
+msgstr ""
+"**Problema:** Em expressões do Leapfrog, referências a variáveis precisam de "
+"colchetes."
+
+#: ../../geologist_tutorial.rst:1068 ../../geologist_tutorial.rst:1085
+#: ../../geologist_tutorial.rst:1105 ../../geologist_tutorial.rst:1127
+#: ../../geologist_tutorial.rst:1147 ../../geologist_tutorial.rst:1170
+#: ../../geologist_tutorial.rst:1192
+msgid "**Fix:**"
+msgstr "**Correção:**"
+
+#: ../../geologist_tutorial.rst:1075
+msgid "Mistake 2: Quote Confusion in Categories"
+msgstr "Erro 2: Confusão de Aspas em Categorias"
+
+#: ../../geologist_tutorial.rst:1083
+msgid "**Problem:** Category values need to be quoted in the Leapfrog expression."
+msgstr "**Problema:** Valores de categoria precisam estar entre aspas na expressão do Leapfrog."
+
+#: ../../geologist_tutorial.rst:1091
+msgid ""
+"**Remember:** Use ``\"'text'\"`` (double quotes outside, single quotes "
+"inside) for category values."
+msgstr ""
+"**Lembre-se:** Use ``\"'text'\"`` (aspas duplas fora, aspas simples "
+"dentro) para valores de categoria."
+
+#: ../../geologist_tutorial.rst:1094
+msgid "Mistake 3: Forgetting to Import"
+msgstr "Erro 3: Esquecer de Importar"
+
+#: ../../geologist_tutorial.rst:1103
+msgid "**Problem:** You need to import before you can use Pollywog classes."
+msgstr "**Problema:** Você precisa importar antes de poder usar classes do Pollywog."
+
+#: ../../geologist_tutorial.rst:1114
+msgid "Mistake 4: Missing Commas in Lists"
+msgstr "Erro 4: Vírgulas Faltando em Listas"
+
+#: ../../geologist_tutorial.rst:1125
+msgid "**Problem:** Python lists need commas between items."
+msgstr "**Problema:** Listas Python precisam de vírgulas entre itens."
+
+#: ../../geologist_tutorial.rst:1137
+msgid "Mistake 5: Using Number for Categories"
+msgstr "Erro 5: Usar Number para Categorias"
+
+#: ../../geologist_tutorial.rst:1145
+msgid "**Problem:** Numbers can't hold text values."
+msgstr "**Problema:** Numbers não podem conter valores de texto."
+
+#: ../../geologist_tutorial.rst:1153
+msgid ""
+"**Rule:** Use ``Number`` for numeric results, ``Category`` for text "
+"results."
+msgstr ""
+"**Regra:** Use ``Number`` para resultados numéricos, ``Category`` para "
+"resultados de texto."
+
+#: ../../geologist_tutorial.rst:1156
+msgid "Mistake 6: Wrong Number of Categories vs Thresholds"
+msgstr "Erro 6: Número Errado de Categorias vs Limites"
+
+#: ../../geologist_tutorial.rst:1168
+msgid "**Problem:** Need one more category than thresholds."
+msgstr "**Problema:** Precisa de uma categoria a mais do que limites."
+
+#: ../../geologist_tutorial.rst:1181
+msgid "Mistake 7: Variable vs Number Confusion"
+msgstr "Erro 7: Confusão entre Variable e Number"
+
+#: ../../geologist_tutorial.rst:1190
+msgid "**Problem:** Variables aren't available outside the calculator."
+msgstr "**Problema:** Variables não estão disponíveis fora da calculadora."
+
+#: ../../geologist_tutorial.rst:1200
+msgid "Best Practices"
+msgstr "Melhores Práticas"
+
+#: ../../geologist_tutorial.rst:1203
+msgid "Commenting Your Work"
+msgstr "Comentando Seu Trabalho"
+
+#: ../../geologist_tutorial.rst:1205
+msgid "Add comments to document your logic—your future self will thank you!"
+msgstr "Adicione comentários para documentar sua lógica—seu eu futuro agradecerá!"
+
+#: ../../geologist_tutorial.rst:1222
+msgid "Use Variables for Intermediate Steps"
+msgstr "Use Variables para Etapas Intermediárias"
+
+#: ../../geologist_tutorial.rst:1224
+msgid ""
+"Keep your Leapfrog interface clean by using Variables for calculations "
+"you won't visualize."
+msgstr ""
+"Mantenha sua interface do Leapfrog limpa usando Variables para cálculos "
+"que você não vai visualizar."
+
+#: ../../geologist_tutorial.rst:1236
+msgid "Organize with Markdown Cells"
+msgstr "Organize com Células Markdown"
+
+#: ../../geologist_tutorial.rst:1238
+msgid "Use markdown cells in your notebooks to explain what each section does:"
+msgstr "Use células markdown em seus notebooks para explicar o que cada seção faz:"
+
+#: ../../geologist_tutorial.rst:1255
+msgid "Test Before Scaling Up"
+msgstr "Teste Antes de Escalar"
+
+#: ../../geologist_tutorial.rst:1257
+msgid "When creating many calculations with loops:"
+msgstr "Ao criar muitos cálculos com loops:"
+
+#: ../../geologist_tutorial.rst:1259
+msgid "Test with 1-2 items first"
+msgstr "Teste com 1-2 itens primeiro"
+
+#: ../../geologist_tutorial.rst:1260
+msgid "Verify in Leapfrog"
+msgstr "Verifique no Leapfrog"
+
+#: ../../geologist_tutorial.rst:1261
+msgid "Then scale up to full list"
+msgstr "Então escale para a lista completa"
+
+#: ../../geologist_tutorial.rst:1274
+msgid "Version Your Files"
+msgstr "Versione Seus Arquivos"
+
+#: ../../geologist_tutorial.rst:1276
+msgid "Keep track of changes by using version numbers or dates in filenames:"
+msgstr "Acompanhe mudanças usando números de versão ou datas em nomes de arquivo:"
+
+#: ../../geologist_tutorial.rst:1287
+msgid "When to Use Pollywog vs Manual"
+msgstr "Quando Usar Pollywog vs Manual"
+
+#: ../../geologist_tutorial.rst:1289
+msgid "**Use Pollywog when:**"
+msgstr "**Use Pollywog quando:**"
+
+#: ../../geologist_tutorial.rst:1291
+msgid "Creating >10 similar calculations"
+msgstr "Criando >10 cálculos similares"
+
+#: ../../geologist_tutorial.rst:1292
+msgid "Need to update many calculations at once"
+msgstr "Precisa atualizar muitos cálculos de uma vez"
+
+#: ../../geologist_tutorial.rst:1293
+msgid "Want version control for workflows"
+msgstr "Quer controle de versão para fluxos de trabalho"
+
+#: ../../geologist_tutorial.rst:1294
+msgid "Reusing patterns across projects"
+msgstr "Reutilizando padrões entre projetos"
+
+#: ../../geologist_tutorial.rst:1295
+msgid "Automating repetitive work"
+msgstr "Automatizando trabalho repetitivo"
+
+#: ../../geologist_tutorial.rst:1297
+msgid "**Use Leapfrog's Calculator when:**"
+msgstr "**Use a Calculadora do Leapfrog quando:**"
+
+#: ../../geologist_tutorial.rst:1299
+msgid "One-off custom calculation"
+msgstr "Cálculo customizado único"
+
+#: ../../geologist_tutorial.rst:1300
+msgid "Experimental/exploratory work"
+msgstr "Trabalho experimental/exploratório"
+
+#: ../../geologist_tutorial.rst:1301
+msgid "Very simple single calculation"
+msgstr "Cálculo único muito simples"
+
+#: ../../geologist_tutorial.rst:1302
+msgid "Still learning the pattern"
+msgstr "Ainda aprendendo o padrão"
+
+#: ../../geologist_tutorial.rst:1304
+msgid ""
+"**The sweet spot:** Use both! Prototype in Leapfrog's calculator, then "
+"convert to Pollywog when you need to scale or reuse."
+msgstr ""
+"**O ponto ideal:** Use ambos! Faça protótipos na calculadora do Leapfrog, depois "
+"converta para Pollywog quando precisar escalar ou reutilizar."
+
+#: ../../geologist_tutorial.rst:1307
+msgid "Downloading Files from JupyterLite"
+msgstr "Baixando Arquivos do JupyterLite"
+
+#: ../../geologist_tutorial.rst:1309
+msgid "You have two options to download your .lfcalc files:"
+msgstr "Você tem duas opções para baixar seus arquivos .lfcalc:"
+
+#: ../../geologist_tutorial.rst:1312
+msgid "Option 1: Enable Autodownload Magic (Recommended)"
+msgstr "Opção 1: Habilitar Magic de Autodownload (Recomendado)"
+
+#: ../../geologist_tutorial.rst:1314
+msgid "At the top of your notebook, run:"
+msgstr "No topo do seu notebook, execute:"
+
+#: ../../geologist_tutorial.rst:1321
+msgid ""
+"Now when you run ``to_lfcalc()``, a download button appears below the "
+"cell. Click it to save the file."
+msgstr ""
+"Agora quando você executa ``to_lfcalc()``, um botão de download aparece abaixo da "
+"célula. Clique nele para salvar o arquivo."
+
+#: ../../geologist_tutorial.rst:1324
+msgid "Option 2: Manual Download"
+msgstr "Opção 2: Download Manual"
+
+#: ../../geologist_tutorial.rst:1326
+msgid ""
+"In JupyterLite's file browser (left side), right-click on your "
+"``.lfcalc`` file and select \"Download\"."
+msgstr ""
+"No navegador de arquivos do JupyterLite (lado esquerdo), clique com o botão direito no seu "
+"arquivo ``.lfcalc`` e selecione \"Download\"."
+
+#: ../../geologist_tutorial.rst:1329
+msgid "Tips for Success"
+msgstr "Dicas para Sucesso"
+
+#: ../../geologist_tutorial.rst:1331
+msgid ""
+"**Start small:** Begin with 2-3 calculations and get comfortable before "
+"tackling complex workflows"
+msgstr ""
+"**Comece pequeno:** Comece com 2-3 cálculos e fique confortável antes de "
+"enfrentar fluxos de trabalho complexos"
+
+#: ../../geologist_tutorial.rst:1333
+msgid ""
+"**Test frequently:** Export and test in Leapfrog often to catch issues "
+"early"
+msgstr ""
+"**Teste frequentemente:** Exporte e teste no Leapfrog frequentemente para pegar problemas "
+"cedo"
+
+#: ../../geologist_tutorial.rst:1335
+msgid "**Use comments:** Add ``comment_equation`` to document your logic"
+msgstr "**Use comentários:** Adicione ``comment_equation`` para documentar sua lógica"
+
+#: ../../geologist_tutorial.rst:1337
+msgid ""
+"**Copy examples:** There's no shame in copying working code and modifying"
+" it—that's how everyone learns!"
+msgstr ""
+"**Copie exemplos:** Não há vergonha em copiar código que funciona e modificá"
+"-lo—é assim que todo mundo aprende!"
+
+#: ../../geologist_tutorial.rst:1339
+msgid ""
+"**Build a library:** Save your successful scripts for reuse on future "
+"projects"
+msgstr ""
+"**Construa uma biblioteca:** Salve seus scripts bem-sucedidos para reutilização em futuros "
+"projetos"
+
+#: ../../geologist_tutorial.rst:1341
+msgid "**Use markdown cells:** Document what each section of your notebook does"
+msgstr "**Use células markdown:** Documente o que cada seção do seu notebook faz"
+
+#: ../../geologist_tutorial.rst:1343
+msgid ""
+"**Keep it readable:** If a formula gets too complex, break it into "
+"Variables"
+msgstr ""
+"**Mantenha legível:** Se uma fórmula fica muito complexa, divida-a em "
+"Variables"
+
+#: ../../geologist_tutorial.rst:1345
+msgid ""
+"**Ask for help:** If you're stuck, check the documentation or ask Python-"
+"savvy colleagues"
+msgstr ""
+"**Peça ajuda:** Se você está travado, verifique a documentação ou pergunte a colegas "
+"experientes em Python"
+
+#: ../../geologist_tutorial.rst:1348
+msgid "Saving and Organizing Your Work"
+msgstr "Salvando e Organizando Seu Trabalho"
+
+#: ../../geologist_tutorial.rst:1351
+msgid "In JupyterLite"
+msgstr "No JupyterLite"
+
+#: ../../geologist_tutorial.rst:1353
+msgid "**Remember:** JupyterLite stores everything in browser memory!"
+msgstr "**Lembre-se:** JupyterLite armazena tudo na memória do navegador!"
+
+#: ../../geologist_tutorial.rst:1355
+msgid "**Best practices:**"
+msgstr "**Melhores práticas:**"
+
+#: ../../geologist_tutorial.rst:1357
+msgid "Download your notebooks regularly (File → Download)"
+msgstr "Baixe seus notebooks regularmente (File → Download)"
+
+#: ../../geologist_tutorial.rst:1358
+msgid "Download .lfcalc files immediately after creating them"
+msgstr "Baixe arquivos .lfcalc imediatamente após criá-los"
+
+#: ../../geologist_tutorial.rst:1359
+msgid "Keep backups on your computer or network drive"
+msgstr "Mantenha backups no seu computador ou drive de rede"
+
+#: ../../geologist_tutorial.rst:1360
+msgid "Consider one notebook per project or workflow stage"
+msgstr "Considere um notebook por projeto ou etapa de fluxo de trabalho"
+
+#: ../../geologist_tutorial.rst:1361
+msgid "Clear browser cache carefully (you'll lose unsaved work!)"
+msgstr "Limpe o cache do navegador com cuidado (você perderá trabalho não salvo!)"
+
+#: ../../geologist_tutorial.rst:1364
+msgid "On Your Computer"
+msgstr "No Seu Computador"
+
+#: ../../geologist_tutorial.rst:1366
+msgid ""
+"If you install Python and Pollywog locally (see :doc:`getting_started`), "
+"you can:"
+msgstr ""
+"Se você instalar Python e Pollywog localmente (veja :doc:`getting_started`), "
+"você pode:"
+
+#: ../../geologist_tutorial.rst:1368
+msgid "Save notebooks and scripts directly to your file system"
+msgstr "Salvar notebooks e scripts diretamente no seu sistema de arquivos"
+
+#: ../../geologist_tutorial.rst:1369
+msgid "Use version control (Git) to track changes"
+msgstr "Usar controle de versão (Git) para rastrear mudanças"
+
+#: ../../geologist_tutorial.rst:1370
+msgid "Integrate with your company's data management systems"
+msgstr "Integrar com os sistemas de gerenciamento de dados da sua empresa"
+
+#: ../../geologist_tutorial.rst:1371
+msgid "Better performance for large calculation sets"
+msgstr "Melhor desempenho para grandes conjuntos de cálculos"
+
+#: ../../geologist_tutorial.rst:1374
+msgid "Next Steps"
+msgstr "Próximos Passos"
+
+#: ../../geologist_tutorial.rst:1376
+msgid "Now that you understand the basics:"
+msgstr "Agora que você entende o básico:"
+
+#: ../../geologist_tutorial.rst:1379
+msgid "Practice Projects"
+msgstr "Projetos de Prática"
+
+#: ../../geologist_tutorial.rst:1381
+msgid "Recreate a simple calculation set from one of your Leapfrog projects"
+msgstr "Recrie um conjunto de cálculos simples de um dos seus projetos Leapfrog"
+
+#: ../../geologist_tutorial.rst:1382
+msgid "Build domain-weighted composites for your most common metals"
+msgstr "Construa compostos ponderados por domínio para seus metais mais comuns"
+
+#: ../../geologist_tutorial.rst:1383
+msgid "Create a classification system for your typical ore types"
+msgstr "Crie um sistema de classificação para seus tipos de minério típicos"
+
+#: ../../geologist_tutorial.rst:1384
+msgid "Add economic calculations (recovery, metal prices, NSR)"
+msgstr "Adicione cálculos econômicos (recuperação, preços de metais, NSR)"
+
+#: ../../geologist_tutorial.rst:1387
+msgid "Learn More"
+msgstr "Aprenda Mais"
+
+#: ../../geologist_tutorial.rst:1389
+msgid ":doc:`getting_started` - Installing Pollywog on your computer"
+msgstr ":doc:`getting_started` - Instalando Pollywog no seu computador"
+
+#: ../../geologist_tutorial.rst:1390
+msgid ":doc:`tutorials` - More detailed workflow examples"
+msgstr ":doc:`tutorials` - Exemplos de fluxo de trabalho mais detalhados"
+
+#: ../../geologist_tutorial.rst:1391
+msgid ":doc:`expression_syntax` - Complete guide to Leapfrog expression syntax"
+msgstr ":doc:`expression_syntax` - Guia completo de sintaxe de expressões do Leapfrog"
+
+#: ../../geologist_tutorial.rst:1392
+msgid ":doc:`helpers_guide` - All available helper functions"
+msgstr ":doc:`helpers_guide` - Todas as funções auxiliares disponíveis"
+
+#: ../../geologist_tutorial.rst:1393
+msgid ":doc:`workflow_patterns` - Common patterns for different scenarios"
+msgstr ":doc:`workflow_patterns` - Padrões comuns para diferentes cenários"
+
+#: ../../geologist_tutorial.rst:1396
+msgid "Advanced Topics (For Later)"
+msgstr "Tópicos Avançados (Para Depois)"
+
+#: ../../geologist_tutorial.rst:1398
+msgid "Converting Excel formulas to Pollywog"
+msgstr "Convertendo fórmulas do Excel para Pollywog"
+
+#: ../../geologist_tutorial.rst:1399
+msgid "Building calculation templates for your company"
+msgstr "Construindo templates de cálculo para sua empresa"
+
+#: ../../geologist_tutorial.rst:1400
+msgid "Integrating machine learning models"
+msgstr "Integrando modelos de machine learning"
+
+#: ../../geologist_tutorial.rst:1401
+msgid "Automating complete workflows"
+msgstr "Automatizando fluxos de trabalho completos"
+
+#: ../../geologist_tutorial.rst:1404
+msgid "Getting Help"
+msgstr "Obtendo Ajuda"
+
+#: ../../geologist_tutorial.rst:1406
+msgid "If you get stuck:"
+msgstr "Se você ficar travado:"
+
+#: ../../geologist_tutorial.rst:1408
+msgid ""
+"**Check the examples:** The ``examples/`` folder in the GitHub repository"
+" has working notebooks"
+msgstr ""
+"**Verifique os exemplos:** A pasta ``examples/`` no repositório GitHub"
+" tem notebooks funcionando"
+
+#: ../../geologist_tutorial.rst:1409
+msgid "**Read the documentation:** https://pollywog.readthedocs.io"
+msgstr "**Leia a documentação:** https://pollywog.readthedocs.io"
+
+#: ../../geologist_tutorial.rst:1410
+msgid ""
+"**Search for similar issues:** "
+"https://github.com/endarthur/pollywog/issues"
+msgstr ""
+"**Procure por problemas similares:** "
+"https://github.com/endarthur/pollywog/issues"
+
+#: ../../geologist_tutorial.rst:1411
+msgid "**Ask questions:** Open a new issue on GitHub"
+msgstr "**Faça perguntas:** Abra uma nova issue no GitHub"
+
+#: ../../geologist_tutorial.rst:1413
+msgid ""
+"The Pollywog community is friendly and helpful. Don't be afraid to ask "
+"questions!"
+msgstr ""
+"A comunidade do Pollywog é amigável e prestativa. Não tenha medo de fazer "
+"perguntas!"
+
+#: ../../geologist_tutorial.rst:1416
+msgid "Final Thoughts"
+msgstr "Considerações Finais"
+
+#: ../../geologist_tutorial.rst:1418
+msgid ""
+"Learning Python and Pollywog might feel challenging at first, but "
+"remember:"
+msgstr ""
+"Aprender Python e Pollywog pode parecer desafiador no início, mas "
+"lembre-se:"
+
+#: ../../geologist_tutorial.rst:1420
+msgid "You already understand the concepts (you use Leapfrog's calculator!)"
+msgstr "Você já entende os conceitos (você usa a calculadora do Leapfrog!)"
+
+#: ../../geologist_tutorial.rst:1421
+msgid "You're just learning a new way to express the same ideas"
+msgstr "Você está apenas aprendendo uma nova forma de expressar as mesmas ideias"
+
+#: ../../geologist_tutorial.rst:1422
+msgid "The time investment pays off quickly—often after just one project"
+msgstr "O investimento de tempo compensa rapidamente—frequentemente após apenas um projeto"
+
+#: ../../geologist_tutorial.rst:1423
+msgid ""
+"Every resource geologist who learns this says: \"I wish I'd learned it "
+"sooner\""
+msgstr ""
+"Todo geólogo de recursos que aprende isso diz: \"Eu gostaria de ter aprendido "
+"antes\""
+
+#: ../../geologist_tutorial.rst:1425
+msgid ""
+"Start with simple examples, build confidence, and gradually tackle more "
+"complex workflows. Before you know it, you'll be automating calculations "
+"that used to take hours."
+msgstr ""
+"Comece com exemplos simples, construa confiança e gradualmente enfrente "
+"fluxos de trabalho mais complexos. Antes que você perceba, você estará automatizando cálculos "
+"que costumavam levar horas."
+
+#: ../../geologist_tutorial.rst:1427
+msgid "**You've got this!** 🪨✨"
+msgstr "**Você consegue!**"

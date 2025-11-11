@@ -1,0 +1,340 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Arthur Endlein
+# This file is distributed under the same license as the pollywog package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: pollywog \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-11 13:16-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: pt_BR\n"
+"Language-Team: pt_BR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../expression_syntax.rst:2
+msgid "Leapfrog Expression Syntax Guide"
+msgstr ""
+
+#: ../../expression_syntax.rst:4
+msgid ""
+"This guide explains the expression syntax used in Leapfrog calculators "
+"and how pollywog represents them."
+msgstr ""
+
+#: ../../expression_syntax.rst:7
+msgid ":doc:`helpers_guide` - Use helper functions instead of manual expressions"
+msgstr ""
+
+#: ../../expression_syntax.rst:8
+msgid ":doc:`tutorials` - See complete examples of expression usage"
+msgstr ""
+
+#: ../../expression_syntax.rst:9
+msgid ":doc:`workflow_patterns` - Common expression patterns and recipes"
+msgstr ""
+
+#: ../../expression_syntax.rst:12
+msgid "Understanding Leapfrog Calculations"
+msgstr ""
+
+#: ../../expression_syntax.rst:14
+msgid ""
+"In Leapfrog, calculations are defined using a specialized expression "
+"language that allows you to:"
+msgstr ""
+
+#: ../../expression_syntax.rst:16
+msgid "Reference variables using square brackets: ``[variable_name]``"
+msgstr ""
+
+#: ../../expression_syntax.rst:17
+msgid "Apply mathematical operations: ``+``, ``-``, ``*``, ``/``, ``^`` (power)"
+msgstr ""
+
+#: ../../expression_syntax.rst:18
+msgid "Use built-in functions for numerical transformations"
+msgstr ""
+
+#: ../../expression_syntax.rst:19
+msgid "Create conditional logic with if/else statements"
+msgstr ""
+
+#: ../../expression_syntax.rst:20
+msgid "Categorize data based on thresholds or conditions"
+msgstr ""
+
+#: ../../expression_syntax.rst:23
+msgid "Variable References"
+msgstr ""
+
+#: ../../expression_syntax.rst:25
+msgid ""
+"Variables in Leapfrog expressions are referenced using square brackets. "
+"This allows Leapfrog to distinguish between variable names and other "
+"text."
+msgstr ""
+
+#: ../../expression_syntax.rst:38
+msgid "Common variable contexts in Leapfrog:"
+msgstr ""
+
+#: ../../expression_syntax.rst:40
+msgid "**Drillhole variables**: Assay data, downhole surveys, lithology codes"
+msgstr ""
+
+#: ../../expression_syntax.rst:41
+msgid "**Block model variables**: Estimated grades, geological domains, density"
+msgstr ""
+
+#: ../../expression_syntax.rst:42
+msgid "**Mesh variables**: Surface attributes, interpolated values"
+msgstr ""
+
+#: ../../expression_syntax.rst:43
+msgid "**Points variables**: Discrete point data, sample locations"
+msgstr ""
+
+#: ../../expression_syntax.rst:46
+msgid "Mathematical Operations"
+msgstr ""
+
+#: ../../expression_syntax.rst:48
+msgid "Pollywog supports all standard mathematical operations used in Leapfrog:"
+msgstr ""
+
+#: ../../expression_syntax.rst:65
+msgid "Built-in Functions"
+msgstr ""
+
+#: ../../expression_syntax.rst:67
+msgid ""
+"Leapfrog provides many built-in functions that pollywog emulates. These "
+"functions are available in calculation expressions:"
+msgstr ""
+
+#: ../../expression_syntax.rst:70
+msgid "Mathematical Functions"
+msgstr ""
+
+#: ../../expression_syntax.rst:86
+msgid "Trigonometric Functions"
+msgstr ""
+
+#: ../../expression_syntax.rst:101
+msgid "Rounding and Clamping"
+msgstr ""
+
+#: ../../expression_syntax.rst:124
+msgid "Min and Max"
+msgstr ""
+
+#: ../../expression_syntax.rst:136
+msgid "String Functions"
+msgstr ""
+
+#: ../../expression_syntax.rst:138
+msgid ""
+"String functions are useful for working with categorical data and text "
+"fields:"
+msgstr ""
+
+#: ../../expression_syntax.rst:154
+msgid "Constants"
+msgstr ""
+
+#: ../../expression_syntax.rst:156
+msgid "Pollywog provides access to mathematical constants:"
+msgstr ""
+
+#: ../../expression_syntax.rst:165
+msgid "Value Status Functions"
+msgstr ""
+
+#: ../../expression_syntax.rst:167
+msgid "Leapfrog provides auxiliary functions to query the status of values:"
+msgstr ""
+
+#: ../../expression_syntax.rst:196
+msgid "Value statuses in Leapfrog:"
+msgstr ""
+
+#: ../../expression_syntax.rst:198
+msgid "**normal**: Regular numeric value"
+msgstr ""
+
+#: ../../expression_syntax.rst:199
+msgid "**blank**: Empty/null value (general missing data)"
+msgstr ""
+
+#: ../../expression_syntax.rst:200
+msgid ""
+"**without_value**: Estimation could not be performed (e.g., insufficient "
+"data)"
+msgstr ""
+
+#: ../../expression_syntax.rst:201
+msgid "**outside**: Evaluation outside domain boundary"
+msgstr ""
+
+#: ../../expression_syntax.rst:204
+msgid "Conditional Logic (If/Else)"
+msgstr ""
+
+#: ../../expression_syntax.rst:206
+msgid ""
+"Conditional logic is essential for domain-based calculations, "
+"classification, and applying business rules."
+msgstr ""
+
+#: ../../expression_syntax.rst:209
+msgid "Basic If/Else"
+msgstr ""
+
+#: ../../expression_syntax.rst:230
+msgid "Domain-Based Calculations"
+msgstr ""
+
+#: ../../expression_syntax.rst:232
+msgid ""
+"A common pattern in resource estimation is applying different formulas "
+"based on geological domains:"
+msgstr ""
+
+#: ../../expression_syntax.rst:257
+msgid "Categorical Outputs"
+msgstr ""
+
+#: ../../expression_syntax.rst:259
+msgid "Use the ``Category`` class for text-based outputs:"
+msgstr ""
+
+#: ../../expression_syntax.rst:274
+msgid "Boolean Comparisons"
+msgstr ""
+
+#: ../../expression_syntax.rst:276
+msgid "Comparison operators available in expressions:"
+msgstr ""
+
+#: ../../expression_syntax.rst:278
+msgid "``=`` : Equal to"
+msgstr ""
+
+#: ../../expression_syntax.rst:279
+msgid "``!=`` : Not equal to"
+msgstr ""
+
+#: ../../expression_syntax.rst:280
+msgid "``>`` : Greater than"
+msgstr ""
+
+#: ../../expression_syntax.rst:281
+msgid "``>=`` : Greater than or equal to"
+msgstr ""
+
+#: ../../expression_syntax.rst:282
+msgid "``<`` : Less than"
+msgstr ""
+
+#: ../../expression_syntax.rst:283
+msgid "``<=`` : Less than or equal to"
+msgstr ""
+
+#: ../../expression_syntax.rst:284
+msgid "``and`` : Logical AND"
+msgstr ""
+
+#: ../../expression_syntax.rst:285
+msgid "``or`` : Logical OR"
+msgstr ""
+
+#: ../../expression_syntax.rst:286
+msgid "``not`` : Logical NOT"
+msgstr ""
+
+#: ../../expression_syntax.rst:296
+msgid "Working with Missing Values"
+msgstr ""
+
+#: ../../expression_syntax.rst:298
+msgid ""
+"Leapfrog has specific value statuses (blank, without_value, outside) for "
+"different types of missing or special values. Use the value status "
+"functions to handle them properly:"
+msgstr ""
+
+#: ../../expression_syntax.rst:324
+msgid "Best Practices for Expressions"
+msgstr ""
+
+#: ../../expression_syntax.rst:326
+msgid ""
+"**Use descriptive variable names**: ``Au_final_recovered`` is better than"
+" ``af``"
+msgstr ""
+
+#: ../../expression_syntax.rst:327
+msgid ""
+"**Add comments**: Use the ``comment_equation`` parameter to document "
+"complex logic"
+msgstr ""
+
+#: ../../expression_syntax.rst:328
+msgid "**Avoid magic numbers**: Define threshold values clearly or use variables"
+msgstr ""
+
+#: ../../expression_syntax.rst:329
+msgid ""
+"**Break complex calculations into steps**: Multiple simple calculations "
+"are easier to debug than one complex expression"
+msgstr ""
+
+#: ../../expression_syntax.rst:330
+msgid ""
+"**Use helper functions**: Pollywog's helpers (Sum, Product, "
+"WeightedAverage, etc.) make code more readable"
+msgstr ""
+
+#: ../../expression_syntax.rst:331
+msgid ""
+"**Clamp inputs**: Protect against invalid values (negative grades, divide"
+" by zero)"
+msgstr ""
+
+#: ../../expression_syntax.rst:332
+msgid ""
+"**Test edge cases**: Ensure your expressions handle boundary conditions "
+"correctly"
+msgstr ""
+
+#: ../../expression_syntax.rst:335
+msgid "Example: Complete Workflow"
+msgstr ""
+
+#: ../../expression_syntax.rst:337
+msgid "Here's a comprehensive example showing various expression types:"
+msgstr ""
+
+#: ../../expression_syntax.rst:391
+msgid "See Also"
+msgstr ""
+
+#: ../../expression_syntax.rst:393
+msgid ":doc:`tutorials` - Complete workflow examples"
+msgstr ""
+
+#: ../../expression_syntax.rst:394
+msgid ":doc:`helpers_guide` - Pollywog helper functions"
+msgstr ""
+
+#: ../../expression_syntax.rst:395
+msgid ":doc:`api_reference` - Full API documentation"
+msgstr ""

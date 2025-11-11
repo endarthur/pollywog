@@ -1,0 +1,917 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Arthur Endlein
+# This file is distributed under the same license as the pollywog package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: pollywog \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-11 13:16-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: pt_BR\n"
+"Language-Team: pt_BR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../api_reference.rst:2
+msgid "API Reference"
+msgstr ""
+
+#: of pollywog.core.CalcSet:1 pollywog.core.If:1 pollywog.core.IfRow:1
+#: pollywog.core.Item:1
+msgid "Bases: :py:class:`object`"
+msgstr ""
+
+#: of pollywog.core.CalcSet:1
+msgid ""
+"Represents a Leapfrog-style calculation set, containing variables, "
+"calculations, categories, filters, and conditional logic."
+msgstr ""
+
+#: of pollywog.core.CalcSet:3
+msgid ""
+"CalcSet is the main container for building, manipulating, and exporting "
+"calculation workflows. It is designed to help automate large, complex, or"
+" repetitive calculation sets, and supports querying, dependency analysis,"
+" and rich display in Jupyter notebooks."
+msgstr ""
+
+#: of pollywog.core.CalcSet:5 pollywog.core.CalcSet.from_dict:5
+#: pollywog.core.CalcSet.query:8 pollywog.core.CalcSet.read_lfcalc:5
+#: pollywog.core.CalcSet.rename:5 pollywog.core.CalcSet.to_dict:5
+#: pollywog.core.CalcSet.to_json:5 pollywog.core.CalcSet.to_lfcalc:5
+#: pollywog.core.If:3 pollywog.core.If:9 pollywog.core.If.from_dict:5
+#: pollywog.core.IfRow:3 pollywog.core.IfRow.from_dict:5
+#: pollywog.core.Item.from_dict:5 pollywog.core.Item.rename:5
+#: pollywog.core.Item.replace:5 pollywog.core.dispatch_expression:5
+#: pollywog.core.get_dependencies:5 pollywog.core.rename:5
+#: pollywog.display.display_calcset:6 pollywog.display.display_item:5
+#: pollywog.display.get_color_palette:3 pollywog.display.render_equation:3
+#: pollywog.display.render_expression:3 pollywog.display.render_item:3
+#: pollywog.display.set_theme:3 pollywog.helpers.Average:3
+#: pollywog.helpers.CategoryFromThresholds:3 pollywog.helpers.Normalize:3
+#: pollywog.helpers.Product:3 pollywog.helpers.Scale:3 pollywog.helpers.Sum:3
+#: pollywog.helpers.WeightedAverage:3 pollywog.helpers.WeightedSum:3
+msgid "Args:"
+msgstr ""
+
+#: of pollywog.core.CalcSet:6
+msgid ""
+"items (list of Item): List of calculation items (Number, Category, "
+"Filter, If, etc.)"
+msgstr ""
+
+#: of pollywog.core.CalcSet:8 pollywog.core.CalcSet.query:15
+#: pollywog.core.CalcSet.topological_sort:15 pollywog.core.Category:6
+#: pollywog.core.Filter:6 pollywog.core.If:14 pollywog.core.Number:6
+#: pollywog.core.Variable:7 pollywog.display.display_calcset:20
+#: pollywog.display.display_item:19 pollywog.helpers.Average:16
+#: pollywog.helpers.CategoryFromThresholds:19 pollywog.helpers.Normalize:15
+#: pollywog.helpers.Product:16 pollywog.helpers.Scale:12
+#: pollywog.helpers.Sum:16 pollywog.helpers.WeightedAverage:18
+msgid "Example:"
+msgstr ""
+
+#: of pollywog.core.CalcSet.copy:1
+msgid "Return a deep copy of the CalcSet and its items."
+msgstr ""
+
+#: ../../api_reference.rst
+msgid "Return type"
+msgstr ""
+
+#: of pollywog.core.CalcSet.copy:3 pollywog.core.CalcSet.from_dict:3
+#: pollywog.core.CalcSet.query:6 pollywog.core.CalcSet.read_lfcalc:3
+#: pollywog.core.CalcSet.rename:3 pollywog.core.CalcSet.topological_sort:7
+msgid ":sphinx_autodoc_typehints_type:`\\:py\\:class\\:\\`\\~pollywog.core.CalcSet\\``"
+msgstr ""
+
+#: of pollywog.core.CalcSet.copy:5 pollywog.core.CalcSet.from_dict:8
+#: pollywog.core.CalcSet.query:12 pollywog.core.CalcSet.read_lfcalc:8
+#: pollywog.core.CalcSet.rename:10 pollywog.core.CalcSet.to_dict:8
+#: pollywog.core.CalcSet.to_json:9 pollywog.core.CalcSet.topological_sort:9
+#: pollywog.core.If.copy:5 pollywog.core.If.from_dict:8
+#: pollywog.core.If.to_dict:5 pollywog.core.IfRow.copy:5
+#: pollywog.core.IfRow.from_dict:8 pollywog.core.IfRow.to_dict:5
+#: pollywog.core.Item.copy:5 pollywog.core.Item.dependencies:3
+#: pollywog.core.Item.from_dict:8 pollywog.core.Item.rename:10
+#: pollywog.core.Item.replace:8 pollywog.core.Item.to_dict:5
+#: pollywog.core.dispatch_expression:8 pollywog.core.get_dependencies:8
+#: pollywog.core.rename:10 pollywog.display.display_calcset:16
+#: pollywog.display.display_item:15 pollywog.display.get_color_palette:9
+#: pollywog.display.render_equation:7 pollywog.display.render_expression:8
+#: pollywog.display.render_item:7 pollywog.helpers.Average:10
+#: pollywog.helpers.CategoryFromThresholds:13 pollywog.helpers.Normalize:12
+#: pollywog.helpers.Product:10 pollywog.helpers.Scale:9 pollywog.helpers.Sum:10
+#: pollywog.helpers.WeightedAverage:12 pollywog.helpers.WeightedSum:12
+msgid "Returns:"
+msgstr ""
+
+#: of pollywog.core.CalcSet.copy:6
+msgid "CalcSet: A new CalcSet instance with all items copied."
+msgstr ""
+
+#: of pollywog.core.CalcSet.query:1
+msgid "Filter items in the CalcSet using a query expression."
+msgstr ""
+
+#: of pollywog.core.CalcSet.query:3
+msgid ""
+"The expression can use attributes of Item (e.g., 'item_type == "
+"\"variable\" and name.startswith(\"Au\")'), and external variables using "
+"@var syntax (like pandas)."
+msgstr ""
+
+#: of pollywog.core.CalcSet.query:9
+msgid ""
+"expr (str): Query expression to filter items. **external_vars: External "
+"variables to use in the query (referenced as @var)."
+msgstr ""
+
+#: of pollywog.core.CalcSet.query:13
+msgid "CalcSet: New CalcSet with filtered items."
+msgstr ""
+
+#: of pollywog.core.CalcSet.topological_sort:1
+msgid "Return a new CalcSet with items sorted topologically by dependencies."
+msgstr ""
+
+#: of pollywog.core.CalcSet.topological_sort:3
+msgid ""
+"This method analyzes variable dependencies and reorders items so that "
+"each calculation appears after all the calculations it depends on. This "
+"ensures calculations can be evaluated in the correct order."
+msgstr ""
+
+#: of pollywog.core.CalcSet.topological_sort:10
+msgid "CalcSet: New CalcSet with topologically sorted items."
+msgstr ""
+
+#: of pollywog.core.CalcSet.topological_sort:12 pollywog.display.set_theme:6
+#: pollywog.helpers.Average:13 pollywog.helpers.CategoryFromThresholds:16
+#: pollywog.helpers.Product:13 pollywog.helpers.Sum:13
+#: pollywog.helpers.WeightedAverage:15 pollywog.helpers.WeightedSum:15
+msgid "Raises:"
+msgstr ""
+
+#: of pollywog.core.CalcSet.topological_sort:13
+msgid ""
+"ValueError: If cyclic dependencies are detected (e.g., A depends on B and"
+" B depends on A)."
+msgstr ""
+
+#: of pollywog.core.CalcSet.to_dict:1
+msgid "Convert the CalcSet to a dictionary representation."
+msgstr ""
+
+#: of pollywog.core.CalcSet.to_dict:3 pollywog.core.If.to_dict:3
+#: pollywog.core.IfRow.to_dict:3 pollywog.core.Item.to_dict:3
+msgid ""
+":sphinx_autodoc_typehints_type:`\\:py\\:class\\:\\`dict\\`\\\\ "
+"\\\\\\[\\:py\\:class\\:\\`str\\`\\, "
+"\\:py\\:data\\:\\`\\~typing.Any\\`\\]`"
+msgstr ""
+
+#: of pollywog.core.CalcSet.to_dict:6
+msgid "sort_items (bool): Whether to sort items by type."
+msgstr ""
+
+#: of pollywog.core.CalcSet.to_dict:9
+msgid "dict: Dictionary representation of the calculation set."
+msgstr ""
+
+#: of pollywog.core.CalcSet.from_dict:1
+msgid "Create a CalcSet from a dictionary."
+msgstr ""
+
+#: of pollywog.core.CalcSet.from_dict:6
+msgid "data (dict): Dictionary containing calculation set data."
+msgstr ""
+
+#: of pollywog.core.CalcSet.from_dict:9 pollywog.core.CalcSet.read_lfcalc:9
+msgid "CalcSet: Instance of CalcSet."
+msgstr ""
+
+#: of pollywog.core.CalcSet.to_json:1
+msgid "Convert the CalcSet to a JSON string."
+msgstr ""
+
+#: of pollywog.core.CalcSet.to_json:3
+msgid ":sphinx_autodoc_typehints_type:`\\:py\\:class\\:\\`str\\``"
+msgstr ""
+
+#: of pollywog.core.CalcSet.to_json:6
+msgid ""
+"sort_items (bool): Whether to sort items by type. indent (int): "
+"Indentation level for JSON output."
+msgstr ""
+
+#: of pollywog.core.CalcSet.to_json:10
+msgid "str: JSON string representation."
+msgstr ""
+
+#: of pollywog.core.CalcSet.to_lfcalc:1
+msgid "Write the CalcSet to a Leapfrog .lfcalc file."
+msgstr ""
+
+#: of pollywog.core.CalcSet.to_lfcalc:3
+msgid ":sphinx_autodoc_typehints_type:`\\:py\\:obj\\:\\`None\\``"
+msgstr ""
+
+#: of pollywog.core.CalcSet.to_lfcalc:6
+msgid ""
+"filepath_or_buffer (str, Path, or file-like): Output file path or buffer."
+" sort_items (bool): Whether to sort items by type."
+msgstr ""
+
+#: of pollywog.core.CalcSet.read_lfcalc:1
+msgid "Read a Leapfrog .lfcalc file and return a CalcSet."
+msgstr ""
+
+#: of pollywog.core.CalcSet.read_lfcalc:6
+msgid "filepath_or_buffer (str, Path, or file-like): Input file path or buffer."
+msgstr ""
+
+#: of pollywog.core.CalcSet.rename:1
+msgid ""
+"Return a copy of the CalcSet with specified items renamed and/or "
+"variables in expression renamed."
+msgstr ""
+
+#: of pollywog.core.CalcSet.rename:6
+msgid ""
+"items (dict-like or function): Mapping of old item names to new names. "
+"variables (dict-like or function): Mapping of old variable names to new "
+"names. regex (bool): Whether to treat keys in `items` and `variables` as "
+"regex patterns."
+msgstr ""
+
+#: of pollywog.core.CalcSet.rename:11
+msgid "CalcSet: New instance with updated item names and/or expression."
+msgstr ""
+
+#: of pollywog.core.Item:1
+msgid "Base class for all items in a CalcSet."
+msgstr ""
+
+#: of pollywog.core.Item:3
+msgid ""
+"Subclasses represent specific calculation types (Number, Category, "
+"Variable, Filter, If, etc.). Each item has a name, expressions, and "
+"optional comments."
+msgstr ""
+
+#: of pollywog.core.Item:6
+msgid ""
+"The `expression` parameter can be either a string or a list: - Use a "
+"string for simple expressions: ``Number(\"result\", \"[x] * 2\")`` - Use "
+"a list when including If objects for conditional logic: "
+"``Number(\"result\", [If(...)])``"
+msgstr ""
+
+#: of pollywog.core.Item:10
+msgid ""
+"Strings are automatically converted to single-element lists internally, "
+"but If objects are separate structures that cannot be embedded in "
+"expression strings, which is why the parameter accepts lists."
+msgstr ""
+
+#: of pollywog.core.Item:14
+msgid "Attributes:"
+msgstr ""
+
+#: of pollywog.core.Item:15
+msgid ""
+"name (str): Name of the item. expression (list): List of "
+"expressions/statements (internally stored as a list). comment_item (str):"
+" Comment for the item. comment_equation (str): Comment for the equation."
+msgstr ""
+
+#: of pollywog.core.Item.to_dict:1
+msgid "Convert the Item to a dictionary representation."
+msgstr ""
+
+#: of pollywog.core.Item.to_dict:6
+msgid "dict: Dictionary representation of the item."
+msgstr ""
+
+#: of pollywog.core.Item.from_dict:1
+msgid "Create an Item from a dictionary."
+msgstr ""
+
+#: of pollywog.core.Item.copy:3 pollywog.core.Item.from_dict:3
+#: pollywog.core.Item.rename:3 pollywog.core.Item.replace:3
+msgid ":sphinx_autodoc_typehints_type:`\\:py\\:class\\:\\`\\~pollywog.core.Item\\``"
+msgstr ""
+
+#: of pollywog.core.Item.from_dict:6
+msgid "data (dict): Dictionary containing item data."
+msgstr ""
+
+#: of pollywog.core.Item.from_dict:9
+msgid "Item: Instance of Item or subclass."
+msgstr ""
+
+#: of pollywog.core.Item.dependencies:1
+msgid "Get the set of variable dependencies for this item."
+msgstr ""
+
+#: of pollywog.core.Item.dependencies:4 pollywog.core.get_dependencies:9
+msgid "set: Set of variable names that are dependencies."
+msgstr ""
+
+#: of pollywog.core.Item.copy:1
+msgid "Return a deep copy of the Item."
+msgstr ""
+
+#: of pollywog.core.Item.copy:6
+msgid "Item: A new Item instance with all attributes copied."
+msgstr ""
+
+#: of pollywog.core.Item.replace:1
+msgid "Return a copy of the Item with specified attributes replaced."
+msgstr ""
+
+#: of pollywog.core.Item.replace:6
+msgid "**changes: Attributes to replace."
+msgstr ""
+
+#: of pollywog.core.Item.replace:9
+msgid "Item: New instance with updated attributes."
+msgstr ""
+
+#: of pollywog.core.Item.rename:1
+msgid ""
+"Return a copy of the Item with a new name and/or renamed variables in "
+"expression."
+msgstr ""
+
+#: of pollywog.core.Item.rename:6
+msgid ""
+"name (str): New name for the item. variables (dict-like or function): "
+"Mapping of old variable names to new names. regex (bool): Whether to "
+"treat keys in `variables` as regex patterns."
+msgstr ""
+
+#: of pollywog.core.Item.rename:11
+msgid "Item: New instance with updated name and/or expression."
+msgstr ""
+
+#: of pollywog.core.IfRow:1
+msgid ""
+"Represents a single row in an If block, containing a condition and "
+"corresponding value(s)."
+msgstr ""
+
+#: of pollywog.core.IfRow:4
+msgid ""
+"condition (list): Condition expressions. value (list): Value expressions "
+"if condition is met."
+msgstr ""
+
+#: of pollywog.core.IfRow.to_dict:1
+msgid "Convert the IfRow to a dictionary representation."
+msgstr ""
+
+#: of pollywog.core.IfRow.to_dict:6
+msgid "dict: Dictionary representation of the IfRow."
+msgstr ""
+
+#: of pollywog.core.IfRow.from_dict:1
+msgid "Create an IfRow from a dictionary."
+msgstr ""
+
+#: of pollywog.core.IfRow.copy:3 pollywog.core.IfRow.from_dict:3
+msgid ":sphinx_autodoc_typehints_type:`\\:py\\:class\\:\\`\\~pollywog.core.IfRow\\``"
+msgstr ""
+
+#: of pollywog.core.IfRow.from_dict:6
+msgid "data (dict): Dictionary containing IfRow data."
+msgstr ""
+
+#: of pollywog.core.IfRow.from_dict:9
+msgid "IfRow: Instance of IfRow."
+msgstr ""
+
+#: of pollywog.core.IfRow.copy:1
+msgid "Return a deep copy of the IfRow."
+msgstr ""
+
+#: of pollywog.core.IfRow.copy:6
+msgid "IfRow: A new IfRow instance with copied condition and value expressions."
+msgstr ""
+
+#: of pollywog.core.If:1
+msgid "Represents a conditional logic block (if/else) in a calculation set."
+msgstr ""
+
+#: of pollywog.core.If:4
+msgid ""
+"rows (list): List of IfRow objects, dicts, or (condition, value) tuples. "
+"otherwise (list): Expressions for the 'otherwise' case."
+msgstr ""
+
+#: of pollywog.core.If:7
+msgid ""
+"Alternatively, in case of a single condition and value, these may be "
+"provided directly as three parameters:"
+msgstr ""
+
+#: of pollywog.core.If:10
+msgid ""
+"condition: condition expression. then: value expression if condition is "
+"met. otherwise: value expression if no conditions are met."
+msgstr ""
+
+#: of pollywog.core.If:21
+msgid "Example of the second case:"
+msgstr ""
+
+#: of pollywog.core.If.to_dict:1
+msgid "Convert the If expression to a dictionary representation."
+msgstr ""
+
+#: of pollywog.core.If.to_dict:6
+msgid "dict: Dictionary representation of the If expression."
+msgstr ""
+
+#: of pollywog.core.If.from_dict:1
+msgid "Create an If expression from a dictionary."
+msgstr ""
+
+#: of pollywog.core.If.copy:3 pollywog.core.If.from_dict:3
+msgid ":sphinx_autodoc_typehints_type:`\\:py\\:class\\:\\`\\~pollywog.core.If\\``"
+msgstr ""
+
+#: of pollywog.core.If.from_dict:6
+msgid "data (dict): Dictionary containing If expression data."
+msgstr ""
+
+#: of pollywog.core.If.from_dict:9
+msgid "If: Instance of If."
+msgstr ""
+
+#: of pollywog.core.If.copy:1
+msgid "Return a deep copy of the If expression."
+msgstr ""
+
+#: of pollywog.core.If.copy:6
+msgid "If: A new If instance with copied rows and otherwise expressions."
+msgstr ""
+
+#: of pollywog.core.Category:1 pollywog.core.Filter:1 pollywog.core.Number:1
+#: pollywog.core.Variable:1
+msgid "Bases: :py:class:`~pollywog.core.Item`"
+msgstr ""
+
+#: of pollywog.core.Number:1
+msgid "Represents a numeric calculation item in a CalcSet."
+msgstr ""
+
+#: of pollywog.core.Number:3
+msgid ""
+"Used for calculations whose values are numbers, either integers or "
+"floats. This is the most common type of calculation in Leapfrog "
+"calculation sets."
+msgstr ""
+
+#: of pollywog.core.Category:1
+msgid "Represents a categorical (string) calculation item in a CalcSet."
+msgstr ""
+
+#: of pollywog.core.Category:3
+msgid ""
+"Used for calculations whose values are categories or text labels. "
+"Commonly used for classification, domain assignment, or text "
+"manipulation."
+msgstr ""
+
+#: of pollywog.core.Variable:1
+msgid "Represents a variable item in a calculation set."
+msgstr ""
+
+#: of pollywog.core.Variable:3
+msgid ""
+"Variables can perform calculations but are not available outside the "
+"scope of the calculation set. They are typically used as parameters or "
+"intermediate values that are referenced by other calculations."
+msgstr ""
+
+#: of pollywog.core.Filter:1
+msgid "Represents a filter item in a calculation set."
+msgstr ""
+
+#: of pollywog.core.Filter:3
+msgid ""
+"Filters define conditions that restrict or modify which data is included "
+"in calculations. They evaluate to boolean values."
+msgstr ""
+
+#: of pollywog.core.dispatch_expression:1
+msgid "Dispatch an expression dictionary to the appropriate class constructor."
+msgstr ""
+
+#: of pollywog.core.dispatch_expression:3 pollywog.core.rename:3
+msgid ":sphinx_autodoc_typehints_type:`\\:py\\:data\\:\\`\\~typing.Any\\``"
+msgstr ""
+
+#: of pollywog.core.dispatch_expression:6
+msgid "data (dict or any): Expression data."
+msgstr ""
+
+#: of pollywog.core.dispatch_expression:9
+msgid "object: Instantiated expression object or the original data if not a dict."
+msgstr ""
+
+#: of pollywog.core.get_dependencies:1
+msgid "Recursively extract variable dependencies from an Item or expression."
+msgstr ""
+
+#: of pollywog.core.get_dependencies:3
+msgid ""
+":sphinx_autodoc_typehints_type:`\\:py\\:class\\:\\`set\\`\\\\ "
+"\\\\\\[\\:py\\:class\\:\\`str\\`\\]`"
+msgstr ""
+
+#: of pollywog.core.get_dependencies:6
+msgid "item (Item or expression): The item or expression to analyze."
+msgstr ""
+
+#: of pollywog.core.rename:1
+msgid ""
+"Recursively rename variables in an Item or expression based on a mapping "
+"dictionary."
+msgstr ""
+
+#: of pollywog.core.rename:6
+msgid ""
+"item (Item or expression): The item or expression to rename. mapper "
+"(dict-like or function): Mapping of old variable names to new names. "
+"regex (bool): If True, treat keys and values of the mapper as regular "
+"expressions."
+msgstr ""
+
+#: of pollywog.core.rename:11
+msgid "Item or expression: The renamed item or expression."
+msgstr ""
+
+#: of pollywog.display.set_theme:1
+msgid "Set the global theme for display_calcset."
+msgstr ""
+
+#: of pollywog.display.set_theme:4
+msgid "theme (str): Theme name, either \"light\" or \"dark\"."
+msgstr ""
+
+#: of pollywog.display.set_theme:7
+msgid "ValueError: If theme is not \"light\" or \"dark\"."
+msgstr ""
+
+#: of pollywog.display.get_color_palette:1
+msgid "Get the color palette for a given theme."
+msgstr ""
+
+#: of pollywog.display.get_color_palette:4
+msgid "theme (str, optional): Visual theme, either \"light\" or \"dark\"."
+msgstr ""
+
+#: of pollywog.display.get_color_palette:5
+msgid "If None, uses the global theme. Defaults to None."
+msgstr ""
+
+#: of pollywog.display.display_calcset:10 pollywog.display.display_item:9
+#: pollywog.display.get_color_palette:6
+msgid "colors (dict, optional): Custom color palette to override theme defaults."
+msgstr ""
+
+#: of pollywog.display.get_color_palette:7
+msgid "Defaults to None."
+msgstr ""
+
+#: of pollywog.display.get_color_palette:10
+msgid "dict: Color palette with keys for 'background', 'text', 'variable', etc."
+msgstr ""
+
+#: of pollywog.display.render_expression:1
+msgid "Render an expression as HTML with syntax highlighting."
+msgstr ""
+
+#: of pollywog.display.render_expression:4
+msgid ""
+"expr: Expression to render (string, list, dict, or other). palette "
+"(dict): Color palette for styling. indent (int): Indentation level. "
+"Defaults to 0."
+msgstr ""
+
+#: of pollywog.display.render_expression:9
+msgid "str: HTML representation of the expression."
+msgstr ""
+
+#: of pollywog.display.render_equation:1
+msgid "Render an equation as HTML."
+msgstr ""
+
+#: of pollywog.display.render_equation:4
+msgid ""
+"eq: Equation to render (dict or other). palette (dict): Color palette for"
+" styling."
+msgstr ""
+
+#: of pollywog.display.render_equation:8
+msgid "str: HTML representation of the equation."
+msgstr ""
+
+#: of pollywog.display.render_item:1
+msgid "Render a single Item (Number, Category, Variable, Filter, etc.) as HTML."
+msgstr ""
+
+#: of pollywog.display.render_item:4
+msgid ""
+"item: The item to render (must have to_dict() method). palette (dict): "
+"Color palette for styling."
+msgstr ""
+
+#: of pollywog.display.render_item:8
+msgid "str: HTML representation of the item."
+msgstr ""
+
+#: of pollywog.display.display_item:1
+msgid ""
+"Display a single Item (Number, Category, Variable, Filter, etc.) in a "
+"Jupyter notebook."
+msgstr ""
+
+#: of pollywog.display.display_item:3
+msgid ""
+"This function renders individual calculation items with Leapfrog-style "
+"visual formatting."
+msgstr ""
+
+#: of pollywog.display.display_item:6
+msgid ""
+"item: The item to display (Number, Category, Variable, Filter, etc.). "
+"theme (str, optional): Visual theme, either \"light\" or \"dark\"."
+msgstr ""
+
+#: of pollywog.display.display_calcset:9 pollywog.display.display_item:8
+msgid "If None, uses the global theme set by set_theme(). Defaults to None."
+msgstr ""
+
+#: of pollywog.display.display_calcset:11 pollywog.display.display_item:10
+msgid ""
+"Keys can include: 'background', 'text', 'variable', 'label', 'if', "
+"'arrow', 'comment', 'var_ref'. Defaults to None."
+msgstr ""
+
+#: of pollywog.display.display_calcset:13 pollywog.display.display_item:12
+msgid "display_output (bool): Whether to display output in Jupyter."
+msgstr ""
+
+#: of pollywog.display.display_calcset:14 pollywog.display.display_item:13
+msgid "If False, returns HTML string. Defaults to True."
+msgstr ""
+
+#: of pollywog.display.display_calcset:17 pollywog.display.display_item:16
+msgid "str or None: If display_output is False, returns HTML string."
+msgstr ""
+
+#: of pollywog.display.display_calcset:18 pollywog.display.display_item:17
+msgid "Otherwise displays in Jupyter and returns None."
+msgstr ""
+
+#: of pollywog.display.display_calcset:1
+msgid ""
+"Display a CalcSet in a Jupyter notebook with Leapfrog-style visual "
+"formatting."
+msgstr ""
+
+#: of pollywog.display.display_calcset:3
+msgid ""
+"This function renders calculation sets with visual styling similar to "
+"Leapfrog, making equations and logic blocks easy to read and understand."
+msgstr ""
+
+#: of pollywog.display.display_calcset:7
+msgid ""
+"calcset (CalcSet): The calculation set to display. theme (str, optional):"
+" Visual theme, either \"light\" or \"dark\"."
+msgstr ""
+
+#: of pollywog.helpers.Sum:1
+msgid ""
+"Create a sum expression or a Number representing the sum of the given "
+"variables."
+msgstr ""
+
+#: of pollywog.helpers.Sum:4
+msgid ""
+"variables (list of str): Variable names (as strings) to sum, e.g. "
+"[\"Au\", \"Ag\"]. name (str, optional): Name for the output variable. If "
+"provided, returns a Number; if None, returns the sum expression as a "
+"string. comment (str, optional): Optional comment for the calculation. "
+"Used only if name is provided. ignore_functions (bool): If True, strings "
+"that appear to be function"
+msgstr ""
+
+#: of pollywog.helpers.Average:8 pollywog.helpers.CategoryFromThresholds:10
+#: pollywog.helpers.Normalize:10 pollywog.helpers.Product:8
+#: pollywog.helpers.Sum:8 pollywog.helpers.WeightedAverage:9
+#: pollywog.helpers.WeightedSum:9
+msgid ""
+"calls (e.g., \"max([Au], [Ag])\") are not wrapped in brackets. Defaults "
+"to True."
+msgstr ""
+
+#: of pollywog.helpers.Sum:11
+msgid ""
+"Number or str: If name is provided, returns a pollywog Number "
+"representing the sum calculation. If name is None, returns the sum "
+"expression as a string."
+msgstr ""
+
+#: of pollywog.helpers.Average:14 pollywog.helpers.Product:14
+#: pollywog.helpers.Sum:14
+msgid "ValueError: If variables is empty."
+msgstr ""
+
+#: of pollywog.helpers.WeightedSum:1
+msgid ""
+"Create a weighted sum expression or a Number representing the weighted "
+"sum of the given variables."
+msgstr ""
+
+#: of pollywog.helpers.WeightedSum:4
+msgid ""
+"variables (list of str): Variable names (as strings) to sum, e.g. "
+"[\"Au\", \"Ag\"]. weights (list of float or str): Corresponding weights "
+"for each variable. Can be constants or variable names. name (str, "
+"optional): Name for the output variable. If provided, returns a Number; "
+"if None, returns the weighted sum expression as a string. comment (str, "
+"optional): Optional comment for the calculation. Used only if name is "
+"provided. ignore_functions (bool): If True, strings that appear to be "
+"function"
+msgstr ""
+
+#: of pollywog.helpers.WeightedSum:13
+msgid ""
+"Number or str: If name is provided, returns a pollywog Number "
+"representing the weighted sum calculation. If name is None, returns the "
+"weighted sum expression as a string."
+msgstr ""
+
+#: of pollywog.helpers.WeightedAverage:16 pollywog.helpers.WeightedSum:16
+msgid "ValueError: If variables and weights are empty or have different lengths."
+msgstr ""
+
+#: of pollywog.helpers.Product:1
+msgid ""
+"Create a product expression or a Number representing the product of the "
+"given variables."
+msgstr ""
+
+#: of pollywog.helpers.Product:4
+msgid ""
+"variables (list of str): Variable names (as strings) to multiply, e.g. "
+"[\"Au\", \"Ag\"]. name (str, optional): Name for the output variable. If "
+"provided, returns a Number; if None, returns the product expression as a "
+"string. comment (str, optional): Optional comment for the calculation. "
+"Used only if name is provided. ignore_functions (bool): If True, strings "
+"that appear to be function"
+msgstr ""
+
+#: of pollywog.helpers.Product:11
+msgid ""
+"Number or str: If name is provided, returns a pollywog Number "
+"representing the product calculation. If name is None, returns the "
+"product expression as a string."
+msgstr ""
+
+#: of pollywog.helpers.Normalize:1
+msgid ""
+"Create a normalization expression or a Number that normalizes a variable "
+"to the range [0, 1]."
+msgstr ""
+
+#: of pollywog.helpers.Normalize:4
+msgid ""
+"variable (str): Variable name to normalize. min_value (float): Minimum "
+"value for normalization (maps to 0). max_value (float): Maximum value for"
+" normalization (maps to 1). name (str, optional): Name for the output "
+"variable. If provided, returns a Number; if None, returns the "
+"normalization expression as a string. comment (str, optional): Optional "
+"comment for the calculation. Used only if name is provided. "
+"ignore_functions (bool): If True, strings that appear to be function"
+msgstr ""
+
+#: of pollywog.helpers.Normalize:13
+msgid ""
+"Number or str: If name is provided, returns a pollywog Number "
+"representing the normalization calculation. If name is None, returns the "
+"normalization expression as a string."
+msgstr ""
+
+#: of pollywog.helpers.Average:1
+msgid ""
+"Create an average expression or a Number representing the arithmetic mean"
+" of the given variables."
+msgstr ""
+
+#: of pollywog.helpers.Average:4
+msgid ""
+"variables (list of str): Variable names (as strings) to average, e.g. "
+"[\"Au\", \"Ag\"]. name (str, optional): Name for the output variable. If "
+"provided, returns a Number; if None, returns the average expression as a "
+"string. comment (str, optional): Optional comment for the calculation. "
+"Used only if name is provided. ignore_functions (bool): If True, strings "
+"that appear to be function"
+msgstr ""
+
+#: of pollywog.helpers.Average:11
+msgid ""
+"Number or str: If name is provided, returns a pollywog Number "
+"representing the average calculation. If name is None, returns the "
+"average expression as a string."
+msgstr ""
+
+#: of pollywog.helpers.WeightedAverage:1
+msgid ""
+"Create a weighted average expression or a Number representing the "
+"weighted average of variables."
+msgstr ""
+
+#: of pollywog.helpers.WeightedAverage:4
+msgid ""
+"variables (list of str): Variable names to average, e.g. [\"Au\", \"Ag\","
+" \"Cu\"]. weights (list of float or str): Corresponding weights for each "
+"variable. Can be constants or variable names. name (str, optional): Name "
+"for the output variable. If provided, returns a Number; if None, returns "
+"the weighted average expression as a string. comment (str, optional): "
+"Optional comment for the calculation. Used only if name is provided. "
+"ignore_functions (bool): If True, strings that appear to be function"
+msgstr ""
+
+#: of pollywog.helpers.WeightedAverage:13
+msgid ""
+"Number or str: If name is provided, returns a pollywog Number "
+"representing the weighted average calculation. If name is None, returns "
+"the weighted average expression as a string."
+msgstr ""
+
+#: of pollywog.helpers.Scale:1
+msgid ""
+"Create a scaling expression or a Number that multiplies a variable by a "
+"scaling factor."
+msgstr ""
+
+#: of pollywog.helpers.Scale:4
+msgid ""
+"variable (str): Variable name to scale. factor (float or str): Scaling "
+"factor. Can be a numeric constant or another variable name. name (str, "
+"optional): Name for the output variable. If provided, returns a Number; "
+"if None, returns the scaling expression as a string. comment (str, "
+"optional): Optional comment for the calculation. Used only if name is "
+"provided."
+msgstr ""
+
+#: of pollywog.helpers.Scale:10
+msgid ""
+"Number or str: If name is provided, returns a pollywog Number "
+"representing the scaled variable. If name is None, returns the scaling "
+"expression as a string."
+msgstr ""
+
+#: of pollywog.helpers.CategoryFromThresholds:1
+msgid ""
+"Create a conditional block or a Category that assigns labels based on "
+"value thresholds."
+msgstr ""
+
+#: of pollywog.helpers.CategoryFromThresholds:4
+msgid ""
+"variable (str): Variable to classify, with or without brackets. "
+"thresholds (list of float): Threshold values in ascending order. These "
+"define the boundaries between categories. categories (list of str): "
+"Category labels. Must have exactly one more element than thresholds. name"
+" (str, optional): Name for the output category. If provided, returns a "
+"Category; if None, returns the If block (conditional logic) for further "
+"encapsulation. comment (str, optional): Optional comment for the "
+"calculation. Used only if name is provided. ignore_functions (bool): If "
+"True, strings that appear to be function"
+msgstr ""
+
+#: of pollywog.helpers.CategoryFromThresholds:14
+msgid ""
+"Category or If: If name is provided, returns a pollywog Category with "
+"conditional logic for threshold-based classification. If name is None, "
+"returns the If block (conditional logic) for further use."
+msgstr ""
+
+#: of pollywog.helpers.CategoryFromThresholds:17
+msgid "ValueError: If len(categories) != len(thresholds) + 1."
+msgstr ""

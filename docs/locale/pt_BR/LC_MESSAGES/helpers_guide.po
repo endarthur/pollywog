@@ -1,0 +1,520 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Arthur Endlein
+# This file is distributed under the same license as the pollywog package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: pollywog \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-11 13:16-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: pt_BR\n"
+"Language-Team: pt_BR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../helpers_guide.rst:2
+msgid "Helper Functions Guide"
+msgstr ""
+
+#: ../../helpers_guide.rst:4
+msgid ""
+"Pollywog provides a collection of helper functions to simplify common "
+"calculation patterns. These functions can generate either complete "
+"``Number`` or ``Category`` objects for your ``CalcSet``, or return just "
+"the expression/logic for use in more complex calculations."
+msgstr ""
+
+#: ../../helpers_guide.rst:7
+msgid "Why Use Helpers?"
+msgstr ""
+
+#: ../../helpers_guide.rst:9
+msgid "Helper functions offer several advantages:"
+msgstr ""
+
+#: ../../helpers_guide.rst:11
+msgid ""
+"**Readability**: ``Sum([\"Au_assay1\", \"Au_assay2\", \"Au_assay3\"])`` "
+"is clearer than manually writing the expression"
+msgstr ""
+
+#: ../../helpers_guide.rst:12
+msgid "**Consistency**: Helpers ensure correct syntax and parentheses"
+msgstr ""
+
+#: ../../helpers_guide.rst:13
+msgid "**Error Prevention**: Reduce mistakes in complex expressions"
+msgstr ""
+
+#: ../../helpers_guide.rst:14
+msgid "**Maintainability**: Easier to update and refactor calculations"
+msgstr ""
+
+#: ../../helpers_guide.rst:15
+msgid "**Self-Documentation**: Helper names clearly indicate intent"
+msgstr ""
+
+#: ../../helpers_guide.rst:16
+msgid ""
+"**Flexibility**: Can return either complete calculations or just "
+"expressions for composition"
+msgstr ""
+
+#: ../../helpers_guide.rst:18
+msgid "All helper functions are available from the ``pollywog.helpers`` module:"
+msgstr ""
+
+#: ../../helpers_guide.rst:25
+msgid "How Helpers Work: Two Modes"
+msgstr ""
+
+#: ../../helpers_guide.rst:27
+msgid "**All helper functions have two modes of operation:**"
+msgstr ""
+
+#: ../../helpers_guide.rst:29
+msgid ""
+"**With ``name`` parameter**: Returns a complete ``Number`` or "
+"``Category`` object ready to add to a ``CalcSet``"
+msgstr ""
+
+#: ../../helpers_guide.rst:30
+msgid ""
+"**Without ``name`` parameter**: Returns just the expression (string) or "
+"logic (If block) for use in more complex calculations"
+msgstr ""
+
+#: ../../helpers_guide.rst:32
+msgid ""
+"This flexibility allows you to use helpers both for simple standalone "
+"calculations and as building blocks for more complex logic."
+msgstr ""
+
+#: ../../helpers_guide.rst:54
+msgid "**When to use each mode:**"
+msgstr ""
+
+#: ../../helpers_guide.rst:56
+msgid "**With name**: Simple, standalone calculations"
+msgstr ""
+
+#: ../../helpers_guide.rst:57
+msgid ""
+"**Without name**: Building blocks for complex logic, nested expressions, "
+"or conditional calculations"
+msgstr ""
+
+#: ../../helpers_guide.rst:60
+msgid "Mathematical Helpers"
+msgstr ""
+
+#: ../../helpers_guide.rst:63 ../../helpers_guide.rst:615
+msgid "Sum"
+msgstr ""
+
+#: ../../helpers_guide.rst:65
+msgid "Add multiple variables together."
+msgstr ""
+
+#: ../../helpers_guide.rst:86 ../../helpers_guide.rst:118
+#: ../../helpers_guide.rst:143 ../../helpers_guide.rst:178
+#: ../../helpers_guide.rst:206 ../../helpers_guide.rst:231
+#: ../../helpers_guide.rst:277
+msgid "**Parameters:**"
+msgstr ""
+
+#: ../../helpers_guide.rst:88 ../../helpers_guide.rst:120
+#: ../../helpers_guide.rst:145
+msgid "``variables``: List of variable names as strings"
+msgstr ""
+
+#: ../../helpers_guide.rst:89 ../../helpers_guide.rst:121
+#: ../../helpers_guide.rst:146
+msgid ""
+"``name`` (optional): Name for output variable. If None, returns "
+"expression string"
+msgstr ""
+
+#: ../../helpers_guide.rst:90 ../../helpers_guide.rst:122
+#: ../../helpers_guide.rst:147 ../../helpers_guide.rst:183
+#: ../../helpers_guide.rst:211 ../../helpers_guide.rst:237
+#: ../../helpers_guide.rst:283
+msgid "``comment`` (optional): Custom comment for the calculation"
+msgstr ""
+
+#: ../../helpers_guide.rst:92 ../../helpers_guide.rst:124
+#: ../../helpers_guide.rst:149
+msgid ""
+"**Returns:** ``Number`` object when name is provided, or expression "
+"string when name is None"
+msgstr ""
+
+#: ../../helpers_guide.rst:95 ../../helpers_guide.rst:617
+msgid "Product"
+msgstr ""
+
+#: ../../helpers_guide.rst:97
+msgid "Multiply multiple variables together."
+msgstr ""
+
+#: ../../helpers_guide.rst:127 ../../helpers_guide.rst:619
+msgid "Average"
+msgstr ""
+
+#: ../../helpers_guide.rst:129
+msgid "Calculate the arithmetic mean of multiple variables."
+msgstr ""
+
+#: ../../helpers_guide.rst:152 ../../helpers_guide.rst:621
+msgid "WeightedAverage"
+msgstr ""
+
+#: ../../helpers_guide.rst:154
+msgid ""
+"Calculate a weighted average of variables. Essential for domain "
+"proportion calculations."
+msgstr ""
+
+#: ../../helpers_guide.rst:180
+msgid "``variables``: List of variable names to average"
+msgstr ""
+
+#: ../../helpers_guide.rst:181
+msgid "``weights``: List of weights (can be variable names or numeric constants)"
+msgstr ""
+
+#: ../../helpers_guide.rst:182
+msgid ""
+"``name`` (optional): Name for output variable (default: "
+"``wavg_<var1>_<var2>_...``)"
+msgstr ""
+
+#: ../../helpers_guide.rst:185 ../../helpers_guide.rst:213
+#: ../../helpers_guide.rst:239
+msgid "**Returns:** ``Number`` object"
+msgstr ""
+
+#: ../../helpers_guide.rst:187
+msgid ""
+"**Important:** Weights are automatically summed in the denominator, so "
+"they don't need to sum to 1."
+msgstr ""
+
+#: ../../helpers_guide.rst:190 ../../helpers_guide.rst:623
+msgid "Scale"
+msgstr ""
+
+#: ../../helpers_guide.rst:192
+msgid "Multiply a variable by a scaling factor."
+msgstr ""
+
+#: ../../helpers_guide.rst:208
+msgid "``variable``: Variable name to scale"
+msgstr ""
+
+#: ../../helpers_guide.rst:209
+msgid "``factor``: Scaling factor (number or variable name)"
+msgstr ""
+
+#: ../../helpers_guide.rst:210
+msgid ""
+"``name`` (optional): Name for output variable (default: "
+"``scale_<variable>``)"
+msgstr ""
+
+#: ../../helpers_guide.rst:216 ../../helpers_guide.rst:625
+msgid "Normalize"
+msgstr ""
+
+#: ../../helpers_guide.rst:218
+msgid "Normalize a variable to the range [0, 1] given min and max values."
+msgstr ""
+
+#: ../../helpers_guide.rst:233
+msgid "``variable``: Variable name to normalize"
+msgstr ""
+
+#: ../../helpers_guide.rst:234
+msgid "``min_value``: Minimum value for normalization"
+msgstr ""
+
+#: ../../helpers_guide.rst:235
+msgid "``max_value``: Maximum value for normalization"
+msgstr ""
+
+#: ../../helpers_guide.rst:236
+msgid ""
+"``name`` (optional): Name for output variable (default: "
+"``norm_<variable>``)"
+msgstr ""
+
+#: ../../helpers_guide.rst:241
+msgid ""
+"**Note:** If the variable equals min_value, result is 0. If it equals "
+"max_value, result is 1."
+msgstr ""
+
+#: ../../helpers_guide.rst:244
+msgid "Classification Helpers"
+msgstr ""
+
+#: ../../helpers_guide.rst:247 ../../helpers_guide.rst:627
+msgid "CategoryFromThresholds"
+msgstr ""
+
+#: ../../helpers_guide.rst:249
+msgid ""
+"Create categorical classifications based on numeric thresholds. Perfect "
+"for grade shells, ore types, and quality classifications."
+msgstr ""
+
+#: ../../helpers_guide.rst:279
+msgid "``variable``: Variable to threshold"
+msgstr ""
+
+#: ../../helpers_guide.rst:280
+msgid ""
+"``thresholds``: List of threshold values (must be sorted in ascending "
+"order)"
+msgstr ""
+
+#: ../../helpers_guide.rst:281
+msgid ""
+"``categories``: List of category labels (length must be ``len(thresholds)"
+" + 1``)"
+msgstr ""
+
+#: ../../helpers_guide.rst:282
+msgid ""
+"``name`` (optional): Name for output category (default: "
+"``class_<variable>``)"
+msgstr ""
+
+#: ../../helpers_guide.rst:285
+msgid "**Returns:** ``Category`` object"
+msgstr ""
+
+#: ../../helpers_guide.rst:287
+msgid ""
+"**Important:** - Thresholds must be in ascending order - Number of "
+"categories must be one more than number of thresholds - Categories below "
+"or equal to first threshold get first label - Categories above last "
+"threshold get last label"
+msgstr ""
+
+#: ../../helpers_guide.rst:294
+msgid "Using Helpers in Workflows"
+msgstr ""
+
+#: ../../helpers_guide.rst:297
+msgid "Combining Multiple Helpers"
+msgstr ""
+
+#: ../../helpers_guide.rst:299
+msgid "Helpers work well together to build complex calculations:"
+msgstr ""
+
+#: ../../helpers_guide.rst:338
+msgid "Programmatic Generation"
+msgstr ""
+
+#: ../../helpers_guide.rst:340
+msgid "Use Python loops to generate many similar calculations:"
+msgstr ""
+
+#: ../../helpers_guide.rst:383
+msgid "When to Use Helpers vs. Manual Expressions"
+msgstr ""
+
+#: ../../helpers_guide.rst:385
+msgid "**Use Helpers When:**"
+msgstr ""
+
+#: ../../helpers_guide.rst:387
+msgid "The calculation matches a helper pattern (sum, average, product, etc.)"
+msgstr ""
+
+#: ../../helpers_guide.rst:388
+msgid "You want readable, self-documenting code"
+msgstr ""
+
+#: ../../helpers_guide.rst:389
+msgid "You're generating many similar calculations programmatically"
+msgstr ""
+
+#: ../../helpers_guide.rst:390
+msgid "You want to minimize syntax errors"
+msgstr ""
+
+#: ../../helpers_guide.rst:392
+msgid "**Use Manual Expressions When:**"
+msgstr ""
+
+#: ../../helpers_guide.rst:394
+msgid "The calculation is unique or complex"
+msgstr ""
+
+#: ../../helpers_guide.rst:395
+msgid "You need fine control over the expression"
+msgstr ""
+
+#: ../../helpers_guide.rst:396
+msgid "The calculation doesn't fit any helper pattern"
+msgstr ""
+
+#: ../../helpers_guide.rst:397
+msgid "You need to use specific Leapfrog functions (clamp, log, etc.)"
+msgstr ""
+
+#: ../../helpers_guide.rst:399
+msgid "Example comparing both approaches:"
+msgstr ""
+
+#: ../../helpers_guide.rst:437
+msgid "Advanced Usage: Composing Helpers"
+msgstr ""
+
+#: ../../helpers_guide.rst:439
+msgid ""
+"The real power of helpers returning expressions (when ``name=None``) is "
+"the ability to compose them into more complex calculations."
+msgstr ""
+
+#: ../../helpers_guide.rst:442
+msgid "Nested Helper Expressions"
+msgstr ""
+
+#: ../../helpers_guide.rst:478
+msgid "Using Helper Expressions in Conditional Logic"
+msgstr ""
+
+#: ../../helpers_guide.rst:513
+msgid "Real-World Example: Multi-Metal Resource Model"
+msgstr ""
+
+#: ../../helpers_guide.rst:559
+msgid ""
+"This example shows how helpers with ``name=None`` enable building complex"
+" calculations while keeping code readable and maintainable."
+msgstr ""
+
+#: ../../helpers_guide.rst:560
+msgid "\"[precious] * clamp([price_ratio], 0, 5) + [premium]\""
+msgstr ""
+
+#: ../../helpers_guide.rst:561
+msgid "]),"
+msgstr ""
+
+#: ../../helpers_guide.rst:562
+msgid "])"
+msgstr ""
+
+#: ../../helpers_guide.rst:565
+msgid "Custom Helper Functions"
+msgstr ""
+
+#: ../../helpers_guide.rst:567
+msgid "You can create your own helper functions following the same pattern:"
+msgstr ""
+
+#: ../../helpers_guide.rst:608
+msgid "Helper Function Reference"
+msgstr ""
+
+#: ../../helpers_guide.rst:610
+msgid "Quick reference table:"
+msgstr ""
+
+#: ../../helpers_guide.rst:613
+msgid "Helper"
+msgstr ""
+
+#: ../../helpers_guide.rst:613
+msgid "Returns"
+msgstr ""
+
+#: ../../helpers_guide.rst:613
+msgid "Use Case"
+msgstr ""
+
+#: ../../helpers_guide.rst:615 ../../helpers_guide.rst:617
+#: ../../helpers_guide.rst:619 ../../helpers_guide.rst:621
+#: ../../helpers_guide.rst:623 ../../helpers_guide.rst:625
+msgid "Number"
+msgstr ""
+
+#: ../../helpers_guide.rst:615
+msgid "Add multiple variables"
+msgstr ""
+
+#: ../../helpers_guide.rst:617
+msgid "Multiply multiple variables"
+msgstr ""
+
+#: ../../helpers_guide.rst:619
+msgid "Arithmetic mean"
+msgstr ""
+
+#: ../../helpers_guide.rst:621
+msgid "Weighted mean (domain proportions)"
+msgstr ""
+
+#: ../../helpers_guide.rst:623
+msgid "Multiply by factor (dilution, recovery)"
+msgstr ""
+
+#: ../../helpers_guide.rst:625
+msgid "Scale to [0, 1] range"
+msgstr ""
+
+#: ../../helpers_guide.rst:627
+msgid "Category"
+msgstr ""
+
+#: ../../helpers_guide.rst:627
+msgid "Classify by numeric thresholds"
+msgstr ""
+
+#: ../../helpers_guide.rst:631
+msgid "Common Patterns"
+msgstr ""
+
+#: ../../helpers_guide.rst:634
+msgid "Domain Proportion Weighting"
+msgstr ""
+
+#: ../../helpers_guide.rst:653
+msgid "Multi-Step Calculations"
+msgstr ""
+
+#: ../../helpers_guide.rst:672
+msgid "Economic Calculations"
+msgstr ""
+
+#: ../../helpers_guide.rst:693
+msgid "See Also"
+msgstr ""
+
+#: ../../helpers_guide.rst:695
+msgid ":doc:`expression_syntax` - Full expression syntax reference"
+msgstr ""
+
+#: ../../helpers_guide.rst:696
+msgid ":doc:`workflow_patterns` - Common workflow examples"
+msgstr ""
+
+#: ../../helpers_guide.rst:697
+msgid ":doc:`api_reference` - Complete API documentation"
+msgstr ""
+
+#: ../../helpers_guide.rst:698
+msgid ":doc:`tutorials` - Step-by-step tutorials"
+msgstr ""

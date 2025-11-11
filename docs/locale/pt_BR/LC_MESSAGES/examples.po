@@ -1,0 +1,788 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2025, Arthur Endlein
+# This file is distributed under the same license as the pollywog package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2025.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: pollywog \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-11-11 13:16-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: pt_BR\n"
+"Language-Team: pt_BR <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../examples.rst:2
+msgid "Example Notebooks"
+msgstr ""
+
+#: ../../examples.rst:4
+msgid ""
+"Pollywog includes a comprehensive collection of Jupyter notebooks "
+"demonstrating common workflows and advanced features. All examples are "
+"available in the `examples/ folder on GitHub "
+"<https://github.com/endarthur/pollywog/tree/main/examples>`_ and can be "
+"run interactively in your browser at `JupyterLite "
+"<https://endarthur.github.io/pollyweb>`_."
+msgstr ""
+
+#: ../../examples.rst:7
+msgid "**Try examples in your browser!**"
+msgstr ""
+
+#: ../../examples.rst:9
+msgid ""
+"Visit https://endarthur.github.io/pollyweb to run all examples "
+"interactively without installing anything. Perfect for learning and "
+"experimentation!"
+msgstr ""
+
+#: ../../examples.rst:12
+msgid "Getting Started"
+msgstr ""
+
+#: ../../examples.rst:14
+msgid "**For beginners**, start with these notebooks in order:"
+msgstr ""
+
+#: ../../examples.rst:16
+msgid ":ref:`basic_usage` - Core concepts and file I/O"
+msgstr ""
+
+#: ../../examples.rst:17
+msgid ":ref:`item_types_guide` - Understanding Variable, Number, Category, Filter"
+msgstr ""
+
+#: ../../examples.rst:18
+msgid ":ref:`helper_functions` - Using helper functions for common patterns"
+msgstr ""
+
+#: ../../examples.rst:20
+msgid "**For experienced users**, explore specific topics:"
+msgstr ""
+
+#: ../../examples.rst:22
+msgid ":ref:`conditional_logic` - Advanced If statements and nested conditions"
+msgstr ""
+
+#: ../../examples.rst:23
+msgid ":ref:`pollywog_workflow_tutorial` - Complete mining workflow example"
+msgstr ""
+
+#: ../../examples.rst:24
+msgid ":ref:`dependency_analysis` - Understanding calculation dependencies"
+msgstr ""
+
+#: ../../examples.rst:25
+msgid ":ref:`modifying_lfcalc` - Read, modify, and save existing .lfcalc files"
+msgstr ""
+
+#: ../../examples.rst:28
+msgid "Core Concepts"
+msgstr ""
+
+#: ../../examples.rst:33
+msgid "Basic Usage"
+msgstr ""
+
+#: ../../examples.rst:35
+msgid ""
+"**File:** `basic_usage.ipynb "
+"<https://github.com/endarthur/pollywog/blob/main/examples/basic_usage.ipynb>`_"
+msgstr ""
+
+#: ../../examples.rst:37 ../../examples.rst:68 ../../examples.rst:107
+#: ../../examples.rst:146 ../../examples.rst:191 ../../examples.rst:211
+#: ../../examples.rst:240 ../../examples.rst:277 ../../examples.rst:303
+#: ../../examples.rst:329 ../../examples.rst:357 ../../examples.rst:378
+#: ../../examples.rst:393
+msgid "**Topics covered:**"
+msgstr ""
+
+#: ../../examples.rst:39
+msgid "Creating CalcSet objects"
+msgstr ""
+
+#: ../../examples.rst:40
+msgid "Creating Number, Category, and Filter calculations"
+msgstr ""
+
+#: ../../examples.rst:41
+msgid "Writing to .lfcalc files"
+msgstr ""
+
+#: ../../examples.rst:42
+msgid "Reading existing .lfcalc files"
+msgstr ""
+
+#: ../../examples.rst:43
+msgid "Postprocessing variable estimates"
+msgstr ""
+
+#: ../../examples.rst:44 ../../examples.rst:195
+msgid "Domain-weighted calculations"
+msgstr ""
+
+#: ../../examples.rst:45
+msgid "Thresholding and classification"
+msgstr ""
+
+#: ../../examples.rst:46
+msgid "Scikit-learn model conversion"
+msgstr ""
+
+#: ../../examples.rst:48
+msgid "**Best for:** First-time pollywog users, general reference"
+msgstr ""
+
+#: ../../examples.rst:64
+msgid "Item Types Guide"
+msgstr ""
+
+#: ../../examples.rst:66
+msgid ""
+"**File:** `item_types_guide.ipynb "
+"<https://github.com/endarthur/pollywog/blob/main/examples/item_types_guide.ipynb>`_"
+msgstr ""
+
+#: ../../examples.rst:70
+msgid "Variable vs Number vs Category vs Filter"
+msgstr ""
+
+#: ../../examples.rst:71
+msgid "When to use each type"
+msgstr ""
+
+#: ../../examples.rst:72
+msgid "Visibility in Leapfrog (calculator vs everywhere)"
+msgstr ""
+
+#: ../../examples.rst:73
+msgid "Decision flow for choosing types"
+msgstr ""
+
+#: ../../examples.rst:74
+msgid "Complete workflow using all types"
+msgstr ""
+
+#: ../../examples.rst:76
+msgid "**Best for:** Understanding which item type to use when"
+msgstr ""
+
+#: ../../examples.rst:82
+msgid "Type"
+msgstr ""
+
+#: ../../examples.rst:83
+msgid "Visible Outside Calculator?"
+msgstr ""
+
+#: ../../examples.rst:84
+msgid "Use Case"
+msgstr ""
+
+#: ../../examples.rst:85
+msgid "Variable"
+msgstr ""
+
+#: ../../examples.rst:86
+msgid "❌ No"
+msgstr ""
+
+#: ../../examples.rst:87
+msgid "Intermediate calculations"
+msgstr ""
+
+#: ../../examples.rst:88
+msgid "Number"
+msgstr ""
+
+#: ../../examples.rst:89 ../../examples.rst:92 ../../examples.rst:95
+msgid "✅ Yes"
+msgstr ""
+
+#: ../../examples.rst:90
+msgid "Final numeric outputs"
+msgstr ""
+
+#: ../../examples.rst:91
+msgid "Category"
+msgstr ""
+
+#: ../../examples.rst:93
+msgid "Classifications and labels"
+msgstr ""
+
+#: ../../examples.rst:94
+msgid "Filter"
+msgstr ""
+
+#: ../../examples.rst:96
+msgid "Boolean inclusion rules"
+msgstr ""
+
+#: ../../examples.rst:103
+msgid "Conditional Logic"
+msgstr ""
+
+#: ../../examples.rst:105
+msgid ""
+"**File:** `conditional_logic.ipynb "
+"<https://github.com/endarthur/pollywog/blob/main/examples/conditional_logic.ipynb>`_"
+msgstr ""
+
+#: ../../examples.rst:109
+msgid "Basic If/otherwise patterns"
+msgstr ""
+
+#: ../../examples.rst:110
+msgid "Multiple conditions"
+msgstr ""
+
+#: ../../examples.rst:111
+msgid "Complex conditions with logical operators"
+msgstr ""
+
+#: ../../examples.rst:112
+msgid "Nested If statements"
+msgstr ""
+
+#: ../../examples.rst:113
+msgid "Mill feed decision trees"
+msgstr ""
+
+#: ../../examples.rst:114
+msgid "Handling missing data"
+msgstr ""
+
+#: ../../examples.rst:115
+msgid "Practical mining examples"
+msgstr ""
+
+#: ../../examples.rst:117
+msgid "**Best for:** Building complex conditional logic"
+msgstr ""
+
+#: ../../examples.rst:137
+msgid "Helper Functions"
+msgstr ""
+
+#: ../../examples.rst:142
+msgid "Helper Functions Showcase"
+msgstr ""
+
+#: ../../examples.rst:144
+msgid ""
+"**File:** `helper_functions.ipynb "
+"<https://github.com/endarthur/pollywog/blob/main/examples/helper_functions.ipynb>`_"
+msgstr ""
+
+#: ../../examples.rst:148
+msgid "Mathematical helpers (Sum, Product, Average)"
+msgstr ""
+
+#: ../../examples.rst:149
+msgid "**WeightedAverage** (critical for multi-domain modeling!)"
+msgstr ""
+
+#: ../../examples.rst:150
+msgid "WeightedSum"
+msgstr ""
+
+#: ../../examples.rst:151
+msgid "Scale (dilution, recovery, unit conversion)"
+msgstr ""
+
+#: ../../examples.rst:152
+msgid "Normalize (proportions)"
+msgstr ""
+
+#: ../../examples.rst:153
+msgid "CategoryFromThresholds (grade classification)"
+msgstr ""
+
+#: ../../examples.rst:154
+msgid "Dual-mode usage (with/without name parameter)"
+msgstr ""
+
+#: ../../examples.rst:155
+msgid "Composing helpers for complex expressions"
+msgstr ""
+
+#: ../../examples.rst:157
+msgid "**Best for:** Learning all available helper functions"
+msgstr ""
+
+#: ../../examples.rst:182
+msgid "Complete Workflows"
+msgstr ""
+
+#: ../../examples.rst:187
+msgid "Complete Mining Workflow"
+msgstr ""
+
+#: ../../examples.rst:189
+msgid ""
+"**File:** `pollywog_workflow_tutorial.ipynb "
+"<https://github.com/endarthur/pollywog/blob/main/examples/pollywog_workflow_tutorial.ipynb>`_"
+msgstr ""
+
+#: ../../examples.rst:193
+msgid "Preprocessing drillhole data"
+msgstr ""
+
+#: ../../examples.rst:194
+msgid "Postprocessing block model grades"
+msgstr ""
+
+#: ../../examples.rst:196
+msgid "Scikit-learn regression trees for recovery"
+msgstr ""
+
+#: ../../examples.rst:197
+msgid "Helper functions in practice"
+msgstr ""
+
+#: ../../examples.rst:198
+msgid "Visualization in Jupyter"
+msgstr ""
+
+#: ../../examples.rst:200
+msgid "**Best for:** End-to-end resource estimation workflow"
+msgstr ""
+
+#: ../../examples.rst:207
+msgid "Dependency Analysis"
+msgstr ""
+
+#: ../../examples.rst:209
+msgid ""
+"**File:** `dependency_analysis.ipynb "
+"<https://github.com/endarthur/pollywog/blob/main/examples/dependency_analysis.ipynb>`_"
+msgstr ""
+
+#: ../../examples.rst:213
+msgid "Automatic dependency extraction"
+msgstr ""
+
+#: ../../examples.rst:214
+msgid "Topological sorting (resolving calculation order)"
+msgstr ""
+
+#: ../../examples.rst:215
+msgid "External dependencies (variables from Leapfrog)"
+msgstr ""
+
+#: ../../examples.rst:216
+msgid "Circular dependency detection"
+msgstr ""
+
+#: ../../examples.rst:217
+msgid "Analyzing complex workflows"
+msgstr ""
+
+#: ../../examples.rst:218
+msgid "Debugging dependency issues"
+msgstr ""
+
+#: ../../examples.rst:220
+msgid "**Best for:** Understanding and debugging calculation order"
+msgstr ""
+
+#: ../../examples.rst:236
+msgid "Modifying .lfcalc Files"
+msgstr ""
+
+#: ../../examples.rst:238
+msgid ""
+"**File:** `modifying_lfcalc_files.ipynb "
+"<https://github.com/endarthur/pollywog/blob/main/examples/modifying_lfcalc_files.ipynb>`_"
+msgstr ""
+
+#: ../../examples.rst:242
+msgid "Reading .lfcalc files"
+msgstr ""
+
+#: ../../examples.rst:243
+msgid "Querying and filtering calculations"
+msgstr ""
+
+#: ../../examples.rst:244
+msgid "Modifying existing calculations"
+msgstr ""
+
+#: ../../examples.rst:245
+msgid "Adding new calculations"
+msgstr ""
+
+#: ../../examples.rst:246
+msgid "Removing calculations"
+msgstr ""
+
+#: ../../examples.rst:247
+msgid "Batch modifications"
+msgstr ""
+
+#: ../../examples.rst:248
+msgid "Merging multiple files"
+msgstr ""
+
+#: ../../examples.rst:249
+msgid "Version control workflows"
+msgstr ""
+
+#: ../../examples.rst:251
+msgid "**Best for:** Working with existing Leapfrog calculations"
+msgstr ""
+
+#: ../../examples.rst:270
+msgid "Advanced Topics"
+msgstr ""
+
+#: ../../examples.rst:273 ../../examples.rst:439
+msgid "Querying CalcSets"
+msgstr ""
+
+#: ../../examples.rst:275
+msgid ""
+"**File:** `querying_calcsets.ipynb "
+"<https://github.com/endarthur/pollywog/blob/main/examples/querying_calcsets.ipynb>`_"
+msgstr ""
+
+#: ../../examples.rst:279
+msgid "Query method basics"
+msgstr ""
+
+#: ../../examples.rst:280
+msgid "Filtering by name, type, or attributes"
+msgstr ""
+
+#: ../../examples.rst:281
+msgid "Using external variables in queries"
+msgstr ""
+
+#: ../../examples.rst:282
+msgid "Practical query examples"
+msgstr ""
+
+#: ../../examples.rst:299 ../../examples.rst:441
+msgid "Running with DataFrames"
+msgstr ""
+
+#: ../../examples.rst:301
+msgid ""
+"**File:** `running_with_dataframe.ipynb "
+"<https://github.com/endarthur/pollywog/blob/main/examples/running_with_dataframe.ipynb>`_"
+msgstr ""
+
+#: ../../examples.rst:305
+msgid "Running calculations on pandas DataFrames"
+msgstr ""
+
+#: ../../examples.rst:306
+msgid "Using ``run_calcset()`` function"
+msgstr ""
+
+#: ../../examples.rst:307
+msgid "Using pandas accessor (``df.pw.run()``)"
+msgstr ""
+
+#: ../../examples.rst:308
+msgid "Testing calculations before deploying"
+msgstr ""
+
+#: ../../examples.rst:325 ../../examples.rst:443
+msgid "Scikit-learn Conversion"
+msgstr ""
+
+#: ../../examples.rst:327
+msgid ""
+"**File:** `sklearn_conversion.ipynb "
+"<https://github.com/endarthur/pollywog/blob/main/examples/sklearn_conversion.ipynb>`_"
+msgstr ""
+
+#: ../../examples.rst:331
+msgid "Converting decision trees to calculations"
+msgstr ""
+
+#: ../../examples.rst:332
+msgid "Converting random forests"
+msgstr ""
+
+#: ../../examples.rst:333
+msgid "Converting linear models"
+msgstr ""
+
+#: ../../examples.rst:334
+msgid "Inspecting converted calculations"
+msgstr ""
+
+#: ../../examples.rst:353
+msgid "Display and Visualization"
+msgstr ""
+
+#: ../../examples.rst:355
+msgid ""
+"**File:** `display_final_workflow.ipynb "
+"<https://github.com/endarthur/pollywog/blob/main/examples/display_final_workflow.ipynb>`_"
+msgstr ""
+
+#: ../../examples.rst:359
+msgid "Loading and displaying .lfcalc files"
+msgstr ""
+
+#: ../../examples.rst:360
+msgid "Interactive visualization in Jupyter"
+msgstr ""
+
+#: ../../examples.rst:361
+msgid "Theming (light/dark mode)"
+msgstr ""
+
+#: ../../examples.rst:371
+msgid "JupyterLite Specific"
+msgstr ""
+
+#: ../../examples.rst:374
+msgid "JupyterLite Quickstart"
+msgstr ""
+
+#: ../../examples.rst:376
+msgid ""
+"**File:** `jupyterlite_quickstart.ipynb "
+"<https://github.com/endarthur/pollywog/blob/main/examples/jupyterlite_quickstart.ipynb>`_"
+msgstr ""
+
+#: ../../examples.rst:380
+msgid "Running pollywog in the browser"
+msgstr ""
+
+#: ../../examples.rst:381
+msgid "Creating simple workflows"
+msgstr ""
+
+#: ../../examples.rst:382
+msgid "Exporting files for download"
+msgstr ""
+
+#: ../../examples.rst:384
+msgid "**Best for:** First-time JupyterLite users"
+msgstr ""
+
+#: ../../examples.rst:389
+msgid "JupyterLite Demo"
+msgstr ""
+
+#: ../../examples.rst:391
+msgid ""
+"**File:** `jupyterlite_demo.ipynb "
+"<https://github.com/endarthur/pollywog/blob/main/examples/jupyterlite_demo.ipynb>`_"
+msgstr ""
+
+#: ../../examples.rst:395
+msgid "Pollywog magic commands"
+msgstr ""
+
+#: ../../examples.rst:396
+msgid "Autodownload feature"
+msgstr ""
+
+#: ../../examples.rst:397
+msgid "Manual download utilities"
+msgstr ""
+
+#: ../../examples.rst:398
+msgid "Working with browser storage"
+msgstr ""
+
+#: ../../examples.rst:410
+msgid "Quick Reference by Task"
+msgstr ""
+
+#: ../../examples.rst:412
+msgid "**I want to...**"
+msgstr ""
+
+#: ../../examples.rst:418
+msgid "Task"
+msgstr ""
+
+#: ../../examples.rst:419
+msgid "See Example"
+msgstr ""
+
+#: ../../examples.rst:420
+msgid "Create my first calculation set"
+msgstr ""
+
+#: ../../examples.rst:421
+msgid ":ref:`basic_usage`"
+msgstr ""
+
+#: ../../examples.rst:422
+msgid "Understand Variable vs Number vs Category"
+msgstr ""
+
+#: ../../examples.rst:423
+msgid ":ref:`item_types_guide`"
+msgstr ""
+
+#: ../../examples.rst:424
+msgid "Use If statements and conditions"
+msgstr ""
+
+#: ../../examples.rst:425
+msgid ":ref:`conditional_logic`"
+msgstr ""
+
+#: ../../examples.rst:426
+msgid "Apply dilution and recovery factors"
+msgstr ""
+
+#: ../../examples.rst:427
+msgid ":ref:`helper_functions` (Scale helper)"
+msgstr ""
+
+#: ../../examples.rst:428
+msgid "Combine domain estimates"
+msgstr ""
+
+#: ../../examples.rst:429
+msgid ":ref:`helper_functions` (WeightedAverage)"
+msgstr ""
+
+#: ../../examples.rst:430
+msgid "Classify by grade thresholds"
+msgstr ""
+
+#: ../../examples.rst:431
+msgid ":ref:`helper_functions` (CategoryFromThresholds)"
+msgstr ""
+
+#: ../../examples.rst:432
+msgid "Build a complete resource workflow"
+msgstr ""
+
+#: ../../examples.rst:433
+msgid ":ref:`pollywog_workflow_tutorial`"
+msgstr ""
+
+#: ../../examples.rst:434
+msgid "Fix calculation order issues"
+msgstr ""
+
+#: ../../examples.rst:435
+msgid ":ref:`dependency_analysis`"
+msgstr ""
+
+#: ../../examples.rst:436
+msgid "Update existing .lfcalc files"
+msgstr ""
+
+#: ../../examples.rst:437
+msgid ":ref:`modifying_lfcalc`"
+msgstr ""
+
+#: ../../examples.rst:438
+msgid "Filter calculations by name"
+msgstr ""
+
+#: ../../examples.rst:440
+msgid "Test calculations on data"
+msgstr ""
+
+#: ../../examples.rst:442
+msgid "Use machine learning models"
+msgstr ""
+
+#: ../../examples.rst:444
+msgid "Try pollywog without installing"
+msgstr ""
+
+#: ../../examples.rst:445
+msgid ":ref:`JupyterLite Quickstart`"
+msgstr ""
+
+#: ../../examples.rst:448
+msgid "Running the Examples"
+msgstr ""
+
+#: ../../examples.rst:450
+msgid "**Option 1: JupyterLite (No Installation)**"
+msgstr ""
+
+#: ../../examples.rst:452
+msgid ""
+"Visit https://endarthur.github.io/pollyweb and open any notebook. "
+"Everything runs in your browser!"
+msgstr ""
+
+#: ../../examples.rst:454
+msgid "**Option 2: Local Installation**"
+msgstr ""
+
+#: ../../examples.rst:468
+msgid "**Option 3: Individual Files**"
+msgstr ""
+
+#: ../../examples.rst:470
+msgid ""
+"Download individual notebooks from `GitHub "
+"<https://github.com/endarthur/pollywog/tree/main/examples>`_ and run "
+"locally."
+msgstr ""
+
+#: ../../examples.rst:473
+msgid "Next Steps"
+msgstr ""
+
+#: ../../examples.rst:475
+msgid "After exploring the examples:"
+msgstr ""
+
+#: ../../examples.rst:477
+msgid "**Read the guides:**"
+msgstr ""
+
+#: ../../examples.rst:479
+msgid ":doc:`expression_syntax` - Leapfrog expression syntax reference"
+msgstr ""
+
+#: ../../examples.rst:480
+msgid ":doc:`helpers_guide` - Detailed helper function documentation"
+msgstr ""
+
+#: ../../examples.rst:481
+msgid ":doc:`workflow_patterns` - Common patterns and best practices"
+msgstr ""
+
+#: ../../examples.rst:483
+msgid "**Check the API:**"
+msgstr ""
+
+#: ../../examples.rst:485
+msgid ":doc:`api_reference` - Complete API documentation"
+msgstr ""
+
+#: ../../examples.rst:487
+msgid "**Get help:**"
+msgstr ""
+
+#: ../../examples.rst:489
+msgid ""
+"`GitHub Issues <https://github.com/endarthur/pollywog/issues>`_ - Report "
+"bugs or request features"
+msgstr ""
+
+#: ../../examples.rst:490
+msgid ""
+"`GitHub Discussions <https://github.com/endarthur/pollywog/discussions>`_"
+" - Ask questions and share ideas"
+msgstr ""
