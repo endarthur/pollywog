@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2025-11-11
+
+### Added
+- **Decompilation Module** (`pollywog/decomp.py`) - Convert .lfcalc files back to Python code
+  - `decompile()` - Read .lfcalc file and generate Python code
+  - `decompile_to_string()` - Convert CalcSet to Python code string
+  - Phase 1: Direct conversion (exact structure recreation)
+  - Phase 2: Pattern detection (automatic helper recognition)
+- **Pattern Detection** (`pollywog/patterns.py`) - Smart recognition of common calculation patterns
+  - WeightedAverage pattern detection
+  - Sum pattern detection
+  - Product pattern detection
+  - Average pattern detection
+  - Confidence scoring (>90% threshold)
+  - Graceful fallback to direct code
+- **Jupyter Magic Command** - `%pw.load` for interactive .lfcalc loading
+  - Behaves like built-in `%load` command
+  - First run: decompiles and replaces cell content
+  - Second run: executes loaded Python code
+  - Integrated with pattern detection
+- Examples and documentation for decompilation workflows
+  - `examples/decompile_example.py` - Comprehensive usage examples
+  - `examples/pw_load_magic_demo.ipynb` - Jupyter magic demonstration
+
+### Changed
+- Decompilation now automatically detects and uses helper functions (WeightedAverage, Sum, Product, Average)
+- Generated Python code imports helpers when patterns are detected
+- Enhanced CLAUDE.md with decompilation architecture details
+
+### Testing
+- Added 28 new tests (21 pattern detection + 7 integration tests)
+- All 146 tests passing
+- Roundtrip validation: .lfcalc → Python → exec → CalcSet → .lfcalc
+
 ## [0.2.0] - 2025-11-10
 
 ### Added
@@ -71,7 +105,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CalcSet container for managing calculations
 - Basic serialization/deserialization support
 
-[Unreleased]: https://github.com/endarthur/pollywog/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/endarthur/pollywog/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/endarthur/pollywog/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/endarthur/pollywog/compare/v0.1.2...v0.2.0
 [0.1.2]: https://github.com/endarthur/pollywog/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/endarthur/pollywog/compare/v0.1.0...v0.1.1

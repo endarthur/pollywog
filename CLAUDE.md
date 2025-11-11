@@ -100,6 +100,24 @@ Converts scikit-learn models to Leapfrog calculations:
 
 The `flat` parameter controls whether If structures are nested (default) or flattened into a single condition list.
 
+### Decompilation Module (`pollywog/decomp.py`)
+
+**New in 0.3.0** - Converts .lfcalc files back to Python code:
+- `decompile()`: Read .lfcalc file and generate Python code that recreates it
+- `decompile_to_string()`: Convert a CalcSet to Python code string
+
+**Phase 1 Implementation**: Direct conversion with no pattern detection. Generates valid Python code that exactly recreates the calculation set structure using pollywog classes (Number, Category, If, etc.).
+
+**Use cases**:
+- Migration path: Convert existing .lfcalc files to version-controlled Python code
+- Learning tool: See how to write complex calculations in pollywog
+- Refactoring aid: Get a pollywog starting point to manually optimize
+- Enables git-based workflows for legacy calculation sets
+
+**Future phases** (not yet implemented):
+- Phase 2: Pattern detection (WeightedAverage, Sum, etc.)
+- Phase 3: Variable family detection (domain-based loops)
+
 ### Display Module (`pollywog/display.py`)
 
 Jupyter notebook integration:
@@ -112,6 +130,8 @@ Jupyter notebook integration:
 
 - `utils.py`: Helper utilities (`ensure_list`, `ensure_brackets`, `to_dict`, etc.)
 - `magics.py`: Jupyter magic commands for interactive workflows
+  - `%pollywog autodownload on/off/status` - Auto-display download buttons in JupyterLite
+  - `%pw.load file.lfcalc` - Load and decompile .lfcalc file into current cell (works like `%load`)
 - `leapfrog_env.py`: Leapfrog environment variable handling
 - `jupyterlite_utils.py`: Browser-based JupyterLite support (https://endarthur.github.io/pollyweb)
 
@@ -152,6 +172,7 @@ Number("NSR",
   - Topological sorting with cyclic dependency detection
   - Helper dual-mode behavior (with/without `name`)
   - ML model conversion accuracy
+  - Decompilation roundtrip (.lfcalc → Python → exec → CalcSet → .lfcalc)
 
 ## Important Implementation Notes
 

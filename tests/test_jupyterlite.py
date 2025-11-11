@@ -182,3 +182,43 @@ class TestIntegration:
             from pollywog.jupyterlite_utils import is_jupyterlite
 
             assert is_jupyterlite() is True
+
+    def test_pw_load_magic(self):
+        """Test the %pw.load magic command logic."""
+        from pathlib import Path
+        from tempfile import TemporaryDirectory
+
+        from pollywog.core import CalcSet, Number
+        from pollywog.decomp import decompile
+
+        with TemporaryDirectory() as tmpdir:
+            tmpdir = Path(tmpdir)
+
+            # Create a test .lfcalc file
+            calcset = CalcSet([Number("Au_clean", "clamp([Au], 0)")])
+            lfcalc_path = tmpdir / "test.lfcalc"
+            calcset.to_lfcalc(lfcalc_path)
+
+            # Test the core logic of what pw.load does
+            # (without instantiating the full magic class which requires a real IPython shell)
+
+            # Decompile the file
+            code = decompile(str(lfcalc_path))
+
+            # Verify the decompiled code would be correct
+            assert "from pollywog.core import" in code
+            assert "CalcSet" in code
+            assert "Au_clean" in code
+            assert "clamp([Au], 0)" in code
+
+            # Simulate what would be set in the cell
+            new_cell_content = f"# %pw.load {lfcalc_path}\n{code}"
+
+            # Verify the commented magic line is present
+            assert f"# %pw.load {lfcalc_path}" in new_cell_content
+
+            # Verify the code is executable
+            namespace = {}
+            exec(code, namespace)
+            assert "calcset" in namespace
+            assert len(namespace["calcset"].items) == 1

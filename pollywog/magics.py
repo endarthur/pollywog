@@ -14,6 +14,7 @@ class PollywogMagics(Magics):
 
     Available commands:
         %pollywog autodownload on/off/status - Manage automatic display of download buttons for exported files
+        %pw.load <file.lfcalc> - Load and decompile a .lfcalc file into the current cell (like %load)
     """
 
     def __init__(self, shell):
@@ -128,6 +129,66 @@ class PollywogMagics(Magics):
             except ImportError:
                 pass
 
+    @line_magic
+    def pw_load(self, line):
+        """
+        Load a .lfcalc file as decompiled Python code into the current cell.
+
+        This magic behaves like Jupyter's built-in %load command:
+        - First execution: Decompiles the .lfcalc file and replaces the cell content
+        - Second execution: Runs the loaded Python code
+
+        Usage:
+            %pw.load file.lfcalc
+
+        Example workflow:
+            # Cell 1 (before execution):
+            %pw.load my_calculations.lfcalc
+
+            # Cell 1 (after first execution):
+            # %pw.load my_calculations.lfcalc
+            from pollywog.core import CalcSet, Number
+            calcset = CalcSet([...])
+
+            # Cell 1 (after second execution):
+            # The code runs and creates the calcset variable
+        """
+        from pathlib import Path
+
+        filepath = line.strip()
+
+        if not filepath:
+            print("Usage: %pw.load <path-to-lfcalc-file>")
+            return
+
+        filepath_obj = Path(filepath)
+
+        if not filepath_obj.exists():
+            print(f"Error: File not found: {filepath}")
+            return
+
+        if not filepath.endswith(".lfcalc"):
+            print("Warning: File does not have .lfcalc extension")
+
+        try:
+            from pollywog.decomp import decompile
+
+            # Decompile the file
+            code = decompile(filepath)
+
+            # Replace the current cell with commented magic line + decompiled code
+            # This is exactly how %load works
+            new_cell_content = f"# %pw.load {filepath}\n{code}"
+
+            # Use set_next_input with replace=True to modify the current cell
+            self.shell.set_next_input(new_cell_content, replace=True)
+
+        except Exception as e:
+            print(f"Error decompiling {filepath}: {e}")
+            import traceback
+
+            traceback.print_exc()
+
 
 def load_ipython_extension(ipython):
     """
@@ -139,9 +200,9 @@ def load_ipython_extension(ipython):
     Args:
         ipython: IPython shell instance.
     """
-    ipython.register_magic_function(
-        PollywogMagics(ipython).pollywog, "line", "pollywog"
-    )
+    magics = PollywogMagics(ipython)
+    ipython.register_magic_function(magics.pollywog, "line", "pollywog")
+    ipython.register_magic_function(magics.pw_load, "line", "pw.load")
 
 
 def unload_ipython_extension(ipython):

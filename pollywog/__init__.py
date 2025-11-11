@@ -1,4 +1,5 @@
 from .core import CalcSet, Category, Filter, If, IfRow, Number, Variable
+from .decomp import decompile, decompile_to_string
 from .display import display_calcset, display_item, set_theme
 from .helpers import Average, Normalize, Product, Sum, WeightedAverage
 
@@ -34,6 +35,9 @@ __all__ = [
     "display_calcset",
     "display_item",
     "set_theme",
+    # Decompilation
+    "decompile",
+    "decompile_to_string",
     # Version
     "__version__",
 ]
