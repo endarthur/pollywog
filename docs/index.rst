@@ -64,13 +64,12 @@ When to Use Pollywog
 What is Leapfrog?
 ~~~~~~~~~~~~~~~~~
 
-`Leapfrog <https://www.seequent.com/products-solutions/leapfrog-geo/>`_ is industry-leading 3D geological modeling and mine planning software developed by Seequent. It is widely used in mining and resource estimation for:
+`Leapfrog <https://www.seequent.com/products-solutions/leapfrog-geo/>`_ is industry-leading 3D geological modeling software developed by Seequent. It is widely used in mining and resource estimation for:
 
 - **Drillhole database management** and visualization
 - **Geological modeling** (surfaces, solids, block models)
-- **Grade estimation** (kriging, IDW, nearest neighbor)
+- **Grade estimation** (kriging, IDW, nearest neighbor) with Leapfrog Edge
 - **Resource and reserve calculation**
-- **Mine planning and design**
 
 Leapfrog uses **calculation sets** (``.lfcalc`` files) to define formulas and transformations applied to data. These calculations can become complex when dealing with multiple domains, conditional logic, and multi-commodity resources.
 

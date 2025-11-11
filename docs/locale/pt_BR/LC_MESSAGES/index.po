@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pollywog \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-11 13:16-0300\n"
+"POT-Creation-Date: 2025-11-11 14:38-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: pt_BR\n"
@@ -41,7 +41,9 @@ msgstr "**Escolha seu caminho de aprendizado:**"
 
 #: ../../index.rst:16
 msgid "**Python users**: Start with :doc:`getting_started` for a quick overview"
-msgstr "**Usuários de Python**: Comece com :doc:`getting_started` para uma visão geral rápida"
+msgstr ""
+"**Usuários de Python**: Comece com :doc:`getting_started` para uma visão "
+"geral rápida"
 
 #: ../../index.rst:17
 msgid ""
@@ -53,7 +55,9 @@ msgstr ""
 
 #: ../../index.rst:18
 msgid "**Advanced workflows**: See :doc:`tutorials` for complete project examples"
-msgstr "**Fluxos de trabalho avançados**: Veja :doc:`tutorials` para exemplos completos de projetos"
+msgstr ""
+"**Fluxos de trabalho avançados**: Veja :doc:`tutorials` para exemplos "
+"completos de projetos"
 
 #: ../../index.rst:37
 msgid "Introduction"
@@ -66,9 +70,10 @@ msgid ""
 "sets—especially when those sets are large, complex, or involve repetitive"
 " logic."
 msgstr ""
-"**pollywog** é uma biblioteca Python projetada para facilitar a construção, "
-"manipulação e inspeção visual de conjuntos de cálculos no estilo Leapfrog—especialmente "
-"quando esses conjuntos são grandes, complexos ou envolvem lógica repetitiva."
+"**pollywog** é uma biblioteca Python projetada para facilitar a "
+"construção, manipulação e inspeção visual de conjuntos de cálculos no "
+"estilo Leapfrog—especialmente quando esses conjuntos são grandes, "
+"complexos ou envolvem lógica repetitiva."
 
 #: ../../index.rst:42
 msgid "When to Use Pollywog"
@@ -81,13 +86,13 @@ msgstr "O que é Leapfrog?"
 #: ../../index.rst:67
 msgid ""
 "`Leapfrog <https://www.seequent.com/products-solutions/leapfrog-geo/>`_ "
-"is industry-leading 3D geological modeling and mine planning software "
-"developed by Seequent. It is widely used in mining and resource "
-"estimation for:"
+"is industry-leading 3D geological modeling software developed by "
+"Seequent. It is widely used in mining and resource estimation for:"
 msgstr ""
-"`Leapfrog <https://www.seequent.com/products-solutions/leapfrog-geo/>`_ "
-"é um software líder de mercado para modelagem geológica 3D e planejamento de minas "
-"desenvolvido pela Seequent. É amplamente usado em mineração e estimativa de recursos para:"
+"`Leapfrog <https://www.seequent.com/products-solutions/leapfrog-geo/>`_ é"
+" um software líder de mercado para modelagem geológica 3D "
+"desenvolvido pela Seequent. É amplamente usado em mineração e "
+"estimativa de recursos para:"
 
 #: ../../index.rst:69
 msgid "**Drillhole database management** and visualization"
@@ -98,169 +103,171 @@ msgid "**Geological modeling** (surfaces, solids, block models)"
 msgstr "**Modelagem geológica** (superfícies, sólidos, modelos de blocos)"
 
 #: ../../index.rst:71
-msgid "**Grade estimation** (kriging, IDW, nearest neighbor)"
-msgstr "**Estimativa de teor** (krigagem, IDW, vizinho mais próximo)"
+msgid "**Grade estimation** (kriging, IDW, nearest neighbor) with Leapfrog Edge"
+msgstr "**Estimativa de teor** (krigagem, IDW, vizinho mais próximo) com Leapfrog Edge"
 
 #: ../../index.rst:72
 msgid "**Resource and reserve calculation**"
 msgstr "**Cálculo de recursos e reservas**"
 
-#: ../../index.rst:73
-msgid "**Mine planning and design**"
-msgstr "**Planejamento e design de mina**"
-
-#: ../../index.rst:75
+#: ../../index.rst:74
 msgid ""
 "Leapfrog uses **calculation sets** (``.lfcalc`` files) to define formulas"
 " and transformations applied to data. These calculations can become "
 "complex when dealing with multiple domains, conditional logic, and multi-"
 "commodity resources."
 msgstr ""
-"O Leapfrog usa **conjuntos de cálculos** (arquivos ``.lfcalc``) para definir fórmulas "
-"e transformações aplicadas aos dados. Esses cálculos podem se tornar complexos ao lidar "
-"com múltiplos domínios, lógica condicional e recursos multi-commodities."
+"O Leapfrog usa **conjuntos de cálculos** (arquivos ``.lfcalc``) para "
+"definir fórmulas e transformações aplicadas aos dados. Esses cálculos "
+"podem se tornar complexos ao lidar com múltiplos domínios, lógica "
+"condicional e recursos multi-commodities."
 
-#: ../../index.rst:78
+#: ../../index.rst:77
 msgid "Why pollywog?"
 msgstr "Por que pollywog?"
 
-#: ../../index.rst:80
+#: ../../index.rst:79
 msgid "**Problems pollywog solves:**"
 msgstr "**Problemas que o pollywog resolve:**"
 
-#: ../../index.rst:86
+#: ../../index.rst:85
 msgid "Challenge"
 msgstr "Desafio"
 
-#: ../../index.rst:87
+#: ../../index.rst:86
 msgid "Solution"
 msgstr "Solução"
 
-#: ../../index.rst:88
+#: ../../index.rst:87
 msgid "📝 **Large calculation sets**"
 msgstr "📝 **Grandes conjuntos de cálculos**"
 
-#: ../../index.rst:89
+#: ../../index.rst:88
 msgid ""
 "Generate hundreds of calculations programmatically instead of point-and-"
 "click"
-msgstr ""
-"Gere centenas de cálculos programaticamente em vez de apontar e clicar"
+msgstr "Gere centenas de cálculos programaticamente em vez de apontar e clicar"
 
-#: ../../index.rst:90
+#: ../../index.rst:89
 msgid "🔀 **Complex logic**"
 msgstr "🔀 **Lógica complexa**"
 
-#: ../../index.rst:91
+#: ../../index.rst:90
 msgid "Use Python's control flow (loops, conditionals) to build calculations"
-msgstr "Use o fluxo de controle do Python (loops, condicionais) para construir cálculos"
+msgstr ""
+"Use o fluxo de controle do Python (loops, condicionais) para construir "
+"cálculos"
 
-#: ../../index.rst:92
+#: ../../index.rst:91
 msgid "🔁 **Repetitive tasks**"
 msgstr "🔁 **Tarefas repetitivas**"
 
-#: ../../index.rst:93
+#: ../../index.rst:92
 msgid "Automate patterns with helper functions and templates"
 msgstr "Automatize padrões com funções auxiliares e templates"
 
-#: ../../index.rst:94
+#: ../../index.rst:93
 msgid "🔍 **Hard to review**"
 msgstr "🔍 **Difícil de revisar**"
 
-#: ../../index.rst:95
+#: ../../index.rst:94
 msgid "Display calculation trees interactively in Jupyter notebooks"
 msgstr "Exiba árvores de cálculo interativamente em notebooks Jupyter"
 
-#: ../../index.rst:96
+#: ../../index.rst:95
 msgid "🤖 **ML integration**"
 msgstr "🤖 **Integração com ML**"
 
-#: ../../index.rst:97
+#: ../../index.rst:96
 msgid "Deploy scikit-learn models directly as Leapfrog calculations"
 msgstr "Implante modelos scikit-learn diretamente como cálculos do Leapfrog"
 
-#: ../../index.rst:98
+#: ../../index.rst:97
 msgid "📋 **Version control**"
 msgstr "📋 **Controle de versão**"
 
-#: ../../index.rst:99
+#: ../../index.rst:98
 msgid "Keep calculation logic in Git-trackable Python scripts"
 msgstr "Mantenha a lógica de cálculo em scripts Python rastreáveis pelo Git"
 
-#: ../../index.rst:100
+#: ../../index.rst:99
 msgid "🧪 **Testing**"
 msgstr "🧪 **Testes**"
 
-#: ../../index.rst:101
+#: ../../index.rst:100
 msgid "Write unit tests for calculation logic before deploying"
 msgstr "Escreva testes unitários para a lógica de cálculo antes de implantar"
 
-#: ../../index.rst:103
+#: ../../index.rst:102
 msgid "**By using pollywog, you can:**"
 msgstr "**Usando o pollywog, você pode:**"
 
-#: ../../index.rst:105
+#: ../../index.rst:104
 msgid "✅ Automate creation and modification of calculation sets"
 msgstr "✅ Automatizar a criação e modificação de conjuntos de cálculos"
 
-#: ../../index.rst:106
+#: ../../index.rst:105
 msgid "✅ Refactor and query calculations with code"
 msgstr "✅ Refatorar e consultar cálculos com código"
 
-#: ../../index.rst:107
+#: ../../index.rst:106
 msgid "✅ Export directly to Leapfrog ``.lfcalc`` format"
 msgstr "✅ Exportar diretamente para o formato ``.lfcalc`` do Leapfrog"
 
-#: ../../index.rst:108
+#: ../../index.rst:107
 msgid "✅ Visualize and validate logic interactively"
 msgstr "✅ Visualizar e validar a lógica interativamente"
 
-#: ../../index.rst:109
+#: ../../index.rst:108
 msgid "✅ Deploy machine learning models in resource models"
 msgstr "✅ Implantar modelos de machine learning em modelos de recursos"
 
-#: ../../index.rst:110
+#: ../../index.rst:109
 msgid "✅ Maintain calculation logic in version-controlled scripts"
 msgstr "✅ Manter a lógica de cálculo em scripts com controle de versão"
 
-#: ../../index.rst:113
+#: ../../index.rst:112
 msgid "Quick Example"
 msgstr "Exemplo Rápido"
 
-#: ../../index.rst:115
+#: ../../index.rst:114
 msgid ""
 "Here's a simple example showing pollywog's power – creating a complete "
 "resource estimation postprocessing workflow in just a few lines:"
 msgstr ""
-"Aqui está um exemplo simples mostrando o poder do pollywog – criando um fluxo "
-"de trabalho completo de pós-processamento de estimativa de recursos em apenas algumas linhas:"
+"Aqui está um exemplo simples mostrando o poder do pollywog – criando um "
+"fluxo de trabalho completo de pós-processamento de estimativa de recursos"
+" em apenas algumas linhas:"
 
-#: ../../index.rst:151
+#: ../../index.rst:150
 msgid "**Compare this to manually creating 6+ calculations in Leapfrog's UI!** 🎉"
-msgstr "**Compare isso com a criação manual de mais de 6 cálculos na interface do Leapfrog!** 🎉"
+msgstr ""
+"**Compare isso com a criação manual de mais de 6 cálculos na interface do"
+" Leapfrog!** 🎉"
 
-#: ../../index.rst:154
+#: ../../index.rst:153
 msgid ""
 "This example creates 6 calculations that would take 10-15 minutes to "
 "build manually in Leapfrog. With pollywog, it takes seconds and is "
 "version-controlled, testable, and reusable!"
 msgstr ""
-"Este exemplo cria 6 cálculos que levariam 10-15 minutos para construir manualmente "
-"no Leapfrog. Com o pollywog, leva segundos e é versionado, testável e reutilizável!"
+"Este exemplo cria 6 cálculos que levariam 10-15 minutos para construir "
+"manualmente no Leapfrog. Com o pollywog, leva segundos e é versionado, "
+"testável e reutilizável!"
 
-#: ../../index.rst:157
+#: ../../index.rst:156
 msgid "Key Features"
 msgstr "Recursos Principais"
 
-#: ../../index.rst:159
+#: ../../index.rst:158
 msgid "**Core Functionality:**"
 msgstr "**Funcionalidade Principal:**"
 
-#: ../../index.rst:161
+#: ../../index.rst:160
 msgid "Read and write Leapfrog ``.lfcalc`` files"
 msgstr "Ler e escrever arquivos ``.lfcalc`` do Leapfrog"
 
-#: ../../index.rst:162
+#: ../../index.rst:161
 msgid ""
 "Programmatically create calculations with ``Number``, ``Category``, "
 "``Variable``, and ``Filter`` types"
@@ -268,79 +275,79 @@ msgstr ""
 "Criar cálculos programaticamente com tipos ``Number``, ``Category``, "
 "``Variable`` e ``Filter``"
 
-#: ../../index.rst:163
+#: ../../index.rst:162
 msgid "Build conditional logic with ``If``/``Else`` statements"
 msgstr "Construir lógica condicional com instruções ``If``/``Else``"
 
-#: ../../index.rst:164
+#: ../../index.rst:163
 msgid "Query and filter calculation sets like pandas DataFrames"
 msgstr "Consultar e filtrar conjuntos de cálculos como DataFrames do pandas"
 
-#: ../../index.rst:166
+#: ../../index.rst:165
 msgid "**Helper Functions:**"
 msgstr "**Funções Auxiliares:**"
 
-#: ../../index.rst:168
+#: ../../index.rst:167
 msgid "``Sum``, ``Product``, ``Average`` - Basic mathematical operations"
 msgstr "``Sum``, ``Product``, ``Average`` - Operações matemáticas básicas"
 
-#: ../../index.rst:169
+#: ../../index.rst:168
 msgid "``WeightedAverage`` - Domain proportion weighting"
 msgstr "``WeightedAverage`` - Ponderação por proporção de domínio"
 
-#: ../../index.rst:170
+#: ../../index.rst:169
 msgid "``Scale``, ``Normalize`` - Data transformations"
 msgstr "``Scale``, ``Normalize`` - Transformações de dados"
 
-#: ../../index.rst:171
+#: ../../index.rst:170
 msgid "``CategoryFromThresholds`` - Threshold-based classification"
 msgstr "``CategoryFromThresholds`` - Classificação baseada em limites"
 
-#: ../../index.rst:173
+#: ../../index.rst:172
 msgid "**Machine Learning:**"
 msgstr "**Machine Learning:**"
 
-#: ../../index.rst:175
+#: ../../index.rst:174
 msgid "Convert scikit-learn decision trees to calculations"
 msgstr "Converter árvores de decisão do scikit-learn em cálculos"
 
-#: ../../index.rst:176
+#: ../../index.rst:175
 msgid "Convert random forests to calculation ensembles"
 msgstr "Converter florestas aleatórias em conjuntos de cálculos"
 
-#: ../../index.rst:177
+#: ../../index.rst:176
 msgid "Convert linear models to equations"
 msgstr "Converter modelos lineares em equações"
 
-#: ../../index.rst:178
+#: ../../index.rst:177
 msgid "Full support for both regression and classification"
 msgstr "Suporte completo para regressão e classificação"
 
-#: ../../index.rst:180
+#: ../../index.rst:179
 msgid "**Advanced Features:**"
 msgstr "**Recursos Avançados:**"
 
-#: ../../index.rst:182
+#: ../../index.rst:181
 msgid "Topological sorting for dependency resolution"
 msgstr "Ordenação topológica para resolução de dependências"
 
-#: ../../index.rst:183
+#: ../../index.rst:182
 msgid "Dependency analysis and visualization"
 msgstr "Análise e visualização de dependências"
 
-#: ../../index.rst:184
+#: ../../index.rst:183
 msgid "Interactive display in Jupyter notebooks"
 msgstr "Exibição interativa em notebooks Jupyter"
 
-#: ../../index.rst:185
+#: ../../index.rst:184
 msgid "Calculation validation and testing"
 msgstr "Validação e teste de cálculos"
 
-#: ../../index.rst:188
+#: ../../index.rst:187
 msgid "Where to Start"
 msgstr "Por Onde Começar"
 
-#: ../../index.rst:190
+#: ../../index.rst:189
 msgid ""
 "**New users**: Start with :doc:`getting_started` for installation and "
 "basic usage"
@@ -348,43 +355,47 @@ msgstr ""
 "**Novos usuários**: Comece com :doc:`getting_started` para instalação e "
 "uso básico"
 
-#: ../../index.rst:191
+#: ../../index.rst:190
 msgid ""
 "**Learning the syntax**: See :doc:`expression_syntax` for Leapfrog "
 "expression syntax"
 msgstr ""
-"**Aprendendo a sintaxe**: Veja :doc:`expression_syntax` para a sintaxe de "
-"expressões do Leapfrog"
+"**Aprendendo a sintaxe**: Veja :doc:`expression_syntax` para a sintaxe de"
+" expressões do Leapfrog"
 
-#: ../../index.rst:192
+#: ../../index.rst:191
 msgid ""
 "**Building workflows**: Check :doc:`workflow_patterns` for common use "
 "cases"
 msgstr ""
-"**Construindo fluxos de trabalho**: Confira :doc:`workflow_patterns` para casos "
-"de uso comuns"
+"**Construindo fluxos de trabalho**: Confira :doc:`workflow_patterns` para"
+" casos de uso comuns"
+
+#: ../../index.rst:192
+msgid "**Using helpers**: Read :doc:`helpers_guide` for helper function details"
+msgstr ""
+"**Usando auxiliares**: Leia :doc:`helpers_guide` para detalhes sobre "
+"funções auxiliares"
 
 #: ../../index.rst:193
-msgid "**Using helpers**: Read :doc:`helpers_guide` for helper function details"
-msgstr "**Usando auxiliares**: Leia :doc:`helpers_guide` para detalhes sobre funções auxiliares"
+msgid "**Best practices**: Review :doc:`best_practices` before production use"
+msgstr ""
+"**Melhores práticas**: Revise :doc:`best_practices` antes do uso em "
+"produção"
 
 #: ../../index.rst:194
-msgid "**Best practices**: Review :doc:`best_practices` before production use"
-msgstr "**Melhores práticas**: Revise :doc:`best_practices` antes do uso em produção"
-
-#: ../../index.rst:195
 msgid "**Step-by-step guides**: Follow :doc:`tutorials` for complete examples"
 msgstr "**Guias passo a passo**: Siga :doc:`tutorials` para exemplos completos"
 
-#: ../../index.rst:196
+#: ../../index.rst:195
 msgid "**API details**: Consult :doc:`api_reference` for technical reference"
 msgstr "**Detalhes da API**: Consulte :doc:`api_reference` para referência técnica"
 
-#: ../../index.rst:199
+#: ../../index.rst:198
 msgid "Legal Notice"
 msgstr "Aviso Legal"
 
-#: ../../index.rst:201
+#: ../../index.rst:200
 msgid ""
 "Pollywog is an independent open-source tool developed to support "
 "automation of workflows involving .lfcalc files used in Leapfrog software"
@@ -392,24 +403,28 @@ msgid ""
 " by Seequent. Users should review Leapfrog's terms of use before "
 "integrating pollywog into their workflows."
 msgstr ""
-"Pollywog é uma ferramenta independente de código aberto desenvolvida para apoiar "
-"a automação de fluxos de trabalho envolvendo arquivos .lfcalc usados no software Leapfrog "
-"da Seequent. Esta ferramenta não é afiliada, endossada ou patrocinada pela "
-"Seequent. Os usuários devem revisar os termos de uso do Leapfrog antes de "
-"integrar o pollywog em seus fluxos de trabalho."
+"Pollywog é uma ferramenta independente de código aberto desenvolvida para"
+" apoiar a automação de fluxos de trabalho envolvendo arquivos .lfcalc "
+"usados no software Leapfrog da Seequent. Esta ferramenta não é afiliada, "
+"endossada ou patrocinada pela Seequent. Os usuários devem revisar os "
+"termos de uso do Leapfrog antes de integrar o pollywog em seus fluxos de "
+"trabalho."
 
-#: ../../index.rst:204
+#: ../../index.rst:203
 msgid "Indices and tables"
 msgstr "Índices e tabelas"
 
-#: ../../index.rst:206
+#: ../../index.rst:205
 msgid ":ref:`genindex`"
 msgstr ":ref:`genindex`"
 
-#: ../../index.rst:207
+#: ../../index.rst:206
 msgid ":ref:`modindex`"
 msgstr ":ref:`modindex`"
 
-#: ../../index.rst:208
+#: ../../index.rst:207
 msgid ":ref:`search`"
 msgstr ":ref:`search`"
+
+#~ msgid "**Mine planning and design**"
+#~ msgstr "**Planejamento e design de mina**"
